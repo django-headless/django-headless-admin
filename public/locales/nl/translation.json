@@ -1,0 +1,9 @@
+{
+  "email": "E-mail",
+  "forgot_password": "Wachtwoord vergeten",
+  "log_in": "Inloggen",
+  "log_out": "Uitloggen",
+  "password": "Wachtwoord",
+  "validation_invalid_email": "Geef een geldig e-mailadres op",
+  "validation_required": "Dit is een verplicht veld"
+}

@@ -1,0 +1,9 @@
+{
+  "email": "Email",
+  "forgot_password": "Forgot password",
+  "log_in": "Log in",
+  "log_out": "Log out",
+  "password": "Password",
+  "validation_invalid_email": "Please provide a valid email",
+  "validation_required": "This is a required field"
+}
