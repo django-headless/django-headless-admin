@@ -6,10 +6,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "refine dev",
+    "build": "refine build",
+    "serve": "refine serve",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "5.43.1",
@@ -50,10 +50,13 @@
     "@mantine/nprogress": "7.10.2",
     "@mantine/spotlight": "7.10.2",
     "@mantine/tiptap": "7.10.2",
+    "@refinedev/cli": "2.16.34",
+    "@refinedev/core": "4.51.0",
     "@tabler/icons-react": "3.6.0",
     "@tiptap/extension-link": "2.4.0",
     "@tiptap/react": "2.4.0",
     "@tiptap/starter-kit": "2.4.0",
+    "axios": "1.7.2",
     "clsx": "2.1.1",
     "dayjs": "1.11.11",
     "i18next": "^23.11.5",
