@@ -1,13 +1,30 @@
-import { WelcomePage } from "@refinedev/core";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Authenticated } from "@refinedev/core";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+
+import App from "@/App";
+import { LoginPage } from "@/pages/login";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <WelcomePage />,
+    element: <App />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "",
+        element: (
+          <Authenticated key="root" appendCurrentPathToQuery>
+            <Outlet />
+          </Authenticated>
+        ),
+        children: [],
+      },
+    ],
   },
 ]);
 
-export function Router() {
+export default function Router() {
   return <RouterProvider router={router} />;
 }
