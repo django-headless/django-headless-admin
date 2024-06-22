@@ -12,8 +12,11 @@ import { Outlet } from "react-router-dom";
 
 import { authProvider } from "@/providers/auth-provider";
 import { dataProvider } from "@/providers/data-provider";
+import { useI18nProvider } from "@/providers/i18n-provider";
 import { notificationProvider } from "@/providers/notification-provider";
 export default function App() {
+  const i18nProvider = useI18nProvider();
+
   return (
     <MantineProvider>
       <Notifications />
@@ -22,6 +25,7 @@ export default function App() {
         authProvider={authProvider}
         routerProvider={routerProvider}
         notificationProvider={notificationProvider}
+        i18nProvider={i18nProvider}
       >
         <Outlet />
       </Refine>

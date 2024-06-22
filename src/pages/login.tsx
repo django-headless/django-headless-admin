@@ -1,3 +1,5 @@
+import { AuthPage } from "@refinedev/core";
+
 export function LoginPage() {
-  return <div>huh</div>;
+  return <AuthPage registerLink={false} />;
 }
