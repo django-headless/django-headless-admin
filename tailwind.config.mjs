@@ -12,6 +12,7 @@ export default {
       colors: {
         gray: colors.stone,
         primary: colors.emerald,
+        border: colors.stone["200"],
       },
     },
   },

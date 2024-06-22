@@ -6,4 +6,7 @@
     body {
         @apply font-sans antialiased text-gray-900 text-base font-normal selection:bg-primary-500/20;
     }
+    * {
+        @apply border-border;
+    }
 }
