@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   AppShell,
   Avatar,
   Burger,
@@ -6,9 +7,10 @@ import {
   Group,
   Menu,
   Skeleton,
+  Tooltip,
 } from "@mantine/core";
 import { useGetIdentity, useLogout, useTranslate } from "@refinedev/core";
-import { TbLogout } from "react-icons/tb";
+import { TbEye, TbLogout } from "react-icons/tb";
 
 import useAdminConfig from "@/hooks/useAdminConfig";
 import { SessionUser } from "@/types";
@@ -37,17 +39,33 @@ export default function AppHeader({
         <div>{admin?.data?.siteHeader}</div>
       </Group>
       <Group className="h-full px-4">
+        {admin?.data.siteUrl && (
+          <Tooltip
+            label={translate("app.header.view_website")}
+            position="bottom"
+          >
+            <ActionIcon
+              size="lg"
+              variant="subtle"
+              onClick={() => window.open(admin.data.siteUrl)}
+            >
+              <TbEye />
+            </ActionIcon>
+          </Tooltip>
+        )}
         {user ? (
           <Menu>
             <Menu.Target>
-              <Button variant="white" color="black">
-                <Group>
-                  <Avatar src={user.profilePicture} alt="" size="sm" />
-                  <span>{`${translate("app.header.welcome")}, ${user.firstName || user.email}`}</span>
-                </Group>
+              <Button variant="subtle">
+                <Avatar src={user.profilePicture} alt="" size="sm" />
               </Button>
             </Menu.Target>
             <Menu.Dropdown>
+              <div className="p-3">
+                <div className="text-sm font-semibold">{`${user.firstName ?? ""} ${user.lastName ?? ""}`}</div>
+                <div className="text-sm text-gray-500">{user.email}</div>
+              </div>
+              <Menu.Divider />
               <Menu.Item
                 onClick={logout}
                 color="red"

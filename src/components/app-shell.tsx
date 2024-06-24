@@ -1,8 +1,9 @@
-import { AppShell as BaseAppShell, ScrollArea } from "@mantine/core";
+import { AppShell as BaseAppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import * as React from "react";
 
 import AppHeader from "@/components/app-header";
+import { AppNavbar } from "@/components/app-navbar";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
@@ -14,16 +15,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       padding="md"
     >
       <AppHeader menuOpened={opened} toggleMenu={toggle} />
-      <BaseAppShell.Navbar p="md">
-        <BaseAppShell.Section>Navbar header</BaseAppShell.Section>
-        <BaseAppShell.Section
-          grow
-          component={ScrollArea}
-        ></BaseAppShell.Section>
-        <BaseAppShell.Section>
-          Navbar footer – always at the bottom
-        </BaseAppShell.Section>
-      </BaseAppShell.Navbar>
+      <AppNavbar />
       <BaseAppShell.Main>{children}</BaseAppShell.Main>
     </BaseAppShell>
   );

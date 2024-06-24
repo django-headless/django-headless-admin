@@ -24,4 +24,7 @@ export interface AdminSite {
   siteHeader: string;
   siteTitle: string;
   indexTitle: string;
+  siteUrl: string | null;
 }
+
+export interface ContentType {}

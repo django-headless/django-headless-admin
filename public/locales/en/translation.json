@@ -2,7 +2,18 @@
   "app": {
     "header": {
       "log_out": "Log out",
-      "welcome": "Welcome"
+      "welcome": "Welcome",
+      "view_website": "View website"
+    },
+    "navbar": {
+      "items": {
+        "dashboard": "Dashboard",
+        "collections": "Collections",
+        "components": "Components",
+        "settings": "Settings",
+        "media_library": "Media library",
+        "users": "Users"
+      }
     }
   },
   "pages": {
