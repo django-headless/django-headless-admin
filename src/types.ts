@@ -19,3 +19,9 @@ export interface SessionUser {
   profilePicture: Url | null;
   userPermissions: string[];
 }
+
+export interface AdminSite {
+  siteHeader: string;
+  siteTitle: string;
+  indexTitle: string;
+}

@@ -1,7 +1,7 @@
 import { Authenticated } from "@refinedev/core";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
-import App from "@/App";
+import App from "@/app";
 import { AppShell } from "@/components/app-shell";
 import { LoginPage } from "@/pages/login";
 

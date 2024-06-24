@@ -10,6 +10,7 @@ import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/react-router-v6";
 import { Outlet } from "react-router-dom";
 
+import useTitle from "@/hooks/useTitle";
 import { authProvider } from "@/providers/auth-provider";
 import { dataProvider } from "@/providers/data-provider";
 import { useI18nProvider } from "@/providers/i18n-provider";
@@ -18,7 +19,7 @@ export default function App() {
   const i18nProvider = useI18nProvider();
 
   return (
-    <MantineProvider>
+    <MantineProvider theme={{ fontFamily: "Inter Variable, sans-serif" }}>
       <Notifications />
       <Refine
         dataProvider={dataProvider}
@@ -27,8 +28,15 @@ export default function App() {
         notificationProvider={notificationProvider}
         i18nProvider={i18nProvider}
       >
+        <DocumentTitle />
         <Outlet />
       </Refine>
     </MantineProvider>
   );
+}
+
+function DocumentTitle() {
+  useTitle();
+
+  return null;
 }

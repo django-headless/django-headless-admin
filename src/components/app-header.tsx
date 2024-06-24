@@ -21,11 +21,9 @@ export default function AppHeader({
   toggleMenu: VoidFunction;
 }) {
   const translate = useTranslate();
-  const { title } = useAdminConfig();
-  const { data } = useGetIdentity<SessionUser>();
+  const { data: admin } = useAdminConfig();
+  const { data: user } = useGetIdentity<SessionUser>();
   const { mutate: logout } = useLogout();
-
-  console.log(data);
 
   return (
     <AppShell.Header className="flex items-center justify-between">
@@ -36,16 +34,16 @@ export default function AppHeader({
           hiddenFrom="sm"
           size="sm"
         />
-        <div>{title}</div>
+        <div>{admin?.data?.siteHeader}</div>
       </Group>
       <Group className="h-full px-4">
-        {data ? (
+        {user ? (
           <Menu>
             <Menu.Target>
               <Button variant="white" color="black">
                 <Group>
-                  <Avatar src={data.profilePicture} alt="" size="sm" />
-                  <span>{`${translate("app.header.welcome")}, ${data.firstName || data.email}`}</span>
+                  <Avatar src={user.profilePicture} alt="" size="sm" />
+                  <span>{`${translate("app.header.welcome")}, ${user.firstName || user.email}`}</span>
                 </Group>
               </Button>
             </Menu.Target>

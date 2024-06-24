@@ -26,5 +26,16 @@ export const dataProvider: DataProvider = {
   // createMany: () => { /* ... */ },
   // deleteMany: () => { /* ... */ },
   // updateMany: () => { /* ... */ },
-  // custom: () => { /* ... */ },
+  async custom({ url, method = "get", payload = {}, query }) {
+    const hasPayload = ["post", "put", "patch"].includes(method);
+
+    if (hasPayload) {
+      const { data } = await http[method](url, payload, { params: query });
+
+      return { data };
+    }
+    const { data } = await http[method](url, { params: query });
+
+    return { data };
+  },
 };
