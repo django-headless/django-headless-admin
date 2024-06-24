@@ -1,9 +1,15 @@
 {
-  "email": "E-mail",
-  "forgot_password": "Wachtwoord vergeten",
-  "log_in": "Inloggen",
-  "log_out": "Uitloggen",
-  "password": "Wachtwoord",
-  "validation_invalid_email": "Geef een geldig e-mailadres op",
-  "validation_required": "Dit is een verplicht veld"
+  "pages": {
+    "login": {
+      "title": "Log in op je account",
+      "button": "Inloggen",
+      "email": "E-mail",
+      "forgot_password": "Wachtwoord vergeten",
+      "password": "Wachtwoord"
+    }
+  },
+  "validations": {
+    "invalid_email": "Geef een geldig e-mailadres op",
+    "required": "Dit is een verplicht veld"
+  }
 }

@@ -1,12 +1,13 @@
 import { AuthProvider } from "@refinedev/core";
 
+import { SessionUser } from "@/types";
 import { http } from "@/utils/http";
 
 const ACCESS_STORAGE_KEY = "DJANGO_HEADLESS_ACCESS_TOKEN";
 const REFRESH_STORAGE_KEY = "DJANGO_HEADLESS_REFRESH_TOKEN";
 
 export const authProvider: AuthProvider = {
-  async login({ email, password, remember }) {
+  async login({ email, password, remember, redirectTo = "/" }) {
     try {
       const { data, status } = await http.post<{
         access: string;
@@ -21,7 +22,7 @@ export const authProvider: AuthProvider = {
         sessionStorage.setItem(ACCESS_STORAGE_KEY, data.access);
       }
       http.defaults.headers.Authorization = `JWT ${data.access}`;
-      return { success: true, redirectTo: "/" };
+      return { success: true, redirectTo };
     } catch (e: any) {
       return {
         success: false,
@@ -60,5 +61,9 @@ export const authProvider: AuthProvider = {
   forgotPassword: async (params) => ({}),
   updatePassword: async (params) => ({}),
   getPermissions: async (params) => ({}),
-  getIdentity: async (params) => ({}),
+  async getIdentity() {
+    const { data } = await http.get<SessionUser>("/users/me/");
+
+    return data;
+  },
 };

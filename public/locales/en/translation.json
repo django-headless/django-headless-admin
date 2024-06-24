@@ -1,9 +1,22 @@
 {
-  "email": "Email",
-  "forgot_password": "Forgot password",
-  "log_in": "Log in",
-  "log_out": "Log out",
-  "password": "Password",
-  "validation_invalid_email": "Please provide a valid email",
-  "validation_required": "This is a required field"
+  "app": {
+    "header": {
+      "log_out": "Log out",
+      "welcome": "Welcome"
+    }
+  },
+  "pages": {
+    "login": {
+      "title": "Log in tou your account",
+      "button": "Log in",
+      "email": "Email",
+      "forgot_password": "Forgot password",
+      "password": "Password",
+      "remember": "Remember me"
+    }
+  },
+  "validations": {
+    "invalid_email": "Please provide a valid email",
+    "required": "This is a required field"
+  }
 }

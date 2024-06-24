@@ -3,7 +3,6 @@ import type { NotificationProvider } from "@refinedev/core";
 
 export const notificationProvider: NotificationProvider = {
   open(params) {
-    console.log(params);
     notifications.show({
       id: params.key,
       title: params.message,
