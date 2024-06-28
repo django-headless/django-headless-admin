@@ -11,8 +11,10 @@ export const dataProvider: DataProvider = {
   update: () => {
     throw new Error("Not implemented");
   },
-  getList: () => {
-    throw new Error("Not implemented");
+  async getList({ resource }) {
+    const { data } = await http.get(`/${resource}`);
+
+    return data;
   },
   create: () => {
     throw new Error("Not implemented");

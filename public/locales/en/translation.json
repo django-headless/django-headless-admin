@@ -26,6 +26,17 @@
       "remember": "Remember me"
     }
   },
+  "components": {
+    "combobox": {
+      "empty": "No results"
+    },
+    "collections-popover": {
+      "search": "Search collection..."
+    },
+    "components-popover": {
+      "search": "Search components..."
+    }
+  },
   "validations": {
     "invalid_email": "Please provide a valid email",
     "required": "This is a required field"

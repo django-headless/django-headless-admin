@@ -27,4 +27,15 @@ export interface AdminSite {
   siteUrl: string | null;
 }
 
-export interface ContentType {}
+export interface ContentType {
+  apiId: string;
+  appLabel: string;
+  appVerboseName: string;
+  modelName: string;
+  verboseName: string;
+  verboseNamePlural: string;
+  fields: Record<string, ContentTypeField>;
+  admin: any;
+}
+
+export interface ContentTypeField {}

@@ -15,7 +15,9 @@
       "version": "detect"
     },
     "import/resolver": {
-      "typescript": {},
+      "typescript": {
+        "project": "tsconfig.app.json"
+      },
       "node": {
         "paths": ["src"],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]

@@ -12,7 +12,7 @@ import {
 import { useGetIdentity, useLogout, useTranslate } from "@refinedev/core";
 import { TbEye, TbLogout } from "react-icons/tb";
 
-import useAdminConfig from "@/hooks/useAdminConfig";
+import useAdminSite from "@/hooks/useAdminSite";
 import { SessionUser } from "@/types";
 
 export default function AppHeader({
@@ -23,7 +23,7 @@ export default function AppHeader({
   toggleMenu: VoidFunction;
 }) {
   const translate = useTranslate();
-  const { data: admin } = useAdminConfig();
+  const { data: admin } = useAdminSite();
   const { data: user } = useGetIdentity<SessionUser>();
   const { mutate: logout } = useLogout();
 

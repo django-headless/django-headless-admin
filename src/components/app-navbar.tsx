@@ -13,7 +13,8 @@ import {
 import { NavLink } from "react-router-dom";
 
 import { CollectionsPopover } from "@/components/collections-popover";
-import cn from "@/utils/cn.ts";
+import { ComponentsPopover } from "@/components/components-popover";
+import cn from "@/utils/cn";
 
 export function AppNavbar() {
   const translate = useTranslate();
@@ -32,18 +33,18 @@ export function AppNavbar() {
             label={translate("app.navbar.items.media_library")}
             to="/media-library"
           />
-
           <CollectionsPopover>
             <MainItem
               icon={<TbDatabase />}
               label={translate("app.navbar.items.collections")}
             />
           </CollectionsPopover>
-          <MainLink
-            icon={<TbComponents />}
-            label={translate("app.navbar.items.components")}
-            to="/components"
-          />
+          <ComponentsPopover>
+            <MainItem
+              icon={<TbComponents />}
+              label={translate("app.navbar.items.components")}
+            />
+          </ComponentsPopover>
           <MainLink
             icon={<TbUser />}
             label={translate("app.navbar.items.users")}
@@ -107,6 +108,7 @@ const MainItem = forwardRef<
       position="right"
       transitionProps={{ duration: 0 }}
       key={label}
+      disabled={isActive}
     >
       <div
         ref={ref}

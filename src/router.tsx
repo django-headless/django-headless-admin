@@ -3,6 +3,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
+import { ListPage } from "@/pages/list";
 import { LoginPage } from "@/pages/login";
 
 const router = createBrowserRouter([
@@ -22,7 +23,12 @@ const router = createBrowserRouter([
             </AppShell>
           </Authenticated>
         ),
-        children: [],
+        children: [
+          {
+            path: "collections/:apiId",
+            element: <ListPage />,
+          },
+        ],
       },
     ],
   },
