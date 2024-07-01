@@ -2,26 +2,33 @@ import { Pagination, Table, Title } from "@mantine/core";
 import { List } from "@refinedev/mantine";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
-import * as R from "ramda";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 
-import useContentTypes from "@/hooks/useContentTypes";
+import useContentType from "@/hooks/useContentType.ts";
+import useListDisplayFields from "@/hooks/useListDisplayFields.ts";
 import useTitle from "@/hooks/useTitle";
+import { ContentType } from "@/types.ts";
 
 export function ListPage() {
-  const { apiId } = useParams();
-  const { data } = useContentTypes();
-  const contentType = apiId ? data?.data?.[apiId] : null;
-  const resourceName = contentType?.verboseNamePlural || "";
-  const fields = useMemo(
-    () =>
-      R.pipe(
-        Object.entries,
-        R.filter(([key, _]) => contentType?.admin.listDisplay.includes(key)),
-      )(contentType?.fields ?? {}),
-    [contentType],
-  );
+  const { apiId } = useParams<"apiId">();
+  const contentType = useContentType(apiId!);
+
+  return contentType && apiId ? (
+    <Main apiId={apiId} contentType={contentType} />
+  ) : null;
+}
+
+function Main({
+  contentType,
+  apiId,
+}: {
+  contentType: ContentType;
+  apiId: string;
+}) {
+  const resourceName =
+    contentType.verboseNamePlural || `${contentType.verboseName}s`;
+  const fields = useListDisplayFields(contentType);
   const columns = useMemo<ColumnDef<any>[]>(
     () =>
       fields.map(([key, field]) => ({
@@ -46,41 +53,36 @@ export function ListPage() {
   return (
     <List title={<Title>{resourceName}</Title>}>
       <Table>
-        <thead>
+        <Table.Thead>
           {getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <Table.Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id}>
+                <Table.Th key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                </th>
+                </Table.Th>
               ))}
-            </tr>
+            </Table.Tr>
           ))}
-        </thead>
-        <tbody>
+        </Table.Thead>
+        <Table.Tbody>
           {getRowModel().rows.map((row) => (
-            <tr key={row.id}>
+            <Table.Tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <Table.Td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </Table.Td>
               ))}
-            </tr>
+            </Table.Tr>
           ))}
-        </tbody>
+        </Table.Tbody>
       </Table>
       <br />
-      <Pagination
-        position="right"
-        total={pageCount}
-        page={current}
-        onChange={setCurrent}
-      />
+      <Pagination total={pageCount} value={current} onChange={setCurrent} />
     </List>
   );
 }

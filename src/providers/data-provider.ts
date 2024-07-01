@@ -11,10 +11,15 @@ export const dataProvider: DataProvider = {
   update: () => {
     throw new Error("Not implemented");
   },
-  async getList({ resource }) {
-    const { data } = await http.get(`/${resource}`);
+  async getList({ resource, pagination }) {
+    const { data } = await http.get(`/${resource}`, {
+      params: { page: pagination?.current },
+    });
 
-    return data;
+    return {
+      data: data.data,
+      total: data.pagination?.count ?? data.data.length,
+    };
   },
   create: () => {
     throw new Error("Not implemented");
@@ -28,11 +33,15 @@ export const dataProvider: DataProvider = {
   // createMany: () => { /* ... */ },
   // deleteMany: () => { /* ... */ },
   // updateMany: () => { /* ... */ },
-  async custom({ url, method = "get", payload = {}, query }) {
+  async custom({ url, method = "get", payload, query }) {
     const hasPayload = ["post", "put", "patch"].includes(method);
 
     if (hasPayload) {
-      const { data } = await http[method](url, payload, { params: query });
+      const { data } = await http[method as "post" | "put" | "patch"](
+        url,
+        payload,
+        { params: query },
+      );
 
       return { data };
     }

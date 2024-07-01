@@ -35,8 +35,6 @@ export const authProvider: AuthProvider = {
       sessionStorage.getItem(ACCESS_STORAGE_KEY) ||
       localStorage.getItem(ACCESS_STORAGE_KEY);
 
-    http.defaults.headers.Authorization = `JWT ${token}`;
-
     if (!token) {
       return {
         authenticated: false,
@@ -45,9 +43,20 @@ export const authProvider: AuthProvider = {
       };
     }
 
-    return {
-      authenticated: true,
-    };
+    try {
+      await http.post("/jwt/verify/", { token });
+      http.defaults.headers.Authorization = `JWT ${token}`;
+
+      return {
+        authenticated: true,
+      };
+    } catch (e) {
+      return {
+        authenticated: false,
+        redirectTo: "/login",
+        logout: true,
+      };
+    }
   },
   async logout() {
     sessionStorage.removeItem(ACCESS_STORAGE_KEY);
