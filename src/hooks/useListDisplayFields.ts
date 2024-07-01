@@ -1,15 +1,18 @@
 import * as R from "ramda";
 import { useMemo } from "react";
 
-import { ContentType } from "@/types";
+import { ContentType, ContentTypeField } from "@/types";
 
 export default function useListDisplayFields(contentType: ContentType) {
-  return useMemo(
+  return useMemo<[string, ContentTypeField][]>(
     () =>
       R.pipe(
-        Object.entries,
-        R.filter(([key, _]) => contentType.admin.listDisplay.includes(key)),
-      )(contentType.fields ?? {}),
+        R.filter((field: string) => R.has(field)(contentType.fields)),
+        R.map((field: string) => [field, contentType.fields[field]]),
+      )(contentType.admin.listDisplay ?? ([] as string[])) as [
+        string,
+        ContentTypeField,
+      ][],
     [contentType],
   );
 }

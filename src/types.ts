@@ -35,7 +35,27 @@ export interface ContentType {
   verboseName: string;
   verboseNamePlural: string;
   fields: Record<string, ContentTypeField>;
-  admin: any;
+  admin: {
+    listDisplay: string[];
+  };
 }
 
-export interface ContentTypeField {}
+export interface ContentTypeField {
+  default: unknown;
+  type: FieldType;
+  label: string;
+  helpText: string;
+  editable: boolean;
+  isRelation?: boolean;
+  toMany?: boolean;
+  relatedModel?: string;
+}
+
+export enum FieldType {
+  UUIDField = "UUIDField",
+  ForeignKey = "ForeignKey",
+  CharField = "CharField",
+  DateTimeField = "DateTimeField",
+  DateField = "DateField",
+  MediaField = "MediaField",
+}

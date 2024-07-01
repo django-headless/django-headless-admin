@@ -1,14 +1,16 @@
 import { Pagination, Table, Title } from "@mantine/core";
-import { List } from "@refinedev/mantine";
+import { DateField, List } from "@refinedev/mantine";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
+import * as R from "ramda";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import useContentType from "@/hooks/useContentType.ts";
 import useListDisplayFields from "@/hooks/useListDisplayFields.ts";
+import useListDisplayLinks from "@/hooks/useListDisplayLinks.ts";
 import useTitle from "@/hooks/useTitle";
-import { ContentType } from "@/types.ts";
+import { ContentType, ContentTypeField, FieldType } from "@/types.ts";
 
 export function ListPage() {
   const { apiId } = useParams<"apiId">();
@@ -29,12 +31,29 @@ function Main({
   const resourceName =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const fields = useListDisplayFields(contentType);
+  const displayLinks = useListDisplayLinks(contentType);
   const columns = useMemo<ColumnDef<any>[]>(
     () =>
       fields.map(([key, field]) => ({
         id: key,
         accessorKey: key,
-        header: field.label,
+        header: field.label ?? "",
+        cell: function render({ getValue, row, cell }) {
+          const isLink =
+            displayLinks.includes(key) ||
+            (R.isEmpty(displayLinks) && cell.column.getIndex() === 0);
+
+          return isLink ? (
+            <Link
+              to={`/collections/${apiId}/${row.original.id}`}
+              className="text-primary-600 hover:underline font-semibold"
+            >
+              <FieldDisplay field={field} value={getValue()} />
+            </Link>
+          ) : (
+            <FieldDisplay field={field} value={getValue()} />
+          );
+        },
       })),
     [fields],
   );
@@ -84,5 +103,23 @@ function Main({
       <br />
       <Pagination total={pageCount} value={current} onChange={setCurrent} />
     </List>
+  );
+}
+
+function FieldDisplay({
+  field,
+  value,
+}: {
+  field: ContentTypeField;
+  value: any;
+}) {
+  return field.type === FieldType.DateTimeField ? (
+    <DateField value={value} format="L LT" />
+  ) : field.type === FieldType.DateField ? (
+    <DateField value={value} format="L" />
+  ) : field.type === FieldType.MediaField ? (
+    <img src={value} alt="" className="size-12 object-cover rounded-md" />
+  ) : (
+    value
   );
 }
