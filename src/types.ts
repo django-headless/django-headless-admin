@@ -36,7 +36,10 @@ export interface ContentType {
   verboseNamePlural: string;
   fields: Record<string, ContentTypeField>;
   admin: {
+    fields: (string | string[])[] | null;
+    exclude: string[] | null;
     listDisplay: string[];
+    listDisplayLinks: string[];
   };
 }
 

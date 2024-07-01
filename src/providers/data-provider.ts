@@ -6,7 +6,7 @@ export const dataProvider: DataProvider = {
   async getOne({ resource, id }) {
     const { data } = await http.get(`/${resource}/${id}`);
 
-    return data;
+    return { data };
   },
   update: () => {
     throw new Error("Not implemented");

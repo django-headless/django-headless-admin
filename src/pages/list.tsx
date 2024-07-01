@@ -6,11 +6,11 @@ import * as R from "ramda";
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import useContentType from "@/hooks/useContentType.ts";
-import useListDisplayFields from "@/hooks/useListDisplayFields.ts";
-import useListDisplayLinks from "@/hooks/useListDisplayLinks.ts";
+import useContentType from "@/hooks/useContentType";
+import useListDisplayFields from "@/hooks/useListDisplayFields";
+import useListDisplayLinks from "@/hooks/useListDisplayLinks";
 import useTitle from "@/hooks/useTitle";
-import { ContentType, ContentTypeField, FieldType } from "@/types.ts";
+import { ContentType, ContentTypeField, FieldType } from "@/types";
 
 export function ListPage() {
   const { apiId } = useParams<"apiId">();

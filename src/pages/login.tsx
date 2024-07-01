@@ -30,7 +30,7 @@ export function LoginPage() {
     ),
   });
 
-  const submitForm = useCallback((values) => {
+  const submitForm = useCallback((values: any) => {
     login({ ...values, redirectTo: "/" });
   }, []);
 

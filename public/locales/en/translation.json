@@ -24,6 +24,9 @@
       "forgot_password": "Forgot password",
       "password": "Password",
       "remember": "Remember me"
+    },
+    "edit": {
+      "document_title": "Edit {{resourceName}}"
     }
   },
   "components": {
@@ -34,7 +37,7 @@
       "search": "Search collection..."
     },
     "components-popover": {
-      "search": "Search components..."
+      "search": "Search component..."
     }
   },
   "validations": {

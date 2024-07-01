@@ -16,7 +16,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     >
       <AppHeader menuOpened={opened} toggleMenu={toggle} />
       <AppNavbar />
-      <BaseAppShell.Main>{children}</BaseAppShell.Main>
+      <BaseAppShell.Main pl={120} pt={120}>
+        {children}
+      </BaseAppShell.Main>
     </BaseAppShell>
   );
 }

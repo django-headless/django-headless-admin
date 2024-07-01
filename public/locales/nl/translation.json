@@ -1,4 +1,21 @@
 {
+  "app": {
+    "header": {
+      "log_out": "Uitloggen",
+      "welcome": "Welkom",
+      "view_website": "Bekijk website"
+    },
+    "navbar": {
+      "items": {
+        "dashboard": "Dashboard",
+        "collections": "Collecties",
+        "components": "Componenten",
+        "settings": "Instellingen",
+        "media_library": "Mediabibliotheek",
+        "users": "Gebruikers"
+      }
+    }
+  },
   "pages": {
     "login": {
       "title": "Log in op je account",
@@ -6,6 +23,20 @@
       "email": "E-mail",
       "forgot_password": "Wachtwoord vergeten",
       "password": "Wachtwoord"
+    },
+    "edit": {
+      "document_title": "Bewerk {{resourceName}}"
+    }
+  },
+  "components": {
+    "combobox": {
+      "empty": "Geen resultaten"
+    },
+    "collections-popover": {
+      "search": "Zoek collectie..."
+    },
+    "components-popover": {
+      "search": "Zoek component..."
     }
   },
   "validations": {
