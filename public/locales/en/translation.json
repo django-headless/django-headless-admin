@@ -33,11 +33,9 @@
     "combobox": {
       "empty": "No results"
     },
-    "collections-popover": {
-      "search": "Search collection..."
-    },
-    "components-popover": {
-      "search": "Search component..."
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
     }
   },
   "validations": {

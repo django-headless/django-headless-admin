@@ -24,7 +24,7 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "collections/:apiId",
+            path: "content/:apiId",
             element: <ListPage />,
           },
           {

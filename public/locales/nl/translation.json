@@ -32,11 +32,9 @@
     "combobox": {
       "empty": "Geen resultaten"
     },
-    "collections-popover": {
-      "search": "Zoek collectie..."
-    },
-    "components-popover": {
-      "search": "Zoek component..."
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
     }
   },
   "validations": {

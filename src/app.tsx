@@ -1,6 +1,7 @@
-import "./styles.css";
+import "@/styles.css";
+import "@/utils/dayjs";
+import "@/utils/i18n";
 import "@fontsource-variable/inter";
-import "./i18n";
 
 import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/react-router-v6";
