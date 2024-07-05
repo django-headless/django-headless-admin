@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import { ContentType, ContentTypeField, FieldType } from "@/types";
@@ -61,8 +62,14 @@ export function ContentField({
     switch (fieldConfig.type) {
       case FieldType.CharField:
         return <Input />;
+      case FieldType.PositiveIntegerField:
+        return <Input type="number" min={0} />;
+      case FieldType.URLField:
+        return <Input type="url" />;
+      case FieldType.TextField:
+        return <Textarea rows={8} />;
       case FieldType.HTMLField:
-        return <Textarea />;
+        return <RichTextField />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

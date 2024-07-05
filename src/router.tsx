@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
-import { CollectionEditPage } from "@/pages/collection-edit";
+import { EditPage } from "@/pages/edit";
 import { ListPage } from "@/pages/list";
 import { LoginPage } from "@/pages/login";
 
@@ -28,8 +28,8 @@ const router = createBrowserRouter([
             element: <ListPage />,
           },
           {
-            path: "collections/:apiId/:id",
-            element: <CollectionEditPage />,
+            path: "content/:apiId/:id",
+            element: <EditPage />,
           },
         ],
       },

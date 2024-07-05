@@ -1,0 +1,36 @@
+.rich-text-field {
+  @apply focus:outline-none p-4 min-h-[400px] font-normal text-sm;
+
+  & h1 {
+    @apply mt-8 mb-6;
+  }
+
+  & h2 {
+    @apply mt-6 mb-4;
+  }
+
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
+    @apply mt-0 mb-2;
+  }
+
+  & p {
+    @apply mb-3;
+  }
+
+  & blockquote {
+    @apply border-l-2 border-muted border-solid border-0 mx-0 px-4 text-muted-foreground;
+  }
+
+  & .rich-text-image {
+    @apply bg-secondary rounded-md max-w-full cursor-grab h-12 w-12 active:cursor-grabbing;
+    &.ProseMirror-selectednode {
+      @apply ring-1 ring-primary;
+    }
+  }
+}
+.richt-text-button {
+  @apply bg-transparent hover:bg-secondary border-none h-full flex items-center justify-center cursor-pointer min-w-[32px];
+}

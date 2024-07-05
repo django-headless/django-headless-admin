@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { modKey } from "@/components/ui/mod-icon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { NON_COLLECTION_MODELS } from "@/constants";
+import useAdminSite from "@/hooks/useAdminSite";
 import useContentTypes from "@/hooks/useContentTypes";
 import type { ContentType } from "@/types";
 import { cn } from "@/utils/cn";
@@ -21,6 +22,7 @@ export function AppNavbar() {
   const { data } = useContentTypes();
   const [search, setSearch] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { data: admin } = useAdminSite();
 
   // Enable keyboard shortcut for focusing search field
   useEffectOnce(() => {
@@ -60,15 +62,11 @@ export function AppNavbar() {
 
   return (
     <nav className="flex flex-col overflow-hidden h-full">
-      <Input
-        ref={searchInputRef}
-        className="rounded-none border-t-0 border-x-0 focus-visible:ring-0 shrink-0 h-10 shadow-none"
-        placeholder={`${translate("app.navbar.search")} ${modKey()}J`}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="space-y-1 border-b p-3">
+          <div className="font-bold text-lg pl-3 pb-3">
+            {admin?.data?.siteHeader}
+          </div>
           <MainLink
             icon={<PiHouseBold />}
             label={translate("app.navbar.items.dashboard")}
@@ -81,6 +79,13 @@ export function AppNavbar() {
           />
         </div>
 
+        <Input
+          ref={searchInputRef}
+          className="rounded-none border-t-0 border-x-0 focus-visible:ring-0 shrink-0 h-10 shadow-none"
+          placeholder={`${translate("app.navbar.search")} ${modKey()}J`}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <ScrollArea className="flex-1 p-3">
           <div className="mb-6">
             {groups

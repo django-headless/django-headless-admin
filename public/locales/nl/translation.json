@@ -1,4 +1,7 @@
 {
+  "common": {
+    "save": "Opslaan"
+  },
   "app": {
     "header": {
       "log_out": "Uitloggen",
@@ -35,6 +38,17 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next"
+    },
+    "rich_text_editor": {
+      "heading1": "Kop 1",
+      "heading2": "Kop 2",
+      "heading3": "Kop 3",
+      "heading4": "Kop 4",
+      "heading5": "Kop 5",
+      "heading6": "Kop 6",
+      "paragraph": "Paragraaf",
+      "blockquote": "Citaat",
+      "codeBlock": "Codeblok"
     }
   },
   "validations": {

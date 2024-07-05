@@ -11,7 +11,7 @@ import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
 
-export function CollectionEditPage() {
+export function EditPage() {
   const { apiId, id } = useParams<"apiId" | "id">();
   const contentType = useContentType(apiId!);
 
@@ -64,26 +64,35 @@ function Main({
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="max-w-screen-md mx-auto bg-white p-8 border rounded">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <Link
-                to={`/collections/${apiId}`}
-                className="text-primary-600 text-sm hover:underline"
-              >
-                {resourceNamePlural}
-              </Link>
-              <h1>{resourceName}</h1>
+    <div className="bg-accent">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="p-16">
+            <div className="max-w-screen-lg mx-auto w-full">
+              <div className="flex items-center justify-between mb-12">
+                <div>
+                  <Link
+                    to={`/content/${apiId}`}
+                    className="text-sm hover:underline"
+                  >
+                    {resourceNamePlural}
+                  </Link>
+                  <h1 className="text-2xl font-semibold truncate">
+                    {form.watch("name")}
+                  </h1>
+                </div>
+                <Button loading={form.formState.isSubmitting} type="submit">
+                  {translate("common.save")}
+                </Button>
+              </div>
+
+              <div className="bg-white p-8 border rounded">
+                <ContentFields contentType={contentType} />
+              </div>
             </div>
-            <Button loading={form.formState.isSubmitting} type="submit">
-              Save
-            </Button>
           </div>
-          <ContentFields contentType={contentType} />
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+    </div>
   );
 }

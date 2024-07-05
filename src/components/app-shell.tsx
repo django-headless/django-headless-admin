@@ -9,6 +9,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const DEFAULT_NAV_SIZE = 15;
 
@@ -34,9 +35,9 @@ export function AppShell() {
         />
         <ResizablePanel className="flex-1 flex flex-col">
           <AppHeader />
-          <main className="flex-1">
+          <ScrollArea className="flex-1">
             <Outlet />
-          </main>
+          </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

@@ -62,4 +62,9 @@ export enum FieldType {
   DateTimeField = "DateTimeField",
   DateField = "DateField",
   MediaField = "MediaField",
+  ManyMediaField = "ManyMediaField",
+  PositiveIntegerField = "PositiveIntegerField",
+  URLField = "URLField",
+  FlexField = "FlexField",
+  TextField = "TextField",
 }
