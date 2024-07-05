@@ -6,10 +6,9 @@
       "view_website": "Bekijk website"
     },
     "navbar": {
+      "search": "Zoeken",
       "items": {
         "dashboard": "Dashboard",
-        "collections": "Collecties",
-        "components": "Componenten",
         "settings": "Instellingen",
         "media_library": "Mediabibliotheek",
         "users": "Gebruikers"
@@ -19,6 +18,7 @@
   "pages": {
     "login": {
       "title": "Log in op je account",
+      "document_title": "Inloggen",
       "button": "Inloggen",
       "email": "E-mail",
       "forgot_password": "Wachtwoord vergeten",

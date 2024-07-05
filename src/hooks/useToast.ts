@@ -137,10 +137,10 @@ function dispatch(action: Action) {
   });
 }
 
-type Toast = Omit<ToasterToast, "id">;
+type Toast = Omit<ToasterToast, "id"> & { id?: string };
 
-function toast({ ...props }: Toast) {
-  const id = genId();
+export function toast({ ...props }: Toast) {
+  const id = props.id ?? genId();
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -162,10 +162,14 @@ function toast({ ...props }: Toast) {
   });
 
   return {
-    id: id,
+    id,
     dismiss,
     update,
   };
+}
+
+export function dismiss(id: string) {
+  dispatch({ type: "DISMISS_TOAST", toastId: id });
 }
 
 function useToast() {

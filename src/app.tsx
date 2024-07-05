@@ -6,6 +6,7 @@ import { Refine } from "@refinedev/core";
 import routerProvider from "@refinedev/react-router-v6";
 import { Outlet } from "react-router-dom";
 
+import { TooltipProvider } from "@/components/ui/tooltip";
 import useTitle from "@/hooks/useTitle";
 import { authProvider } from "@/providers/auth-provider";
 import { dataProvider } from "@/providers/data-provider";
@@ -23,9 +24,11 @@ export default function App() {
       notificationProvider={notificationProvider}
       i18nProvider={i18nProvider}
     >
-      <Toaster />
-      <DocumentTitle />
-      <Outlet />
+      <TooltipProvider>
+        <Toaster />
+        <DocumentTitle />
+        <Outlet />
+      </TooltipProvider>
     </Refine>
   );
 }

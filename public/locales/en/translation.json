@@ -6,10 +6,9 @@
       "view_website": "View website"
     },
     "navbar": {
+      "search": "Search",
       "items": {
         "dashboard": "Dashboard",
-        "collections": "Collections",
-        "components": "Components",
         "settings": "Settings",
         "media_library": "Media library",
         "users": "Users"
@@ -19,6 +18,7 @@
   "pages": {
     "login": {
       "title": "Log in tou your account",
+      "document_title": "Log in",
       "button": "Log in",
       "email": "Email",
       "forgot_password": "Forgot password",

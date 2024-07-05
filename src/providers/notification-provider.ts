@@ -1,16 +1,17 @@
-import { notifications } from "@mantine/notifications";
 import type { NotificationProvider } from "@refinedev/core";
+
+import { dismiss, toast } from "@/hooks/useToast";
 
 export const notificationProvider: NotificationProvider = {
   open(params) {
-    notifications.show({
+    toast({
       id: params.key,
       title: params.message,
-      message: params.description,
+      description: params.description,
       color: params.type === "error" ? "red" : "blue",
     });
   },
   close(id) {
-    notifications.hide(id);
+    dismiss(id);
   },
 };

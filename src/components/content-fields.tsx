@@ -1,34 +1,47 @@
-import { Textarea, TextInput } from "@mantine/core";
-import React, { useId, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import { ContentType, ContentTypeField, FieldType } from "@/types";
 
 /**
  * Renders a content type's admin fields. This component
- * should always be rendered inside a `react-hook-form` `FormProvider`.
+ * should always be rendered inside a `Form` component.
  */
 export function ContentFields({ contentType }: { contentType: ContentType }) {
-  const fields = useAdminFields(contentType);
+  const fieldNames = useAdminFields(contentType);
 
   return (
     <div className="space-y-3">
-      {fields.map((field) =>
-        Array.isArray(field) ? (
+      {fieldNames.map((nameOrNames) =>
+        Array.isArray(nameOrNames) ? (
           <div
-            key={field.join()}
+            key={nameOrNames.join()}
             className="flex items-end gap-3 justify-evenly"
           >
-            {field.map((f) => (
-              <ContentField key={f} field={contentType.fields[f]} />
+            {nameOrNames.map((name) => (
+              <ContentField
+                key={name}
+                name={name}
+                fieldConfig={contentType.fields[name]}
+              />
             ))}
           </div>
         ) : (
           <ContentField
-            key={field}
-            name={field}
-            field={contentType.fields[field]}
+            key={nameOrNames}
+            name={nameOrNames}
+            fieldConfig={contentType.fields[nameOrNames]}
           />
         ),
       )}
@@ -38,49 +51,43 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
 
 export function ContentField({
   name,
-  field,
+  fieldConfig,
 }: {
   name: string;
-  field: ContentTypeField;
+  fieldConfig: ContentTypeField;
 }) {
+  const form = useFormContext();
   const element = useMemo(() => {
-    switch (field.type) {
+    switch (fieldConfig.type) {
       case FieldType.CharField:
-        return <TextInput />;
+        return <Input />;
       case FieldType.HTMLField:
         return <Textarea />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">
-            Unable to render fields of type {field.type}
+            Unable to render fields of type {fieldConfig.type}
           </div>
         ) : null;
     }
-  }, [field.type]);
+  }, [fieldConfig.type]);
 
   return (
-    element && <FormItem element={element} name={name} label={field.label} />
-  );
-}
-
-export function FormItem({
-  element,
-  name,
-  label,
-}: {
-  element: React.ReactElement;
-  name: string;
-  label: string;
-}) {
-  const methods = useFormContext();
-  const id = useId();
-
-  return (
-    <div>
-      <label htmlFor={id} className="font-semibold text-sm text-gray-800">
-        {label}
-      </label>
-      {React.cloneElement(element, { ...methods.register(name), id })}
-    </div>
+    element && (
+      <FormField
+        control={form.control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{fieldConfig.label}</FormLabel>
+            <FormControl>{React.cloneElement(element, field)}</FormControl>
+            {fieldConfig.helpText && (
+              <FormDescription>{fieldConfig.helpText}</FormDescription>
+            )}
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )
   );
 }

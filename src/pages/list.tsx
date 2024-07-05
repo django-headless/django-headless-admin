@@ -1,11 +1,27 @@
-import { Pagination, Table, Title } from "@mantine/core";
-import { DateField, List } from "@refinedev/mantine";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
+import * as dayjs from "dayjs";
 import * as R from "ramda";
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import useContentType from "@/hooks/useContentType";
 import useListDisplayFields from "@/hooks/useListDisplayFields";
 import useListDisplayLinks from "@/hooks/useListDisplayLinks";
@@ -38,7 +54,7 @@ function Main({
         id: key,
         accessorKey: key,
         header: field.label ?? "",
-        cell: function render({ getValue, row, cell }) {
+        cell({ getValue, row, cell }) {
           const isLink =
             displayLinks.includes(key) ||
             (R.isEmpty(displayLinks) && cell.column.getIndex() === 0);
@@ -70,39 +86,74 @@ function Main({
   });
 
   return (
-    <List title={<Title>{resourceName}</Title>}>
+    <div>
+      <h1>{resourceName}</h1>
+
       <Table>
-        <Table.Thead>
+        <TableHeader>
           {getHeaderGroups().map((headerGroup) => (
-            <Table.Tr key={headerGroup.id}>
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <Table.Th key={header.id}>
+                <TableHead key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                </Table.Th>
+                </TableHead>
               ))}
-            </Table.Tr>
+            </TableRow>
           ))}
-        </Table.Thead>
-        <Table.Tbody>
+        </TableHeader>
+        <TableBody>
           {getRowModel().rows.map((row) => (
-            <Table.Tr key={row.id}>
+            <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <Table.Td key={cell.id}>
+                <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Table.Td>
+                </TableCell>
               ))}
-            </Table.Tr>
+            </TableRow>
           ))}
-        </Table.Tbody>
+        </TableBody>
       </Table>
-      <br />
-      <Pagination total={pageCount} value={current} onChange={setCurrent} />
-    </List>
+
+      <Paginator
+        pages={pageCount}
+        current={current}
+        onPageChange={setCurrent}
+      />
+    </div>
+  );
+}
+
+function Paginator({
+  pages,
+  current,
+  onPageChange,
+}: {
+  pages: number;
+  current: number;
+  onPageChange(page: number): void;
+}) {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }
 
@@ -114,9 +165,9 @@ function FieldDisplay({
   value: any;
 }) {
   return field.type === FieldType.DateTimeField ? (
-    <DateField value={value} format="L LT" />
+    <div>{dayjs(value).format("L LT")}</div>
   ) : field.type === FieldType.DateField ? (
-    <DateField value={value} format="L" />
+    <div>{dayjs(value).format("L")}</div>
   ) : field.type === FieldType.MediaField ? (
     <img src={value} alt="" className="size-12 object-cover rounded-md" />
   ) : (
