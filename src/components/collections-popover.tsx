@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { NON_COLLECTION_MODELS } from "@/constants";
-import useContentTypes from "@/hooks/useContentTypes.ts";
+import useContentTypes from "@/hooks/useContentTypes";
 import { ContentType } from "@/types";
 
 export function CollectionsPopover({

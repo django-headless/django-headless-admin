@@ -1,24 +1,19 @@
-import { AppShell as BaseAppShell } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import * as React from "react";
+import { Outlet } from "react-router-dom";
 
 import AppHeader from "@/components/app-header";
 import { AppNavbar } from "@/components/app-navbar";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
-  const [opened, { toggle }] = useDisclosure();
-
+export function AppShell() {
   return (
-    <BaseAppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-    >
-      <AppHeader menuOpened={opened} toggleMenu={toggle} />
+    <div>
       <AppNavbar />
-      <BaseAppShell.Main pl={120} pt={120}>
-        {children}
-      </BaseAppShell.Main>
-    </BaseAppShell>
+      <div>
+        <AppHeader />
+        <main className="bg-gray-50">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 }

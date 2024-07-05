@@ -1,35 +1,17 @@
-import {
-  ActionIcon,
-  AppShell,
-  Avatar,
-  Burger,
-  Button,
-  Group,
-  Menu,
-  Skeleton,
-  Tooltip,
-} from "@mantine/core";
 import { useGetIdentity, useLogout, useTranslate } from "@refinedev/core";
-import { TbEye, TbLogout } from "react-icons/tb";
 
 import useAdminSite from "@/hooks/useAdminSite";
 import { SessionUser } from "@/types";
 
-export default function AppHeader({
-  menuOpened,
-  toggleMenu,
-}: {
-  menuOpened: boolean;
-  toggleMenu: VoidFunction;
-}) {
+export default function AppHeader() {
   const translate = useTranslate();
   const { data: admin } = useAdminSite();
   const { data: user } = useGetIdentity<SessionUser>();
   const { mutate: logout } = useLogout();
 
   return (
-    <AppShell.Header className="flex items-center justify-between">
-      <Group className="h-full px-4">
+    <header className="flex items-center justify-between">
+      <div className="h-full px-4">
         <Burger
           opened={menuOpened}
           onClick={toggleMenu}
@@ -37,8 +19,8 @@ export default function AppHeader({
           size="sm"
         />
         <div>{admin?.data?.siteHeader}</div>
-      </Group>
-      <Group className="h-full px-4">
+      </div>
+      <div className="h-full px-4">
         {admin?.data.siteUrl && (
           <Tooltip
             label={translate("app.header.view_website")}
@@ -55,11 +37,11 @@ export default function AppHeader({
         )}
         {user ? (
           <Menu>
-            <Menu.Target>
+            <MenuTrigger>
               <Button variant="subtle">
                 <Avatar src={user.profilePicture} alt="" size="sm" />
               </Button>
-            </Menu.Target>
+            </MenuTrigger>
             <Menu.Dropdown>
               <div className="p-3">
                 <div className="text-sm font-semibold">{`${user.firstName ?? ""} ${user.lastName ?? ""}`}</div>
@@ -78,7 +60,7 @@ export default function AppHeader({
         ) : (
           <Skeleton h={8} w={200} />
         )}
-      </Group>
-    </AppShell.Header>
+      </div>
+    </header>
   );
 }

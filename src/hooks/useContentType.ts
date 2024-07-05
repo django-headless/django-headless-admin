@@ -1,4 +1,4 @@
-import useContentTypes from "@/hooks/useContentTypes.ts";
+import useContentTypes from "@/hooks/useContentTypes";
 
 export default function useContentType(apiId: string) {
   const { data } = useContentTypes();

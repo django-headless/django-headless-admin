@@ -1,5 +1,5 @@
-import { TextInput } from "@mantine/core";
-import React, { useCallback, useId, useMemo } from "react";
+import { Textarea, TextInput } from "@mantine/core";
+import React, { useId, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { useAdminFields } from "@/hooks/useAdminFields";
@@ -47,6 +47,8 @@ export function ContentField({
     switch (field.type) {
       case FieldType.CharField:
         return <TextInput />;
+      case FieldType.HTMLField:
+        return <Textarea />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

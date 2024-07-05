@@ -58,6 +58,7 @@ export enum FieldType {
   UUIDField = "UUIDField",
   ForeignKey = "ForeignKey",
   CharField = "CharField",
+  HTMLField = "HTMLField",
   DateTimeField = "DateTimeField",
   DateField = "DateField",
   MediaField = "MediaField",

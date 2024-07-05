@@ -6,8 +6,7 @@
     "plugin:jsx-a11y/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended",
-    "plugin:storybook/recommended"
+    "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
   "plugins": ["simple-import-sort"],
   "settings": {
@@ -29,6 +28,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
     "no-empty": "warn",
     "jsx-a11y/no-autofocus": "off",
     "jsx-a11y/click-events-have-key-events": "warn",

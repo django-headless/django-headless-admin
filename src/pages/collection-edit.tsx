@@ -6,7 +6,7 @@ import { FormProvider } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 
 import { ContentFields } from "@/components/content-fields";
-import { Spinner } from "@/components/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
@@ -66,7 +66,7 @@ function Main({
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="max-w-screen-md mx-auto">
+        <div className="max-w-screen-md mx-auto bg-white p-8 border rounded">
           <div className="flex items-center justify-between mb-12">
             <div>
               <Breadcrumbs>

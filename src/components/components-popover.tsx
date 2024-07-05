@@ -4,7 +4,7 @@ import * as R from "ramda";
 import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 
-import useContentTypes from "@/hooks/useContentTypes.ts";
+import useContentTypes from "@/hooks/useContentTypes";
 import { ContentType } from "@/types";
 
 export function ComponentsPopover({

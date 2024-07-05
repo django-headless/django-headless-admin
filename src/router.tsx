@@ -19,9 +19,7 @@ const router = createBrowserRouter([
         path: "",
         element: (
           <Authenticated key="root" appendCurrentPathToQuery>
-            <AppShell>
-              <Outlet />
-            </AppShell>
+            <AppShell />
           </Authenticated>
         ),
         children: [
