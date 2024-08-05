@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { ChoiceField } from "@/components/ui/choice-field";
 import { FlexField } from "@/components/ui/flex-field";
 import { ForeignKeyField } from "@/components/ui/foreign-key-field";
 import {
@@ -17,6 +18,7 @@ import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import { ContentType, ContentTypeField, FieldType } from "@/types";
+import { cn } from "@/utils/cn";
 
 /**
  * Renders a content type's admin fields. This component
@@ -26,12 +28,12 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
   const fieldNames = useAdminFields(contentType);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {fieldNames.map((nameOrNames) =>
         Array.isArray(nameOrNames) ? (
           <div
             key={nameOrNames.join()}
-            className="flex items-end gap-3 justify-evenly"
+            className="flex items-end gap-2 justify-evenly"
           >
             {nameOrNames.map((name) => (
               <ContentField
@@ -64,7 +66,11 @@ export function ContentField({
   const element = useMemo(() => {
     switch (fieldConfig.type) {
       case FieldType.CharField:
-        return <Input />;
+        return fieldConfig.choices ? (
+          <ChoiceField options={fieldConfig.choices} />
+        ) : (
+          <Input />
+        );
       case FieldType.PositiveIntegerField:
         return <Input type="number" min={0} />;
       case FieldType.EmailField:
@@ -96,13 +102,24 @@ export function ContentField({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>{fieldConfig.label}</FormLabel>
-            <FormControl>{React.cloneElement(element, field)}</FormControl>
-            {fieldConfig.helpText && (
-              <FormDescription>{fieldConfig.helpText}</FormDescription>
-            )}
-            <FormMessage />
+          <FormItem className="flex items-start space-y-0">
+            <div className="w-[200px]">
+              <FormLabel
+                className={cn({
+                  "font-normal text-secondary-foreground":
+                    !fieldConfig.validation.required,
+                })}
+              >
+                {fieldConfig.label}
+              </FormLabel>
+            </div>
+            <div className="flex-1">
+              <FormControl>{React.cloneElement(element, field)}</FormControl>
+              {fieldConfig.helpText && (
+                <FormDescription>{fieldConfig.helpText}</FormDescription>
+              )}
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />

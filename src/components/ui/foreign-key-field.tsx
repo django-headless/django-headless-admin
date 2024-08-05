@@ -32,7 +32,7 @@ const ForeignKeyField = React.forwardRef<
     <Combobox
       ref={ref}
       value={value}
-      className={cn("flex", className)}
+      className={cn("flex w-full", className)}
       {...props}
       onSearchValueChange={setSearch}
       placeholder={translate("components.combobox.placeholder")}

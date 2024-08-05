@@ -61,7 +61,7 @@ const Combobox = React.forwardRef<
             <RxCaretSort className="ml-2 size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent ref={ref} className="w-[200px] p-0">
+        <PopoverContent ref={ref} className="w-[320px] p-0">
           <Command shouldFilter={false}>
             <CommandInput
               placeholder={emptySearch ?? t("common.search")}

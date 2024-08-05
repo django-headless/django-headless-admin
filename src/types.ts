@@ -52,6 +52,7 @@ export interface ContentTypeField {
   isRelation?: boolean;
   toMany?: boolean;
   relatedModel?: string;
+  choices?: [string, string][] | null;
   resourceId?: string;
   schema?: JSONSchema;
   validation: {

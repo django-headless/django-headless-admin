@@ -18,7 +18,9 @@ const FlexField = React.forwardRef<React.ElementRef<"div">, FlexFieldProps>(
           return (
             <div key={name}>
               {property.verboseName && (
-                <Label className="font-normal">{property.verboseName}</Label>
+                <Label className="font-normal text-secondary-foreground">
+                  {property.verboseName}
+                </Label>
               )}
               <Input
                 value={R.prop(name, value) || ""}
