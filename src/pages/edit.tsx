@@ -1,4 +1,4 @@
-import { useOne, useTranslate } from "@refinedev/core";
+import { useOne, useTranslate, useUpdate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -34,13 +34,18 @@ function Main({
   const resourceNamePlural =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const { data, isError, isLoading } = useOne({ resource: apiId, id });
+  const { mutate } = useUpdate();
 
   useTitle(translate("pages.edit.document_title", { resourceName }));
 
   const form = useForm();
 
   const onSubmit = useCallback((values: any) => {
-    console.log(values);
+    mutate({
+      resource: apiId,
+      id,
+      values,
+    });
   }, []);
 
   useEffect(() => {

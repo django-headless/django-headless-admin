@@ -9,8 +9,10 @@ export const dataProvider: DataProvider = {
 
     return { data };
   },
-  update: () => {
-    throw new Error("Not implemented");
+  async update({ resource, variables, id }) {
+    const { data } = await http.patch(`/${resource}/${id}`, variables);
+
+    return { data };
   },
   async getList({ resource, pagination, filters = [] }) {
     const { data } = await http.get(`/${resource}`, {

@@ -23,10 +23,20 @@ const FlexField = React.forwardRef<React.ElementRef<"div">, FlexFieldProps>(
                 </Label>
               )}
               <Input
-                value={R.prop(name, value) || ""}
+                value={value?.[name] || ""}
                 onBlur={onBlur}
                 onChange={(e) => {
-                  onChange?.(R.assoc(name, e.target.value));
+                  const fieldValue = R.pipe(
+                    R.when(
+                      () =>
+                        [
+                          JSONSchemaType.Integer,
+                          JSONSchemaType.Number,
+                        ].includes(property.type),
+                      Number,
+                    ),
+                  )(e.target.value);
+                  onChange?.(R.assoc(name, fieldValue, value));
                 }}
                 type={
                   property.type === JSONSchemaType.Integer ? "number" : "text"
