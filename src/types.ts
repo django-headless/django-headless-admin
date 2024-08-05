@@ -54,21 +54,25 @@ export interface ContentTypeField {
   relatedModel?: string;
   resourceId?: string;
   schema?: JSONSchema;
+  validation: {
+    required: boolean;
+  };
 }
 
 export enum FieldType {
-  UUIDField = "UUIDField",
-  ForeignKey = "ForeignKey",
   CharField = "CharField",
-  HTMLField = "HTMLField",
-  DateTimeField = "DateTimeField",
   DateField = "DateField",
-  MediaField = "MediaField",
-  ManyMediaField = "ManyMediaField",
-  PositiveIntegerField = "PositiveIntegerField",
-  URLField = "URLField",
+  DateTimeField = "DateTimeField",
+  EmailField = "EmailField",
   FlexField = "FlexField",
+  ForeignKey = "ForeignKey",
+  HTMLField = "HTMLField",
+  ManyMediaField = "ManyMediaField",
+  MediaField = "MediaField",
+  PositiveIntegerField = "PositiveIntegerField",
   TextField = "TextField",
+  URLField = "URLField",
+  UUIDField = "UUIDField",
 }
 
 export interface JSONSchema {

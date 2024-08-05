@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MediaField } from "@/components/ui/media-field";
 import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminFields } from "@/hooks/useAdminFields";
@@ -66,6 +67,8 @@ export function ContentField({
         return <Input />;
       case FieldType.PositiveIntegerField:
         return <Input type="number" min={0} />;
+      case FieldType.EmailField:
+        return <Input type="email" />;
       case FieldType.URLField:
         return <Input type="url" />;
       case FieldType.TextField:
@@ -76,6 +79,8 @@ export function ContentField({
         return <FlexField schema={fieldConfig.schema} />;
       case FieldType.ForeignKey:
         return <ForeignKeyField resourceId={fieldConfig.resourceId} />;
+      case FieldType.MediaField:
+        return <MediaField clearable={!fieldConfig.validation?.required} />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

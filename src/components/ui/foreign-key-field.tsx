@@ -13,7 +13,7 @@ const ForeignKeyField = React.forwardRef<
   const [search, setSearch] = useState("");
   const { data: list } = useList({
     resource: resourceId,
-    filters: [{ field: "search", value: search }],
+    filters: [{ field: "search", operator: "contains", value: search }],
   });
   const { data: selected } = useOne({
     resource: resourceId,
@@ -48,8 +48,8 @@ ForeignKeyField.displayName = "ForeignKeyField";
 
 interface ForeignKeyFieldProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value: string | null;
-  onChange(value: string): void;
+  value?: string | null;
+  onChange?(value: string): void;
   resourceId: string;
 }
 

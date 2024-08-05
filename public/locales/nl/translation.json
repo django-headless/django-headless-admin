@@ -51,6 +51,9 @@
       "paragraph": "Paragraaf",
       "blockquote": "Citaat",
       "codeBlock": "Codeblok"
+    },
+    "media_field": {
+      "placeholder": "Selecteer een afbeelding"
     }
   },
   "validations": {

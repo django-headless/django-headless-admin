@@ -41,6 +41,9 @@
     "pagination": {
       "previous": "Previous",
       "next": "Next"
+    },
+    "media_field": {
+      "placeholder": "Select an image"
     }
   },
   "validations": {
