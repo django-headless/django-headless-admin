@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { FlexField } from "@/components/ui/flex-field";
+import { ForeignKeyField } from "@/components/ui/foreign-key-field";
 import {
   FormControl,
   FormDescription,
@@ -73,6 +74,8 @@ export function ContentField({
         return <RichTextField />;
       case FieldType.FlexField:
         return <FlexField schema={fieldConfig.schema} />;
+      case FieldType.ForeignKey:
+        return <ForeignKeyField resourceId={fieldConfig.resourceId} />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

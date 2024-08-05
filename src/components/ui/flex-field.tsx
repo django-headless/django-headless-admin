@@ -24,7 +24,7 @@ const FlexField = React.forwardRef<React.ElementRef<"div">, FlexFieldProps>(
                 value={R.prop(name, value) || ""}
                 onBlur={onBlur}
                 onChange={(e) => {
-                  onChange(R.assoc(name, e.target.value));
+                  onChange?.(R.assoc(name, e.target.value));
                 }}
                 type={
                   property.type === JSONSchemaType.Integer ? "number" : "text"
@@ -42,9 +42,9 @@ FlexField.displayName = "FlexField";
 
 interface FlexFieldProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value: Record<string, any>;
+  value?: Record<string, any>;
   schema: JSONSchema;
-  onChange(value: Record<string, any>): void;
+  onChange?(value: Record<string, any>): void;
 }
 
 export { FlexField };

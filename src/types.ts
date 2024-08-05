@@ -52,6 +52,8 @@ export interface ContentTypeField {
   isRelation?: boolean;
   toMany?: boolean;
   relatedModel?: string;
+  resourceId?: string;
+  schema?: JSONSchema;
 }
 
 export enum FieldType {

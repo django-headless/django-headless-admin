@@ -1,6 +1,7 @@
 {
   "common": {
-    "save": "Opslaan"
+    "save": "Opslaan",
+    "search": "Zoeken"
   },
   "app": {
     "header": {
@@ -33,7 +34,8 @@
   },
   "components": {
     "combobox": {
-      "empty": "Geen resultaten"
+      "empty": "Geen resultaten",
+      "placeholder": "Selecteer een waarde"
     },
     "pagination": {
       "previous": "Previous",

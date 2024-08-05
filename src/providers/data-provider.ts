@@ -1,4 +1,5 @@
 import type { DataProvider } from "@refinedev/core";
+import * as R from "ramda";
 
 import { http } from "@/utils/http";
 
@@ -11,9 +12,13 @@ export const dataProvider: DataProvider = {
   update: () => {
     throw new Error("Not implemented");
   },
-  async getList({ resource, pagination }) {
+  async getList({ resource, pagination, filters = [] }) {
     const { data } = await http.get(`/${resource}`, {
-      params: { page: pagination?.current, relations: "string" },
+      params: {
+        page: pagination?.current,
+        relations: "string",
+        ...R.fromPairs(filters.map(({ field, value }: any) => [field, value])),
+      },
     });
 
     return {
@@ -28,11 +33,7 @@ export const dataProvider: DataProvider = {
     throw new Error("Not implemented");
   },
   getApiUrl: () => http.defaults.baseURL ?? "",
-  // Optional methods:
-  // getMany: () => { /* ... */ },
-  // createMany: () => { /* ... */ },
-  // deleteMany: () => { /* ... */ },
-  // updateMany: () => { /* ... */ },
+
   async custom({ url, method = "get", payload, query }) {
     const hasPayload = ["post", "put", "patch"].includes(method);
 

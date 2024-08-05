@@ -1,6 +1,7 @@
 {
   "common": {
-    "save": "Save"
+    "save": "Save",
+    "search": "Search"
   },
   "app": {
     "header": {
@@ -34,7 +35,8 @@
   },
   "components": {
     "combobox": {
-      "empty": "No results"
+      "empty": "No results",
+      "placeholder": "Select a value"
     },
     "pagination": {
       "previous": "Previous",
