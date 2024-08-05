@@ -33,7 +33,7 @@ export function AppShell() {
             ref.current?.resize(DEFAULT_NAV_SIZE);
           }}
         />
-        <ResizablePanel className="flex-1 flex flex-col">
+        <ResizablePanel className="flex-1 flex flex-col bg-accent">
           <AppHeader />
           <ScrollArea className="flex-1">
             <Outlet />

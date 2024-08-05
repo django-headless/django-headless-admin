@@ -13,7 +13,7 @@ export const dataProvider: DataProvider = {
   },
   async getList({ resource, pagination }) {
     const { data } = await http.get(`/${resource}`, {
-      params: { page: pagination?.current },
+      params: { page: pagination?.current, relations: "string" },
     });
 
     return {

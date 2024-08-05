@@ -68,3 +68,20 @@ export enum FieldType {
   FlexField = "FlexField",
   TextField = "TextField",
 }
+
+export interface JSONSchema {
+  type: "object";
+  properties: Record<string, JSONSchemaProperty>;
+}
+
+export interface JSONSchemaProperty {
+  type: JSONSchemaType;
+  verboseName?: string;
+  minimum?: number;
+  maximum?: number;
+}
+
+export enum JSONSchemaType {
+  Integer = "integer",
+  String = "string",
+}

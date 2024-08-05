@@ -28,7 +28,7 @@ export default function AppHeader() {
   const { mutate: logout } = useLogout();
 
   return (
-    <header className="flex items-center justify-end gap-3 h-12 border-b px-8 shrink-0">
+    <header className="bg-white flex items-center justify-end gap-3 h-12 border-b px-8 shrink-0">
       {admin?.data.siteUrl && (
         <Tooltip>
           <TooltipContent>

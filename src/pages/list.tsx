@@ -51,7 +51,7 @@ function Main({
     <div className="p-16">
       <h1 className="text-3xl font-bold mb-6">{resourceName}</h1>
 
-      <div className="rounded-md border mb-6">
+      <div className="rounded-md border mb-6 bg-white">
         <Table>
           <TableHeader>
             {getHeaderGroups().map((headerGroup) => (

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { FlexField } from "@/components/ui/flex-field";
 import {
   FormControl,
   FormDescription,
@@ -70,6 +71,8 @@ export function ContentField({
         return <Textarea rows={8} />;
       case FieldType.HTMLField:
         return <RichTextField />;
+      case FieldType.FlexField:
+        return <FlexField schema={fieldConfig.schema} />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

@@ -49,50 +49,50 @@ function Main({
     }
   }, [isLoading, isError, data]);
 
-  const resource = data?.data;
-
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center py-12">
         <Spinner />
       </div>
     );
   }
 
   if (isError) {
-    return <div>Something went wrong!</div>;
+    return (
+      <div className="flex items-center justify-center py-12">
+        Something went wrong!
+      </div>
+    );
   }
 
   return (
-    <div className="bg-accent">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="p-16">
-            <div className="max-w-screen-lg mx-auto w-full">
-              <div className="flex items-center justify-between mb-12">
-                <div>
-                  <Link
-                    to={`/content/${apiId}`}
-                    className="text-sm hover:underline"
-                  >
-                    {resourceNamePlural}
-                  </Link>
-                  <h1 className="text-2xl font-semibold truncate">
-                    {form.watch("name")}
-                  </h1>
-                </div>
-                <Button loading={form.formState.isSubmitting} type="submit">
-                  {translate("common.save")}
-                </Button>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="p-16">
+          <div className="max-w-screen-lg mx-auto w-full">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <Link
+                  to={`/content/${apiId}`}
+                  className="text-sm hover:underline"
+                >
+                  {resourceNamePlural}
+                </Link>
+                <h1 className="text-2xl font-semibold truncate">
+                  {form.watch("__str__")}
+                </h1>
               </div>
+              <Button loading={form.formState.isSubmitting} type="submit">
+                {translate("common.save")}
+              </Button>
+            </div>
 
-              <div className="bg-white p-8 border rounded">
-                <ContentFields contentType={contentType} />
-              </div>
+            <div className="bg-white p-8 border rounded">
+              <ContentFields contentType={contentType} />
             </div>
           </div>
-        </form>
-      </Form>
-    </div>
+        </div>
+      </form>
+    </Form>
   );
 }
