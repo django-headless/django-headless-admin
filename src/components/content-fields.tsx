@@ -58,9 +58,11 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
 export function ContentField({
   name,
   fieldConfig,
+  hideLabel = false,
 }: {
   name: string;
   fieldConfig: ContentTypeField;
+  hideLabel?: boolean;
 }) {
   const form = useFormContext();
   const element = useMemo(() => {
@@ -103,16 +105,18 @@ export function ContentField({
         name={name}
         render={({ field }) => (
           <FormItem className="flex items-start space-y-0">
-            <div className="w-[200px]">
-              <FormLabel
-                className={cn({
-                  "font-normal text-secondary-foreground":
-                    !fieldConfig.validation.required,
-                })}
-              >
-                {fieldConfig.label}
-              </FormLabel>
-            </div>
+            {!hideLabel && (
+              <div className="w-[200px]">
+                <FormLabel
+                  className={cn({
+                    "font-normal text-secondary-foreground":
+                      !fieldConfig.validation.required,
+                  })}
+                >
+                  {fieldConfig.label}
+                </FormLabel>
+              </div>
+            )}
             <div className="flex-1">
               <FormControl>{React.cloneElement(element, field)}</FormControl>
               {fieldConfig.helpText && (

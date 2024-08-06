@@ -4,6 +4,7 @@ import { useCallback, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { ContentFields } from "@/components/content-fields";
+import { Inlines } from "@/components/inlines";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
@@ -16,7 +17,12 @@ export function EditPage() {
   const contentType = useContentType(apiId!);
 
   return contentType && apiId && id ? (
-    <Main apiId={apiId} id={id} contentType={contentType} />
+    <div className="p-16">
+      <div className="max-w-screen-lg mx-auto w-full space-y-12">
+        <Main apiId={apiId} id={id} contentType={contentType} />
+        <Inlines contentType={contentType} />
+      </div>
+    </div>
   ) : null;
 }
 
@@ -73,29 +79,22 @@ function Main({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="p-16">
-          <div className="max-w-screen-lg mx-auto w-full">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <Link
-                  to={`/content/${apiId}`}
-                  className="text-sm hover:underline"
-                >
-                  {resourceNamePlural}
-                </Link>
-                <h1 className="text-2xl font-semibold truncate">
-                  {form.watch("__str__")}
-                </h1>
-              </div>
-              <Button loading={form.formState.isSubmitting} type="submit">
-                {translate("common.save")}
-              </Button>
-            </div>
-
-            <div className="bg-white p-8 border rounded">
-              <ContentFields contentType={contentType} />
-            </div>
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <Link to={`/content/${apiId}`} className="text-sm hover:underline">
+              {resourceNamePlural}
+            </Link>
+            <h1 className="text-2xl font-semibold truncate">
+              {form.watch("__str__")}
+            </h1>
           </div>
+          <Button loading={form.formState.isSubmitting} type="submit">
+            {translate("common.save")}
+          </Button>
+        </div>
+
+        <div className="bg-white p-8 border rounded">
+          <ContentFields contentType={contentType} />
         </div>
       </form>
     </Form>

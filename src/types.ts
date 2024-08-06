@@ -40,6 +40,7 @@ export interface ContentType {
     exclude: string[] | null;
     listDisplay: string[];
     listDisplayLinks: string[];
+    inlines: Inline[] | null;
   };
 }
 
@@ -58,6 +59,15 @@ export interface ContentTypeField {
   validation: {
     required: boolean;
   };
+}
+
+export interface Inline {
+  apiId: string;
+  fkName: string;
+  canDelete: boolean;
+  extra: number;
+  minNum: number | null;
+  maxNum: number | null;
 }
 
 export enum FieldType {

@@ -8,8 +8,12 @@ import { ContentType } from "@/types";
  * This list is based on the admin's `fields` and `exclude` properties. If neither
  * are defined, the list will contain all editable fields of the content type.
  */
-export function useAdminFields(contentType: ContentType) {
+export function useAdminFields(contentType: ContentType | null) {
   return useMemo(() => {
+    if (!contentType) {
+      return [];
+    }
+
     if (contentType.admin.fields) {
       return contentType.admin.fields;
     }
