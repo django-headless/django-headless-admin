@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
 import { EditPage } from "@/pages/edit";
-import { ListPage } from "@/pages/list";
+import { ListOrSingletonPage } from "@/pages/list-or-singleton";
 import { LoginPage } from "@/pages/login";
 
 const router = createBrowserRouter([
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "content/:apiId",
-            element: <ListPage />,
+            element: <ListOrSingletonPage />,
           },
           {
             path: "content/:apiId/:id",

@@ -16,11 +16,11 @@ export function EditPage() {
   const { apiId, id } = useParams<"apiId" | "id">();
   const contentType = useContentType(apiId!);
 
-  return contentType && apiId && id ? (
+  return contentType && apiId ? (
     <div className="p-16">
       <div className="max-w-screen-lg mx-auto w-full space-y-12">
         <Main apiId={apiId} id={id} contentType={contentType} />
-        <Inlines contentType={contentType} />
+        {id && <Inlines contentType={contentType} />}
       </div>
     </div>
   ) : null;
@@ -29,17 +29,21 @@ export function EditPage() {
 function Main({
   contentType,
   apiId,
-  id,
+  id = null,
 }: {
   contentType: ContentType;
   apiId: string;
-  id: string;
+  id?: string | null;
 }) {
   const translate = useTranslate();
   const resourceName = contentType.verboseName;
   const resourceNamePlural =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
-  const { data, isError, isLoading } = useOne({ resource: apiId, id });
+  const { data, isError, isLoading } = useOne({
+    resource: apiId,
+    id,
+    meta: { isSingleton: contentType.isSingleton },
+  });
   const { mutate } = useUpdate();
 
   useTitle(translate("pages.edit.document_title", { resourceName }));

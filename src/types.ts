@@ -29,6 +29,7 @@ export interface AdminSite {
 
 export interface ContentType {
   apiId: string;
+  isSingleton?: boolean;
   appLabel: string;
   appVerboseName: string;
   modelName: string;

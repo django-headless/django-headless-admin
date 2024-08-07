@@ -4,8 +4,10 @@ import * as R from "ramda";
 import { http } from "@/utils/http";
 
 export const dataProvider: DataProvider = {
-  async getOne({ resource, id }) {
-    const { data } = await http.get(`/${resource}/${id}`);
+  async getOne({ resource, id, meta }) {
+    const { data } = await http.get(
+      `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
+    );
 
     return { data };
   },
