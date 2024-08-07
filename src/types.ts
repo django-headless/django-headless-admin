@@ -1,8 +1,8 @@
-type DateTimeString = string;
-type DateString = string;
-type Id = string;
-type Url = string;
-type Email = string;
+export type DateTimeString = string;
+export type DateString = string;
+export type Id = string;
+export type Url = string;
+export type Email = string;
 
 export interface SessionUser {
   id: Id;

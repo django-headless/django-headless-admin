@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { ChoiceField } from "@/components/ui/choice-field";
+import { DatePicker } from "@/components/ui/date-picker";
 import { FlexField } from "@/components/ui/flex-field";
 import { ForeignKeyField } from "@/components/ui/foreign-key-field";
 import {
@@ -58,11 +59,9 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
 export function ContentField({
   name,
   fieldConfig,
-  hideLabel = false,
 }: {
   name: string;
   fieldConfig: ContentTypeField;
-  hideLabel?: boolean;
 }) {
   const form = useFormContext();
   const element = useMemo(() => {
@@ -77,6 +76,8 @@ export function ContentField({
         return <Input type="number" min={0} />;
       case FieldType.EmailField:
         return <Input type="email" />;
+      case FieldType.DateField:
+        return <DatePicker />;
       case FieldType.URLField:
         return <Input type="url" />;
       case FieldType.TextField:
@@ -84,9 +85,9 @@ export function ContentField({
       case FieldType.HTMLField:
         return <RichTextField />;
       case FieldType.FlexField:
-        return <FlexField schema={fieldConfig.schema} />;
+        return <FlexField schema={fieldConfig.schema!} />;
       case FieldType.ForeignKey:
-        return <ForeignKeyField resourceId={fieldConfig.resourceId} />;
+        return <ForeignKeyField resourceId={fieldConfig.resourceId!} />;
       case FieldType.MediaField:
         return <MediaField clearable={!fieldConfig.validation?.required} />;
       default:
@@ -96,7 +97,7 @@ export function ContentField({
           </div>
         ) : null;
     }
-  }, [fieldConfig.type]);
+  }, [fieldConfig]);
 
   return (
     element && (
@@ -105,18 +106,16 @@ export function ContentField({
         name={name}
         render={({ field }) => (
           <FormItem className="flex items-start space-y-0">
-            {!hideLabel && (
-              <div className="w-[200px]">
-                <FormLabel
-                  className={cn({
-                    "font-normal text-secondary-foreground":
-                      !fieldConfig.validation.required,
-                  })}
-                >
-                  {fieldConfig.label}
-                </FormLabel>
-              </div>
-            )}
+            <div className="w-[200px]">
+              <FormLabel
+                className={cn({
+                  "font-normal text-secondary-foreground":
+                    !fieldConfig.validation.required,
+                })}
+              >
+                {fieldConfig.label}
+              </FormLabel>
+            </div>
             <div className="flex-1">
               <FormControl>{React.cloneElement(element, field)}</FormControl>
               {fieldConfig.helpText && (
