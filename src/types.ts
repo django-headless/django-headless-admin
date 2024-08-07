@@ -80,10 +80,13 @@ export enum FieldType {
   ForeignKey = "ForeignKey",
   HTMLField = "HTMLField",
   ManyMediaField = "ManyMediaField",
+  ManyToManyField = "ManyToManyField",
   MediaField = "MediaField",
   PositiveIntegerField = "PositiveIntegerField",
+  PositiveSmallIntegerField = "PositiveSmallIntegerField",
   TextField = "TextField",
   URLField = "URLField",
+  URLPathField = "URLPathField",
   UUIDField = "UUIDField",
 }
 

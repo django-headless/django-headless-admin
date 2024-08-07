@@ -73,6 +73,7 @@ export function ContentField({
           <Input />
         );
       case FieldType.PositiveIntegerField:
+      case FieldType.PositiveSmallIntegerField:
         return <Input type="number" min={0} />;
       case FieldType.EmailField:
         return <Input type="email" />;
@@ -80,6 +81,8 @@ export function ContentField({
         return <DatePicker />;
       case FieldType.URLField:
         return <Input type="url" />;
+      case FieldType.URLPathField:
+        return <Input placeholder="/" />;
       case FieldType.TextField:
         return <Textarea rows={8} />;
       case FieldType.HTMLField:
