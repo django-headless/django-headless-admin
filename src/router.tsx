@@ -24,11 +24,11 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "content/:apiId",
+            path: "content/:resourceId",
             element: <ListOrSingletonPage />,
           },
           {
-            path: "content/:apiId/:id",
+            path: "content/:resourceId/:id",
             element: <EditPage />,
           },
         ],

@@ -17,20 +17,20 @@ import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
 
 export function ListPage() {
-  const { apiId } = useParams<"apiId">();
-  const contentType = useContentType(apiId!);
+  const { resourceId } = useParams<"resourceId">();
+  const contentType = useContentType(resourceId!);
 
-  return contentType && apiId ? (
-    <Main apiId={apiId} contentType={contentType} />
+  return contentType && resourceId ? (
+    <Main resourceId={resourceId} contentType={contentType} />
   ) : null;
 }
 
 function Main({
   contentType,
-  apiId,
+  resourceId,
 }: {
   contentType: ContentType;
-  apiId: string;
+  resourceId: string;
 }) {
   const resourceName =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
@@ -43,7 +43,7 @@ function Main({
     getRowModel,
     refineCore: { setCurrent, pageCount, current },
   } = useTable({
-    refineCoreProps: { resource: apiId },
+    refineCoreProps: { resource: resourceId },
     columns,
   });
 

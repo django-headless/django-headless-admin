@@ -14,7 +14,7 @@ export function useAdminFields(contentType: ContentType | null) {
       return [];
     }
 
-    if (contentType.admin.fields) {
+    if (contentType.admin?.fields) {
       return contentType.admin.fields;
     }
 
@@ -23,7 +23,7 @@ export function useAdminFields(contentType: ContentType | null) {
       [] as string[],
     );
 
-    if (contentType.admin.exclude) {
+    if (contentType.admin?.exclude) {
       return R.without(contentType.admin.exclude, fields);
     }
 

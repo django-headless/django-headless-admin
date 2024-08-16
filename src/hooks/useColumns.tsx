@@ -26,7 +26,7 @@ export default function useColumns(contentType: ContentType) {
 
           return isLink ? (
             <Link
-              to={`/content/${contentType.apiId}/${row.original.id}`}
+              to={`/content/${contentType.resourceId}/${row.original.id}`}
               className="text-primary hover:underline font-semibold"
             >
               <ContentFieldDisplay
@@ -42,6 +42,6 @@ export default function useColumns(contentType: ContentType) {
           );
         },
       })),
-    [fields, contentType.apiId, displayLinks],
+    [fields, contentType.resourceId, displayLinks],
   );
 }

@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ManyToManyField } from "@/components/ui/m2m-field";
 import { MediaField } from "@/components/ui/media-field";
+import { MultipleChoiceField } from "@/components/ui/multiple-choice-field";
 import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdminFields } from "@/hooks/useAdminFields";
@@ -73,6 +74,8 @@ export function ContentField({
         ) : (
           <Input />
         );
+      case FieldType.MultipleChoiceField:
+        return <MultipleChoiceField options={fieldConfig.choices ?? []} />;
       case FieldType.PositiveIntegerField:
       case FieldType.PositiveSmallIntegerField:
         return <Input type="number" min={0} />;

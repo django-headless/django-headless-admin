@@ -6,10 +6,10 @@ import { EditPage } from "./edit";
 import { ListPage } from "./list";
 
 export function ListOrSingletonPage() {
-  const { apiId } = useParams<"apiId">();
-  const contentType = useContentType(apiId!);
+  const { resourceId } = useParams<"resourceId">();
+  const contentType = useContentType(resourceId!);
 
-  return contentType && apiId ? (
+  return contentType && resourceId ? (
     contentType.isSingleton ? (
       <EditPage />
     ) : (

@@ -1,6 +1,5 @@
 import { useList } from "@refinedev/core";
 import * as R from "ramda";
-import React from "react";
 import { PiTrash } from "react-icons/pi";
 import { useParams } from "react-router-dom";
 
@@ -24,7 +23,7 @@ import { ContentType, Inline } from "@/types";
 export function Inlines({ contentType }: { contentType: ContentType }) {
   return (
     <div className="space-y-4">
-      {contentType.admin.inlines?.map((inline, idx) => (
+      {contentType.admin?.inlines?.map((inline, idx) => (
         <TabularInline key={idx} inline={inline} />
       ))}
     </div>
@@ -32,11 +31,11 @@ export function Inlines({ contentType }: { contentType: ContentType }) {
 }
 
 export function TabularInline({ inline }: { inline: Inline }) {
-  const contentType = useContentType(inline.apiId);
+  const contentType = useContentType(inline.resourceId);
   const fieldNames = useAdminFields(contentType);
   const { id } = useParams<"id">();
   const { data } = useList({
-    resource: inline.apiId,
+    resource: inline.resourceId,
     filters: [{ operator: "eq", field: inline.fkName, value: id }],
   });
   /**

@@ -1,7 +1,7 @@
 import useContentTypes from "@/hooks/useContentTypes";
 
-export default function useContentType(apiId: string) {
+export default function useContentType(resourceId: string) {
   const { data } = useContentTypes();
 
-  return apiId ? data?.data?.[apiId] ?? null : null;
+  return resourceId ? (data?.data?.[resourceId] ?? null) : null;
 }

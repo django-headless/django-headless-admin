@@ -13,13 +13,13 @@ import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
 
 export function EditPage() {
-  const { apiId, id } = useParams<"apiId" | "id">();
-  const contentType = useContentType(apiId!);
+  const { resourceId, id } = useParams<"resourceId" | "id">();
+  const contentType = useContentType(resourceId!);
 
-  return contentType && apiId ? (
+  return contentType && resourceId ? (
     <div className="p-16">
       <div className="max-w-screen-lg mx-auto w-full space-y-12">
-        <Main apiId={apiId} id={id} contentType={contentType} />
+        <Main resourceId={resourceId} id={id} contentType={contentType} />
         {id && <Inlines contentType={contentType} />}
       </div>
     </div>
@@ -28,11 +28,11 @@ export function EditPage() {
 
 function Main({
   contentType,
-  apiId,
+  resourceId,
   id = null,
 }: {
   contentType: ContentType;
-  apiId: string;
+  resourceId: string;
   id?: string | null;
 }) {
   const translate = useTranslate();
@@ -40,7 +40,7 @@ function Main({
   const resourceNamePlural =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const { data, isError, isLoading } = useOne({
-    resource: apiId,
+    resource: resourceId,
     id,
     meta: { isSingleton: contentType.isSingleton },
   });
@@ -52,7 +52,7 @@ function Main({
 
   const onSubmit = useCallback((values: any) => {
     mutate({
-      resource: apiId,
+      resource: resourceId,
       id,
       values,
     });
@@ -85,7 +85,10 @@ function Main({
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex items-center justify-between mb-12">
           <div>
-            <Link to={`/content/${apiId}`} className="text-sm hover:underline">
+            <Link
+              to={`/content/${resourceId}`}
+              className="text-sm hover:underline"
+            >
               {resourceNamePlural}
             </Link>
             <h1 className="text-2xl font-semibold truncate">

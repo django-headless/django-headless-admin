@@ -40,6 +40,8 @@ export function AppNavbar() {
         Object.values,
         R.reject(
           R.anyPass([
+            // Don't show content types without admin models
+            R.propSatisfies(R.isNil, "admin"),
             // Users are a separate route.
             R.prop("isUserModel"),
             // Some other special models are excluded from this list.
@@ -95,9 +97,9 @@ export function AppNavbar() {
                 <div key={idx}>
                   {group.map((ct) => (
                     <MainLink
-                      key={ct.apiId}
+                      key={ct.resourceId}
                       label={ct.verboseNamePlural}
-                      to={`/content/${ct.apiId}`}
+                      to={`/content/${ct.resourceId}`}
                     />
                   ))}
                 </div>
@@ -115,9 +117,9 @@ export function AppNavbar() {
                 <div className="space-y-1">
                   {group.map((ct) => (
                     <MainLink
-                      key={ct.apiId}
+                      key={ct.resourceId}
                       label={ct.verboseNamePlural}
-                      to={`/content/${ct.apiId}`}
+                      to={`/content/${ct.resourceId}`}
                     />
                   ))}
                 </div>

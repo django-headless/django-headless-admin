@@ -28,7 +28,7 @@ export interface AdminSite {
 }
 
 export interface ContentType {
-  apiId: string;
+  resourceId: string;
   isSingleton?: boolean;
   appLabel: string;
   appVerboseName: string;
@@ -42,7 +42,7 @@ export interface ContentType {
     listDisplay: string[];
     listDisplayLinks: string[];
     inlines: Inline[] | null;
-  };
+  } | null;
 }
 
 export interface ContentTypeField {
@@ -63,7 +63,7 @@ export interface ContentTypeField {
 }
 
 export interface Inline {
-  apiId: string;
+  resourceId: string;
   fkName: string;
   canDelete: boolean;
   extra: number;
@@ -79,10 +79,11 @@ export enum FieldType {
   FlexField = "FlexField",
   ForeignKey = "ForeignKey",
   HTMLField = "HTMLField",
+  IntegerField = "IntegerField",
   ManyMediaField = "ManyMediaField",
   ManyToManyField = "ManyToManyField",
   MediaField = "MediaField",
-  IntegerField = "IntegerField",
+  MultipleChoiceField = "MultipleChoiceField",
   PositiveIntegerField = "PositiveIntegerField",
   PositiveSmallIntegerField = "PositiveSmallIntegerField",
   TextField = "TextField",
