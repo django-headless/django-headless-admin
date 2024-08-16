@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 const ManyToManyField = React.forwardRef<
   React.ElementRef<typeof Combobox>,
   ManyToManyFieldProps
->(({ value = [], className, resourceId, ...props }, ref) => {
+>(({ value = [], onChange, className, resourceId, ...props }, ref) => {
   const translate = useTranslate();
   const [search, setSearch] = useState("");
   const { data: list } = useList({
@@ -39,7 +39,11 @@ const ManyToManyField = React.forwardRef<
             <span className="text-secondary-foreground text-sm font-medium">
               {record.__str__}
             </span>
-            <Button size="sm" variant="ghost">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => onChange?.(R.without([record.id], value))}
+            >
               <PiXBold />
             </Button>
           </div>
@@ -51,6 +55,7 @@ const ManyToManyField = React.forwardRef<
         {...props}
         onSearchValueChange={setSearch}
         placeholder={translate("components.m2m_field.placeholder")}
+        onChange={(v) => onChange?.(R.append(v, value))}
         options={
           list?.data.map(({ id, __str__ }) => ({
             value: id,

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { ContentFieldDisplay } from "@/components/content-field-display";
 import { ChoiceField } from "@/components/ui/choice-field";
 import { DatePicker } from "@/components/ui/date-picker";
 import { FlexField } from "@/components/ui/flex-field";
@@ -29,6 +30,7 @@ import { cn } from "@/utils/cn";
  */
 export function ContentFields({ contentType }: { contentType: ContentType }) {
   const fieldNames = useAdminFields(contentType);
+  const readOnly = !contentType.admin?.permissions.change;
 
   return (
     <div className="space-y-6">
@@ -42,6 +44,7 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
               <ContentField
                 key={name}
                 name={name}
+                readOnly={readOnly}
                 fieldConfig={contentType.fields[name]}
               />
             ))}
@@ -50,6 +53,7 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
           <ContentField
             key={nameOrNames}
             name={nameOrNames}
+            readOnly={readOnly}
             fieldConfig={contentType.fields[nameOrNames]}
           />
         ),
@@ -61,9 +65,11 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
 export function ContentField({
   name,
   fieldConfig,
+  readOnly,
 }: {
   name: string;
   fieldConfig: ContentTypeField;
+  readOnly: boolean;
 }) {
   const form = useFormContext();
   const element = useMemo(() => {
@@ -128,9 +134,20 @@ export function ContentField({
               </FormLabel>
             </div>
             <div className="flex-1">
-              <FormControl>{React.cloneElement(element, field)}</FormControl>
-              {fieldConfig.helpText && (
-                <FormDescription>{fieldConfig.helpText}</FormDescription>
+              {readOnly ? (
+                <ContentFieldDisplay
+                  contentTypeField={fieldConfig}
+                  value={form.watch(name)}
+                />
+              ) : (
+                <>
+                  <FormControl>
+                    {React.cloneElement(element, field)}
+                  </FormControl>
+                  {fieldConfig.helpText && (
+                    <FormDescription>{fieldConfig.helpText}</FormDescription>
+                  )}
+                </>
               )}
               <FormMessage />
             </div>

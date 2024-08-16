@@ -53,8 +53,9 @@ function Main({
   const onSubmit = useCallback((values: any) => {
     mutate({
       resource: resourceId,
-      id,
+      id: id ?? "<SINGLETON>",
       values,
+      meta: { isSingleton: contentType.isSingleton },
     });
   }, []);
 
@@ -95,9 +96,11 @@ function Main({
               {form.watch("__str__")}
             </h1>
           </div>
-          <Button loading={form.formState.isSubmitting} type="submit">
-            {translate("common.save")}
-          </Button>
+          {contentType.admin?.permissions.change && (
+            <Button loading={form.formState.isSubmitting} type="submit">
+              {translate("common.save")}
+            </Button>
+          )}
         </div>
 
         <div className="bg-white p-8 border rounded">

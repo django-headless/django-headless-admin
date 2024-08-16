@@ -1,5 +1,7 @@
 {
   "common": {
+    "cancel": "Annuleren",
+    "create": "Toevoegen",
     "save": "Opslaan",
     "search": "Zoeken"
   },
@@ -30,6 +32,9 @@
     },
     "edit": {
       "document_title": "Bewerk {{resourceName}}"
+    },
+    "list": {
+      "add": "{{resourceName}} toevoegen"
     }
   },
   "components": {
@@ -57,6 +62,10 @@
     },
     "m2m_field": {
       "placeholder": "Voeg item toe"
+    },
+    "inline_modal": {
+      "create_title": "{{resourceName}} toevoegen",
+      "edit_title": "Bewerk {{resourceName}}"
     }
   },
   "validations": {

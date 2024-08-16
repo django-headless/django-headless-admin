@@ -1,7 +1,10 @@
+import { useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
 import { useParams } from "react-router-dom";
 
+import { InlineModal } from "@/components/inline-modal";
+import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
@@ -32,6 +35,7 @@ function Main({
   contentType: ContentType;
   resourceId: string;
 }) {
+  const translate = useTranslate();
   const resourceName =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const columns = useColumns(contentType);
@@ -49,7 +53,18 @@ function Main({
 
   return (
     <div className="p-16">
-      <h1 className="text-3xl font-bold mb-6">{resourceName}</h1>
+      <div className="flex mb-12 justify-between items-center">
+        <h1 className="text-3xl font-bold">{resourceName}</h1>
+        {contentType.admin?.permissions.add && (
+          <InlineModal resourceId={resourceId} id={null}>
+            <Button>
+              {translate("pages.list.add", {
+                resourceName: contentType.verboseName,
+              })}
+            </Button>
+          </InlineModal>
+        )}
+      </div>
 
       <div className="rounded-md border mb-6 bg-white">
         <Table>

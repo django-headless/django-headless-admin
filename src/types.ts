@@ -42,6 +42,12 @@ export interface ContentType {
     listDisplay: string[];
     listDisplayLinks: string[];
     inlines: Inline[] | null;
+    permissions: {
+      add: boolean;
+      change: boolean;
+      delete: boolean;
+      view: boolean;
+    };
   } | null;
 }
 
