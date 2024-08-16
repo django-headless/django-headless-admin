@@ -4,6 +4,8 @@ import * as R from "ramda";
 import { http } from "@/utils/http";
 
 export const dataProvider: DataProvider = {
+  getApiUrl: () => http.defaults.baseURL ?? "",
+
   async getOne({ resource, id, meta }) {
     const { data } = await http.get(
       `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
@@ -11,11 +13,16 @@ export const dataProvider: DataProvider = {
 
     return { data };
   },
-  async update({ resource, variables, id }) {
-    const { data } = await http.patch(`/${resource}/${id}`, variables);
+
+  async update({ resource, variables, id, meta }) {
+    const { data } = await http.patch(
+      `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
+      variables,
+    );
 
     return { data };
   },
+
   async getList({ resource, pagination, filters = [] }) {
     const { data } = await http.get(`/${resource}`, {
       params: {
@@ -30,13 +37,18 @@ export const dataProvider: DataProvider = {
       total: data.pagination?.count ?? data.data.length,
     };
   },
-  create: () => {
-    throw new Error("Not implemented");
+
+  async create({ resource, variables }) {
+    const { data } = await http.post(`/${resource}`, variables);
+
+    return { data };
   },
-  deleteOne: () => {
-    throw new Error("Not implemented");
+
+  async deleteOne({ resource, id }) {
+    const { data } = await http.delete(`/${resource}/${id}`);
+
+    return data;
   },
-  getApiUrl: () => http.defaults.baseURL ?? "",
 
   async custom({ url, method = "get", payload, query }) {
     const hasPayload = ["post", "put", "patch"].includes(method);

@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ManyToManyField } from "@/components/ui/m2m-field";
 import { MediaField } from "@/components/ui/media-field";
 import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,7 +30,7 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
   const fieldNames = useAdminFields(contentType);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {fieldNames.map((nameOrNames) =>
         Array.isArray(nameOrNames) ? (
           <div
@@ -75,6 +76,8 @@ export function ContentField({
       case FieldType.PositiveIntegerField:
       case FieldType.PositiveSmallIntegerField:
         return <Input type="number" min={0} />;
+      case FieldType.IntegerField:
+        return <Input type="number" />;
       case FieldType.EmailField:
         return <Input type="email" />;
       case FieldType.DateField:
@@ -91,6 +94,8 @@ export function ContentField({
         return <FlexField schema={fieldConfig.schema!} />;
       case FieldType.ForeignKey:
         return <ForeignKeyField resourceId={fieldConfig.resourceId!} />;
+      case FieldType.ManyToManyField:
+        return <ManyToManyField resourceId={fieldConfig.resourceId!} />;
       case FieldType.MediaField:
         return <MediaField clearable={!fieldConfig.validation?.required} />;
       default:

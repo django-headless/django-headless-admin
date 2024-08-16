@@ -54,6 +54,9 @@
     },
     "media_field": {
       "placeholder": "Selecteer een afbeelding"
+    },
+    "m2m_field": {
+      "placeholder": "Voeg item toe"
     }
   },
   "validations": {

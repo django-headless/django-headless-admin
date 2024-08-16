@@ -82,6 +82,7 @@ export enum FieldType {
   ManyMediaField = "ManyMediaField",
   ManyToManyField = "ManyToManyField",
   MediaField = "MediaField",
+  IntegerField = "IntegerField",
   PositiveIntegerField = "PositiveIntegerField",
   PositiveSmallIntegerField = "PositiveSmallIntegerField",
   TextField = "TextField",
