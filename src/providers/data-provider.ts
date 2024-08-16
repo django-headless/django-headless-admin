@@ -24,9 +24,11 @@ export const dataProvider: DataProvider = {
   },
 
   async getList({ resource, pagination, filters = [] }) {
+    console.log(pagination);
     const { data } = await http.get(`/${resource}`, {
       params: {
         page: pagination?.current,
+        limit: pagination?.pageSize,
         relations: "string",
         ...R.fromPairs(filters.map(({ field, value }: any) => [field, value])),
       },

@@ -36,7 +36,8 @@
       "delete_document": "{{resourceName}} verwijderen"
     },
     "list": {
-      "add": "{{resourceName}} toevoegen"
+      "add": "{{resourceName}} toevoegen",
+      "search": "Zoek {{resourceName}}"
     }
   },
   "components": {

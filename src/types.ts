@@ -41,7 +41,9 @@ export interface ContentType {
     exclude: string[] | null;
     listDisplay: string[];
     listDisplayLinks: string[];
+    listPerPage: number;
     inlines: Inline[] | null;
+    enableSearch: boolean;
     permissions: {
       add: boolean;
       change: boolean;

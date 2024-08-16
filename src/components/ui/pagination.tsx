@@ -58,11 +58,17 @@ const Pagination = ({
   return (
     <PaginationNavigation {...props}>
       <PaginationContent>
-        <PaginationItem disabled={current <= 1}>
+        <PaginationItem
+          disabled={current <= 1}
+          onClick={() => onPageChange(current - 1)}
+        >
           <PiCaretLeftBold />
           <span>{translate("components.pagination.previous")}</span>
         </PaginationItem>
-        <PaginationItem disabled={current >= pages}>
+        <PaginationItem
+          disabled={current >= pages}
+          onClick={() => onPageChange(current + 1)}
+        >
           <span>{translate("components.pagination.next")}</span>
           <PiCaretRightBold />
         </PaginationItem>

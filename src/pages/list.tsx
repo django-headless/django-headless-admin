@@ -1,10 +1,12 @@
 import { useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
@@ -18,6 +20,7 @@ import useColumns from "@/hooks/useColumns";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
+import { cn } from "@/utils/cn";
 
 export function ListPage() {
   const { resourceId } = useParams<"resourceId">();
@@ -39,15 +42,26 @@ function Main({
   const resourceName =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const columns = useColumns(contentType);
+  const [search, setSearch] = useState("");
 
   useTitle(resourceName);
 
   const {
     getHeaderGroups,
     getRowModel,
-    refineCore: { setCurrent, pageCount, current },
+    refineCore: {
+      setFilters,
+      setCurrent,
+      pageCount,
+      current,
+      tableQuery: { isFetching, isPreviousData },
+    },
   } = useTable({
-    refineCoreProps: { resource: resourceId },
+    refineCoreProps: {
+      resource: resourceId,
+      syncWithLocation: true,
+      pagination: { pageSize: contentType.admin?.listPerPage },
+    },
     columns,
   });
 
@@ -66,7 +80,31 @@ function Main({
         )}
       </div>
 
-      <div className="rounded-md border mb-6 bg-white">
+      <div className="mb-4 empty:hidden flex items-center gap-1">
+        {contentType.admin?.enableSearch && (
+          <Input
+            placeholder={translate("pages.list.search", {
+              resourceName: resourceName.toLocaleLowerCase(),
+            })}
+            className="max-w-xs"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setFilters([
+                  { field: "search", operator: "eq", value: search },
+                ]);
+              }
+            }}
+          />
+        )}
+      </div>
+
+      <div
+        className={cn("rounded-md border mb-6 bg-white", {
+          "opacity-50": isFetching && isPreviousData,
+        })}
+      >
         <Table>
           <TableHeader>
             {getHeaderGroups().map((headerGroup) => (
