@@ -4,7 +4,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
 import { EditPage } from "@/pages/edit";
-import { ListOrSingletonPage } from "@/pages/list-or-singleton";
+import { ListPage } from "@/pages/list";
 import { LoginPage } from "@/pages/login";
 import { MediaLibrary } from "@/pages/media-library";
 
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             children: [
               {
                 path: "content/:resourceId",
-                element: <ListOrSingletonPage />,
+                element: <ListPage />,
               },
             ],
           },

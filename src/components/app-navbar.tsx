@@ -100,7 +100,7 @@ export function AppNavbar() {
                     <MainLink
                       key={ct.resourceId}
                       label={ct.verboseNamePlural}
-                      to={`/content/${ct.resourceId}`}
+                      to={`/content/${ct.resourceId}${ct.isSingleton ? "/edit" : ""}`}
                     />
                   ))}
                 </div>
@@ -120,7 +120,7 @@ export function AppNavbar() {
                     <MainLink
                       key={ct.resourceId}
                       label={ct.verboseNamePlural}
-                      to={`/content/${ct.resourceId}`}
+                      to={`/content/${ct.resourceId}${ct.isSingleton ? "/edit" : ""}`}
                     />
                   ))}
                 </div>

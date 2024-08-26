@@ -22,7 +22,7 @@ import { ContentType, Inline } from "@/types";
  */
 export function Inlines({ contentType }: { contentType: ContentType }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-12 max-w-screen-lg w-full mx-auto lg:w-2/3 z-10 relative my-24">
       {contentType.admin?.inlines?.map((inline, idx) => (
         <TabularInline key={idx} inline={inline} />
       ))}
@@ -46,34 +46,32 @@ export function TabularInline({ inline }: { inline: Inline }) {
 
   return (
     contentType && (
-      <div className="bg-white p-8 border rounded">
-        <h4 className="font-semibold text-lg mb-8">
+      <div className="p-4 border shadow-sm rounded">
+        <h4 className="font-semibold text-lg mb-4">
           {contentType.verboseNamePlural}
         </h4>
-        <div className="rounded border overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {fields.map((name) => (
-                  <TableHead key={name}>
-                    {contentType.fields[name].label}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data?.data.map((record) => (
-                <TabularInlineRow
-                  key={record.id}
-                  record={record}
-                  fields={fields}
-                  contentType={contentType}
-                  canDelete={inline.canDelete}
-                />
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {fields.map((name) => (
+                <TableHead key={name}>
+                  {contentType.fields[name].label}
+                </TableHead>
               ))}
-            </TableBody>
-          </Table>
-        </div>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.data.map((record) => (
+              <TabularInlineRow
+                key={record.id}
+                record={record}
+                fields={fields}
+                contentType={contentType}
+                canDelete={inline.canDelete}
+              />
+            ))}
+          </TableBody>
+        </Table>
       </div>
     )
   );

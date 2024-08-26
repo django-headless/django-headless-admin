@@ -1,33 +1,30 @@
 import { useDelete, useOne, useTranslate, useUpdate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { PiDotsThreeVerticalBold } from "react-icons/pi";
+import {
+  PiCaretLeft,
+  PiSidebarSimple,
+  PiSidebarSimpleFill,
+} from "react-icons/pi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ContentFields } from "@/components/content-fields";
 import { Inlines } from "@/components/inlines";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
+import { cn } from "@/utils/cn";
 
 export function EditPage() {
   const { resourceId, id } = useParams<"resourceId" | "id">();
   const contentType = useContentType(resourceId!);
 
   return contentType && resourceId ? (
-    <div className="p-16">
-      <Layout resourceId={resourceId} id={id} contentType={contentType} />
-    </div>
+    <Layout resourceId={resourceId} id={id} contentType={contentType} />
   ) : null;
 }
 
@@ -43,27 +40,32 @@ function Layout({
   const translate = useTranslate();
   const resourceName = contentType.verboseName;
   const isSingleton = contentType.isSingleton ?? false;
+  const [sidebar, setSidebar] = useState(false);
 
   useTitle(translate("pages.edit.document_title", { resourceName }));
 
   return (
-    <div>
-      <EditForm isSingleton={isSingleton} resourceId={resourceId} id={id}>
-        <div>
+    <EditForm isSingleton={isSingleton} resourceId={resourceId} id={id}>
+      <div className="flex overflow-hidden h-dvh">
+        <div className="relative flex-1 overflow-y-auto">
           <Header
             isSingleton={isSingleton}
             resourceId={resourceId}
-            id={id}
             contentType={contentType}
+            setSidebar={(s) => setSidebar(s)}
+            sidebar={sidebar}
           />
 
-          <div className="bg-white p-8 border rounded">
+          <div className="max-w-screen-md mx-auto w-full lg:w-2/3 z-10 relative">
             <ContentFields contentType={contentType} />
           </div>
+          {id && <Inlines contentType={contentType} />}
         </div>
-      </EditForm>
-      {id && <Inlines contentType={contentType} />}
-    </div>
+        {sidebar && (
+          <Sidebar contentType={contentType} resourceId={resourceId} id={id} />
+        )}
+      </div>
+    </EditForm>
   );
 }
 
@@ -129,68 +131,97 @@ function Header({
   isSingleton,
   resourceId,
   contentType,
-  id,
+  setSidebar,
+  sidebar,
 }: {
   isSingleton: boolean;
   resourceId: string;
   contentType: ContentType;
-  id?: string | null;
+  sidebar: boolean;
+  setSidebar(sidebar: boolean): void;
 }) {
-  const resourceName = contentType.verboseName;
   const resourceNamePlural =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const form = useFormContext();
   const translate = useTranslate();
-  const navigate = useNavigate();
-  const { mutateAsync: remove } = useDelete();
 
   return (
-    <div className="flex items-center justify-between mb-12">
-      <div>
-        {!isSingleton && (
-          <Link
-            to={`/content/${resourceId}`}
-            className="text-sm hover:underline"
-          >
-            {resourceNamePlural}
-          </Link>
-        )}
-        <h1 className="text-2xl font-semibold truncate">
+    <div className="flex items-start justify-between lg:sticky top-0 left-0 right-0 lg:p-4 mb-12 lg:mb-0">
+      <div className="lg:w-1/6">
+        <Link
+          to={isSingleton ? "/" : `/content/${resourceId}`}
+          className={cn(
+            "inline-flex items-center gap-1",
+            buttonVariants({ variant: "ghost" }),
+          )}
+        >
+          <PiCaretLeft />
+          <span>
+            {isSingleton ? translate("common.back") : resourceNamePlural}
+          </span>
+        </Link>
+        <h1 className="text-xl font-semibold mt-4 px-4">
           {isSingleton ? resourceNamePlural : form.watch("__str__")}
         </h1>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2 lg:w-1/6">
         {contentType.admin?.permissions.change && (
           <Button loading={form.formState.isSubmitting} type="submit">
             {translate("common.save")}
           </Button>
         )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setSidebar(!sidebar)}
+        >
+          {sidebar ? (
+            <PiSidebarSimpleFill className="rotate-180 origin-center size-5" />
+          ) : (
+            <PiSidebarSimple className="rotate-180 origin-center size-5" />
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Sidebar({
+  contentType,
+  resourceId,
+  id,
+}: {
+  contentType: ContentType;
+  resourceId: string;
+  id?: string | null;
+}) {
+  const translate = useTranslate();
+  const resourceName = contentType.verboseName;
+  const navigate = useNavigate();
+  const { mutateAsync: remove } = useDelete();
+
+  return (
+    <div className="border-l overflow-y-auto flex flex-col flex-none w-80">
+      <div className="flex-1"></div>
+      <div className="p-4 border-t">
         {contentType.admin?.permissions.delete && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <PiDotsThreeVerticalBold />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem
-                className="text-destructive"
-                onClick={async () => {
-                  if (window.confirm(translate("common.are_you_sure"))) {
-                    try {
-                      await remove({
-                        resource: resourceId,
-                        id: id ?? "<SINGLETON>",
-                      });
-                      navigate(`/content/${resourceId}`);
-                    } catch (e) {}
-                  }
-                }}
-              >
-                {translate("pages.edit.delete_document", { resourceName })}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button
+            variant="destructive"
+            className="w-full"
+            onClick={async () => {
+              if (window.confirm(translate("common.are_you_sure"))) {
+                try {
+                  await remove({
+                    resource: resourceId,
+                    id: id ?? "<SINGLETON>",
+                  });
+                  navigate(`/content/${resourceId}`);
+                } catch (e) {}
+              }
+            }}
+          >
+            {translate("pages.edit.delete_document", { resourceName })}
+          </Button>
         )}
       </div>
     </div>
