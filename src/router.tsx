@@ -32,16 +32,16 @@ const router = createBrowserRouter([
                 path: "content/:resourceId",
                 element: <ListPage />,
               },
+              {
+                path: "media-library",
+                element: <MediaLibrary />,
+              },
             ],
           },
 
           {
             path: "content/:resourceId/:id",
             element: <EditPage />,
-          },
-          {
-            path: "media-library",
-            element: <MediaLibrary />,
           },
         ],
       },

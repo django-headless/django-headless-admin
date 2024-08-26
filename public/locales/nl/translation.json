@@ -67,7 +67,8 @@
       "codeBlock": "Codeblok"
     },
     "media_field": {
-      "placeholder": "Selecteer een afbeelding"
+      "select_media": "Selecteer media",
+      "dialog_title": "Selecteer media"
     },
     "m2m_field": {
       "placeholder": "Voeg item toe"
