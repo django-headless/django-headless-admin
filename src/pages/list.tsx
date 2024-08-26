@@ -31,12 +31,14 @@ export function ListPage() {
   ) : null;
 }
 
-function Main({
+export function Main({
   contentType,
   resourceId,
+  title,
 }: {
   contentType: ContentType;
   resourceId: string;
+  title?: string;
 }) {
   const translate = useTranslate();
   const resourceName =
@@ -44,7 +46,7 @@ function Main({
   const columns = useColumns(contentType);
   const [search, setSearch] = useState("");
 
-  useTitle(resourceName);
+  useTitle(title || resourceName);
 
   const {
     getHeaderGroups,
@@ -68,7 +70,7 @@ function Main({
   return (
     <div className="p-16">
       <div className="flex mb-12 justify-between items-center">
-        <h1 className="text-3xl font-bold">{resourceName}</h1>
+        <h1 className="text-3xl font-bold">{title || resourceName}</h1>
         {contentType.admin?.permissions.add && (
           <InlineModal resourceId={resourceId} id={null}>
             <Button>
@@ -101,7 +103,7 @@ function Main({
       </div>
 
       <div
-        className={cn("rounded-md border mb-6 bg-white", {
+        className={cn("rounded-md mb-6 bg-white", {
           "opacity-50": isFetching && isPreviousData,
         })}
       >

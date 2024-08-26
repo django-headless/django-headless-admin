@@ -1,11 +1,12 @@
 import { Authenticated } from "@refinedev/core";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
 import { EditPage } from "@/pages/edit";
 import { ListOrSingletonPage } from "@/pages/list-or-singleton";
 import { LoginPage } from "@/pages/login";
+import { MediaLibrary } from "@/pages/media-library";
 
 const router = createBrowserRouter([
   {
@@ -19,17 +20,28 @@ const router = createBrowserRouter([
         path: "",
         element: (
           <Authenticated key="root" appendCurrentPathToQuery>
-            <AppShell />
+            <Outlet />
           </Authenticated>
         ),
         children: [
           {
-            path: "content/:resourceId",
-            element: <ListOrSingletonPage />,
+            path: "",
+            element: <AppShell />,
+            children: [
+              {
+                path: "content/:resourceId",
+                element: <ListOrSingletonPage />,
+              },
+            ],
           },
+
           {
             path: "content/:resourceId/:id",
             element: <EditPage />,
+          },
+          {
+            path: "media-library",
+            element: <MediaLibrary />,
           },
         ],
       },

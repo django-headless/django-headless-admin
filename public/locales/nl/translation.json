@@ -3,6 +3,7 @@
     "are_you_sure": "Weet je het zeker?",
     "cancel": "Annuleren",
     "create": "Toevoegen",
+    "general": "Algemeen",
     "save": "Opslaan",
     "search": "Zoeken"
   },
@@ -38,6 +39,10 @@
     "list": {
       "add": "{{resourceName}} toevoegen",
       "search": "Zoek {{resourceName}}"
+    },
+    "media_library": {
+      "title": "Mediabibliotheek",
+      "search": "Media zoeken"
     }
   },
   "components": {

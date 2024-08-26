@@ -1,28 +1,38 @@
-import { useTranslate } from "@refinedev/core";
+import { useGetIdentity, useLogout, useTranslate } from "@refinedev/core";
 import keyboardJS from "keyboardjs";
 import * as R from "ramda";
 import * as React from "react";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { FiSettings } from "react-icons/fi";
-import { PiHouseBold, PiImagesBold, PiUserBold } from "react-icons/pi";
+import { PiCaretDown } from "react-icons/pi";
 import { NavLink } from "react-router-dom";
 import { useEffectOnce } from "react-use";
 
-import { Input } from "@/components/ui/input";
-import { modKey } from "@/components/ui/mod-icon";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import { NON_COLLECTION_MODELS } from "@/constants";
 import useAdminSite from "@/hooks/useAdminSite";
 import useContentTypes from "@/hooks/useContentTypes";
-import type { ContentType } from "@/types";
+import { type ContentType, SessionUser } from "@/types";
 import { cn } from "@/utils/cn";
 
 export function AppNavbar() {
   const translate = useTranslate();
   const { data } = useContentTypes();
-  const [search, setSearch] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data: admin } = useAdminSite();
+  const { data: user } = useGetIdentity<SessionUser>();
+  const { mutate: logout } = useLogout();
 
   // Enable keyboard shortcut for focusing search field
   useEffectOnce(() => {
@@ -49,47 +59,38 @@ export function AppNavbar() {
               R.includes(R.__, NON_COLLECTION_MODELS),
               "appLabel",
             ),
-            R.propSatisfies(
-              (name: string) =>
-                !name.toLowerCase?.().includes(search.toLowerCase().trim()),
-              "verboseNamePlural",
-            ),
           ]),
         ),
         R.groupBy(R.prop("appVerboseName")),
         Object.entries,
       )(data?.data ?? {}),
-    [data?.data, search],
+    [data?.data],
   ) as [string, ContentType[]][];
 
   return (
     <nav className="flex flex-col overflow-hidden h-full">
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="space-y-1 border-b p-3">
-          <div className="font-bold text-lg pl-3 pb-3">
+          <div className="font-bold text-lg pl-6 pb-3">
             {admin?.data?.siteHeader}
           </div>
           <MainLink
-            icon={<PiHouseBold />}
+            icon={<span>🏠</span>}
             label={translate("app.navbar.items.dashboard")}
             to=""
           />
           <MainLink
-            icon={<PiImagesBold />}
+            icon={<span>📷</span>}
             label={translate("app.navbar.items.media_library")}
             to="/media-library"
           />
         </div>
 
-        <Input
-          ref={searchInputRef}
-          className="rounded-none border-t-0 border-x-0 focus-visible:ring-0 shrink-0 h-10 shadow-none"
-          placeholder={`${translate("app.navbar.search")} ${modKey()}J`}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <ScrollArea className="flex-1 p-3">
-          <div className="mb-6">
+        <ScrollArea className="flex-1 px-3">
+          <div className="my-3">
+            <h3 className="font-semibold text-secondary-foreground tracking-tight pl-6 mb-2">
+              {translate("common.general")}
+            </h3>
             {groups
               .filter(([_, group]) => group.length === 1)
               .map(([_, group]) => group)
@@ -110,7 +111,7 @@ export function AppNavbar() {
             .map(([appName, group]) => (
               <div key={appName} className="mb-6">
                 {group.length > 1 && (
-                  <h3 className="text-lg font-semibold tracking-tight pl-3 mb-2">
+                  <h3 className="font-semibold text-secondary-foreground tracking-tight pl-6 mb-2">
                     {appName}
                   </h3>
                 )}
@@ -127,17 +128,47 @@ export function AppNavbar() {
             ))}
         </ScrollArea>
 
-        <div className="space-y-1 border-t p-3">
-          <MainLink
-            icon={<PiUserBold />}
-            label={translate("app.navbar.items.users")}
-            to="/users"
-          />
-          <MainLink
-            icon={<FiSettings />}
-            label={translate("app.navbar.items.settings")}
-            to="/settings"
-          />
+        <div className="flex justify-between items-center border-t p-3">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="px-1">
+                  <Avatar className="size-8 mr-2">
+                    {user.profilePicture && (
+                      <AvatarImage src={user.profilePicture} />
+                    )}
+                    <AvatarFallback>{`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`}</AvatarFallback>
+                  </Avatar>
+                  <PiCaretDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="min-w-64">
+                <div className="flex items-center gap-3 px-6 py-3">
+                  <Avatar className="size-12">
+                    {user.profilePicture && (
+                      <AvatarImage src={user.profilePicture} />
+                    )}
+                    <AvatarFallback>{`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="text-sm font-medium">{`${user.firstName ?? ""} ${user.lastName ?? ""}`}</div>
+                    <div className="font-normal text-sm text-muted-foreground">
+                      {user.email}
+                    </div>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => logout()}>
+                    {translate("app.header.log_out")}
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Skeleton className="h-2 w-[200px]" />
+          )}
+          <MainLink icon={<FiSettings />} to="/settings" />
         </div>
       </div>
     </nav>
@@ -149,7 +180,7 @@ function MainLink({
   icon,
   to,
 }: {
-  label: string;
+  label?: string;
   icon?: React.ReactNode;
   to: string;
 }) {
@@ -158,15 +189,15 @@ function MainLink({
       to={to}
       className={({ isActive }) =>
         cn(
-          "px-3 py-2 w-full text-secondary-foreground text-sm font-medium rounded hover:bg-secondary flex items-center gap-3",
-          {
-            "bg-secondary": isActive,
-          },
+          "px-6 py-2 text-sm font-normal rounded hover:bg-secondary flex items-center gap-3",
+          isActive
+            ? "font-bold text-secondary-foreground"
+            : "text-muted-foreground",
         )
       }
     >
       {icon && <div className="text-lg">{icon}</div>}
-      <div className="w-full truncate">{label}</div>
+      {label && <div className="w-full truncate">{label}</div>}
     </NavLink>
   );
 }

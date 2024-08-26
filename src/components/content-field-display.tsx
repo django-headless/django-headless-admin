@@ -18,10 +18,19 @@ export function ContentFieldDisplay({
     case FieldType.ForeignKey:
       return value;
     case FieldType.DateTimeField:
-      return <div>{dayjs(value).format("L LT")}</div>;
+      return (
+        <div className="font-medium text-sm text-muted-foreground">
+          {dayjs(value).format("L LT")}
+        </div>
+      );
     case FieldType.DateField:
-      return <div>{dayjs(value).format("L")}</div>;
+      return (
+        <div className="font-medium text-sm text-muted-foreground">
+          {dayjs(value).format("L")}
+        </div>
+      );
     case FieldType.MediaField:
+    case FieldType.FileField:
       return (
         <img src={value} alt="" className="size-12 object-cover rounded-md" />
       );

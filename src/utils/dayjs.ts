@@ -38,9 +38,9 @@ dayjs.updateLocale("en", {
 
 const tz = dayjs.tz.guess();
 dayjs.tz.setDefault(tz);
-console.info(`Using ${tz} timezone`);
+console.info(`Guessing ${tz} timezone`);
 
-const getTimeZone = (option: any, dayjsClass: any) => {
+const getTimeZone = (_: any, dayjsClass: any) => {
   dayjsClass.prototype.getCurrentTimeZone = function () {
     return tz;
   };

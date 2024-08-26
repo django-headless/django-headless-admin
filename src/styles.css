@@ -59,4 +59,7 @@
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary/20;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  .shadow-card {
+    box-shadow: 0 0 7px rgba(0,0,0,.08),0 2.1px 2.2px -5px rgba(0,0,0,.011),0 5.1px 5.3px -5px rgba(0,0,0,.016),0 9.5px 10px -5px rgba(0,0,0,.02),0 17px 17.9px -5px rgba(0,0,0,.024),0 31.8px 33.4px -5px rgba(0,0,0,.029),0 76px 80px -5px rgba(0,0,0,.04);
+  }
 }

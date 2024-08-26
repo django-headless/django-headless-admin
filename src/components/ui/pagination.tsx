@@ -2,7 +2,7 @@ import { useTranslate } from "@refinedev/core";
 import * as React from "react";
 import { PiCaretLeftBold, PiCaretRightBold } from "react-icons/pi";
 
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 
 const PaginationNavigation = ({
@@ -32,18 +32,11 @@ PaginationContent.displayName = "PaginationContent";
 
 const PaginationItem = React.forwardRef<
   HTMLLIElement,
-  React.ComponentProps<"li"> & { disabled: boolean }
->(({ className, disabled, ...props }, ref) => (
-  <li
-    ref={ref}
-    className={cn(
-      buttonVariants({ variant: "outline", size: "sm" }),
-      "space-x-2 select-none cursor-pointer",
-      { "opacity-50 cursor-default hover:bg-background": disabled },
-      className,
-    )}
-    {...props}
-  />
+  React.ComponentProps<"button">
+>(({ ...props }, ref) => (
+  <li ref={ref}>
+    <Button variant="outline" size="sm" {...props} />
+  </li>
 ));
 PaginationItem.displayName = "PaginationItem";
 

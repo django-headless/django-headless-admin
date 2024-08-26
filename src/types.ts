@@ -17,6 +17,8 @@ export interface SessionUser {
   isStaff: boolean;
   isSuperuser: boolean;
   profilePicture: Url | null;
+  timezone: string;
+  locale: string;
   userPermissions: string[];
 }
 
@@ -84,6 +86,7 @@ export enum FieldType {
   DateField = "DateField",
   DateTimeField = "DateTimeField",
   EmailField = "EmailField",
+  FileField = "FileField",
   FlexField = "FlexField",
   ForeignKey = "ForeignKey",
   HTMLField = "HTMLField",

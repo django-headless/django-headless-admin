@@ -1,4 +1,5 @@
 import { AuthProvider } from "@refinedev/core";
+import dayjs from "dayjs";
 
 import { SessionUser } from "@/types";
 import { http } from "@/utils/http";
@@ -72,6 +73,12 @@ export const authProvider: AuthProvider = {
   getPermissions: async (params) => ({}),
   async getIdentity() {
     const { data } = await http.get<SessionUser>("/users/me/");
+
+    console.log(`Changing locale to ${data.locale}`);
+    dayjs.locale(data.locale);
+
+    console.log(`Changing timezone to ${data.timezone}`);
+    dayjs.tz.setDefault(data.timezone);
 
     return data;
   },
