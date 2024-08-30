@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { ContentFieldDisplay } from "@/components/content-field-display";
 import { ChoiceField } from "@/components/ui/choice-field";
 import { DatePicker } from "@/components/ui/date-picker";
+import { FileField } from "@/components/ui/file-field";
 import { FlexField } from "@/components/ui/flex-field";
 import { ForeignKeyField } from "@/components/ui/foreign-key-field";
 import {
@@ -107,6 +108,8 @@ export function ContentField({
         return <ManyToManyField resourceId={fieldConfig.resourceId!} />;
       case FieldType.MediaField:
         return <MediaField clearable={!fieldConfig.validation?.required} />;
+      case FieldType.FileField:
+        return <FileField />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">
