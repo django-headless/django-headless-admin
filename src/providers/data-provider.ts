@@ -15,16 +15,19 @@ export const dataProvider: DataProvider = {
   },
 
   async update({ resource, variables, id, meta }) {
-    const { data } = await http.patch(
+    if (meta.hasFileField) {
+      return await http.patchForm(
+        `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
+        variables,
+      );
+    }
+    return await http.patch(
       `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
       variables,
     );
-
-    return { data };
   },
 
   async getList({ resource, pagination, filters = [] }) {
-    console.log(pagination);
     const { data } = await http.get(`/${resource}`, {
       params: {
         page: pagination?.current,
@@ -40,10 +43,12 @@ export const dataProvider: DataProvider = {
     };
   },
 
-  async create({ resource, variables }) {
-    const { data } = await http.post(`/${resource}`, variables);
+  async create({ resource, variables, meta }) {
+    if (meta.hasFileField) {
+      return await http.postForm(`/${resource}`, variables);
+    }
 
-    return { data };
+    return await http.post(`/${resource}`, variables);
   },
 
   async deleteOne({ resource, id }) {

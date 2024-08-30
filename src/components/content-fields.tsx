@@ -109,7 +109,7 @@ export function ContentField({
       case FieldType.MediaField:
         return <MediaField clearable={!fieldConfig.validation?.required} />;
       case FieldType.FileField:
-        return <FileField />;
+        return <FileField type={fieldConfig.validation?.fileType || "file"} />;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">

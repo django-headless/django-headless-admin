@@ -1,5 +1,6 @@
 import { useDelete, useOne, useTranslate, useUpdate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
+import * as R from "ramda";
 import React, { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
@@ -16,7 +17,7 @@ import { Form } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
-import { ContentType } from "@/types";
+import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
 
 export function EditPage() {
@@ -42,10 +43,21 @@ function Layout({
   const isSingleton = contentType.isSingleton ?? false;
   const [sidebar, setSidebar] = useState(false);
 
+  // Check if content type contains a file field, so we
+  // can tell the dataprovider to use multipart.
+  const hasFileField = Object.values(contentType.fields).some(
+    R.whereEq({ type: FieldType.FileField }),
+  );
+
   useTitle(translate("pages.edit.document_title", { resourceName }));
 
   return (
-    <EditForm isSingleton={isSingleton} resourceId={resourceId} id={id}>
+    <EditForm
+      hasFileField={hasFileField}
+      isSingleton={isSingleton}
+      resourceId={resourceId}
+      id={id}
+    >
       <div className="flex overflow-hidden h-dvh">
         <div className="relative flex-1 overflow-y-auto">
           <Header
@@ -71,11 +83,13 @@ function Layout({
 
 function EditForm({
   isSingleton,
+  hasFileField,
   resourceId,
   id = null,
   children,
 }: {
   isSingleton: boolean;
+  hasFileField: boolean;
   resourceId: string;
   id?: string | null;
   children: React.ReactElement;
@@ -94,7 +108,7 @@ function EditForm({
       resource: resourceId,
       id: id ?? "<SINGLETON>",
       values,
-      meta: { isSingleton },
+      meta: { isSingleton, hasFileField },
     });
   }, []);
 

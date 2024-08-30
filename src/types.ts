@@ -69,6 +69,7 @@ export interface ContentTypeField {
   schema?: JSONSchema;
   validation: {
     required: boolean;
+    fileType?: "file" | "image" | "audio" | "video";
   };
 }
 
