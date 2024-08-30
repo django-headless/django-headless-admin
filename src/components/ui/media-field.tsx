@@ -29,8 +29,8 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
   ) => {
     const translate = useTranslate();
     const { data } = useOne({
-      resource: "media",
-      id: value?.split("/").at(-1),
+      resource: "media_library",
+      id: value,
       queryOptions: {
         enabled: !R.isNil(value),
       },
@@ -43,13 +43,13 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
         {...props}
       >
         <Avatar className="size-24 rounded-md shadow">
-          <AvatarImage src={value ?? undefined} alt="" />
+          <AvatarImage src={data?.data.file ?? undefined} alt="" />
           <AvatarFallback className="rounded-md" />
         </Avatar>
 
         <div>
           <div className="flex items-center gap-2">
-            <SelectDialog multiple={multiple} onSelect={(v) => onChange(v)}>
+            <SelectDialog multiple={multiple} onSelect={(v) => onChange?.(v)}>
               <Button variant="outline">
                 {translate("components.media_field.select_media")}
               </Button>
@@ -64,7 +64,6 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
               </Button>
             )}
           </div>
-          {data && <div>{data.id}</div>}
         </div>
       </div>
     );
@@ -75,9 +74,9 @@ MediaField.displayName = "MediaField";
 
 interface MediaFieldProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value?: string | null | string[];
+  value?: string;
 
-  onChange?(value: string | null): void;
+  onChange?(value: string | null | string[]): void;
 
   clearable?: boolean;
   multiple?: boolean;
@@ -118,7 +117,7 @@ function SelectDialogContent({
   const [selection, setSelection] = useState<string[]>([]);
   const translate = useTranslate();
   const { data: list } = useList({
-    resource: "media",
+    resource: "media_library",
     pagination: { pageSize: 24 },
     filters: [{ field: "search", operator: "contains", value: search }],
   });
@@ -129,7 +128,7 @@ function SelectDialogContent({
         <DebouncedInput value={search} onChange={(v) => setSearch(v)} />
       </div>
       <div className="grid grid-cols-6 gap-2">
-        {list?.data.map((item) => {
+        {list?.data.map((item: any) => {
           const isSelected = selection.includes(item.id);
           return (
             <button
@@ -165,9 +164,11 @@ function SelectDialogContent({
         <DialogClose asChild>
           <Button variant="ghost">{translate("common.cancel")}</Button>
         </DialogClose>
-        <Button onClick={() => onSelect(multiple ? selection : selection[0])}>
-          {translate("components.media_field.select_media")}
-        </Button>
+        <DialogClose asChild>
+          <Button onClick={() => onSelect(multiple ? selection : selection[0])}>
+            {translate("components.media_field.select_media")}
+          </Button>
+        </DialogClose>
       </div>
     </div>
   );

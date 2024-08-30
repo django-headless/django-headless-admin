@@ -4,7 +4,7 @@ import useContentType from "@/hooks/useContentType";
 import { Main } from "@/pages/list";
 
 export function MediaLibrary() {
-  const resourceId = "media";
+  const resourceId = "media_library";
   const contentType = useContentType(resourceId!);
   const translate = useTranslate();
 
