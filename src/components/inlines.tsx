@@ -1,4 +1,4 @@
-import { useList } from "@refinedev/core";
+import { useDelete, useList } from "@refinedev/core";
 import * as R from "ramda";
 import { PiTrash } from "react-icons/pi";
 import { useParams } from "react-router-dom";
@@ -88,6 +88,8 @@ const TabularInlineRow = ({
   record: Record<string, any>;
   canDelete: boolean;
 }) => {
+  const { mutate: remove } = useDelete();
+
   return (
     <TableRow>
       {fields.map((name) => (
@@ -104,6 +106,12 @@ const TabularInlineRow = ({
             variant="destructive"
             size="icon"
             className="group-hover/row:visible invisible"
+            onClick={() =>
+              remove({
+                resource: contentType.resourceId,
+                id: record.id,
+              })
+            }
           >
             <PiTrash />
           </Button>
