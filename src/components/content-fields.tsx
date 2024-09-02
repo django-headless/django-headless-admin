@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ManyToManyField } from "@/components/ui/m2m-field";
+import { ManyMediaField } from "@/components/ui/many-media-field";
 import { MediaField } from "@/components/ui/media-field";
 import { MultipleChoiceField } from "@/components/ui/multiple-choice-field";
 import { RichTextField } from "@/components/ui/rich-text";
@@ -116,6 +117,8 @@ export function ContentField({
         return <ManyToManyField resourceId={fieldConfig.resourceId!} />;
       case FieldType.MediaField:
         return <MediaField clearable={!fieldConfig.validation?.required} />;
+      case FieldType.ManyMediaField:
+        return <ManyMediaField />;
       case FieldType.FileField:
         return <FileField type={fieldConfig.validation?.fileType || "file"} />;
       default:
@@ -134,7 +137,7 @@ export function ContentField({
         name={name}
         render={({ field }) => (
           <FormItem className="flex items-start space-y-0">
-            <div className="w-[200px]">
+            <div className="w-[200px] shrink-0">
               <FormLabel
                 className={cn({
                   "font-normal text-secondary-foreground":

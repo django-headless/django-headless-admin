@@ -1,7 +1,7 @@
 import { useList, useOne, useTranslate } from "@refinedev/core";
 import * as R from "ramda";
 import React, { type HTMLAttributes, useState } from "react";
-import { PiCheckBold, PiX } from "react-icons/pi";
+import { PiCheckBold, PiXBold } from "react-icons/pi";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -42,10 +42,23 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
         className={cn("flex items-center gap-2", className)}
         {...props}
       >
-        <Avatar className="size-24 rounded-md shadow">
-          <AvatarImage src={data?.data.file ?? undefined} alt="" />
-          <AvatarFallback className="rounded-md" />
-        </Avatar>
+        <div className="relative flex items-center shrink-0 group">
+          <Avatar className="size-24 rounded-md shadow-sm">
+            <AvatarImage src={data?.data.file ?? undefined} alt="" />
+            <AvatarFallback className="rounded-md" />
+          </Avatar>
+          {clearable && !R.isNil(value) && (
+            <button
+              className="absolute bg-white/50 rounded p-3 left-1/2 -translate-x-1/2 invisible group-hover:visible"
+              onClick={(e) => {
+                e.preventDefault();
+                onChange?.(null);
+              }}
+            >
+              <PiXBold />
+            </button>
+          )}
+        </div>
 
         <div>
           <div className="flex items-center gap-2">
@@ -54,15 +67,6 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
                 {translate("components.media_field.select_media")}
               </Button>
             </SelectDialog>
-            {clearable && !R.isNil(value) && (
-              <Button
-                onClick={() => onChange?.(null)}
-                size="icon"
-                variant="outline"
-              >
-                <PiX />
-              </Button>
-            )}
           </div>
         </div>
       </div>
@@ -82,7 +86,7 @@ interface MediaFieldProps
   multiple?: boolean;
 }
 
-function SelectDialog({
+export function SelectDialog({
   children,
   multiple,
   onSelect,
