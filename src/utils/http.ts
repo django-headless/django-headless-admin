@@ -15,7 +15,7 @@ http.interceptors.response.use(
   (error) => {
     const customError: HttpError = {
       ...error,
-      message: error.response?.data?.message,
+      message: error.response?.data?.detail,
       statusCode: error.response?.status,
     };
 

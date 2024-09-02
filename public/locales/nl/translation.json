@@ -85,5 +85,17 @@
   "validations": {
     "invalid_email": "Geef een geldig e-mailadres op",
     "required": "Dit is een verplicht veld"
+  },
+  "notifications": {
+    "success": "Succesvol",
+    "error": "Fout (statuscode: {{statusCode}})",
+    "undoable": "Je hebt {{seconds}} seconden om deze actie ongedaan te maken",
+    "createSuccess": "{{resource}} succesvol aangemaakt",
+    "createError": "{{resource}} kon niet aangemaakt worden (statuscode: {{statusCode}})",
+    "deleteSuccess": "{{resource}} succesvol verwijderd",
+    "deleteError": "{{resource}} kon niet verwijderd worden (statuscode: {{statusCode}})",
+    "editSuccess": "{{resource}} succesvol bewerkt",
+    "editError": "{{resource}} kon niet gewijzigd worden (statuscode: {{statusCode}})",
+    "importProgress": "Importeren: {{processed}}/{{total}}"
   }
 }
