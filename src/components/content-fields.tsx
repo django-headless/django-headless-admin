@@ -30,7 +30,15 @@ import { cn } from "@/utils/cn";
  * Renders a content type's admin fields. This component
  * should always be rendered inside a `Form` component.
  */
-export function ContentFields({ contentType }: { contentType: ContentType }) {
+export function ContentFields({
+  contentType,
+  exclude = [],
+}: {
+  contentType: ContentType;
+  // Force the exclusion of certain field names which
+  // is used by inlines to exclude known field values.
+  exclude?: string[];
+}) {
   const fieldNames = useAdminFields(contentType);
   const noUpdatePermission = !contentType.admin?.permissions.change;
 
@@ -42,30 +50,35 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
             key={nameOrNames.join()}
             className="flex items-end gap-2 justify-evenly"
           >
-            {nameOrNames.map((name) => (
-              <ContentField
-                key={name}
-                name={name}
-                readOnly={
-                  (noUpdatePermission ||
-                    contentType.admin?.readonlyFields.includes(name)) ??
-                  false
-                }
-                fieldConfig={contentType.fields[name]}
-              />
-            ))}
+            {nameOrNames.map(
+              (name) =>
+                !exclude.includes(name) && (
+                  <ContentField
+                    key={name}
+                    name={name}
+                    readOnly={
+                      (noUpdatePermission ||
+                        contentType.admin?.readonlyFields.includes(name)) ??
+                      false
+                    }
+                    fieldConfig={contentType.fields[name]}
+                  />
+                ),
+            )}
           </div>
         ) : (
-          <ContentField
-            key={nameOrNames}
-            name={nameOrNames}
-            readOnly={
-              (noUpdatePermission ||
-                contentType.admin?.readonlyFields.includes(nameOrNames)) ??
-              false
-            }
-            fieldConfig={contentType.fields[nameOrNames]}
-          />
+          !exclude.includes(nameOrNames) && (
+            <ContentField
+              key={nameOrNames}
+              name={nameOrNames}
+              readOnly={
+                (noUpdatePermission ||
+                  contentType.admin?.readonlyFields.includes(nameOrNames)) ??
+                false
+              }
+              fieldConfig={contentType.fields[nameOrNames]}
+            />
+          )
         ),
       )}
     </div>

@@ -76,6 +76,10 @@
     "inline_modal": {
       "create_title": "{{resourceName}} toevoegen",
       "edit_title": "Bewerk {{resourceName}}"
+    },
+    "inlines": {
+      "create": "{{resourceName}} toevoegen",
+      "empty_state": "Je hebt nog geen {{resourceName}}."
     }
   },
   "validations": {

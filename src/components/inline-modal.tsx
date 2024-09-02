@@ -24,10 +24,15 @@ import { ContentType, FieldType } from "@/types";
 export function InlineModal({
   resourceId,
   id,
+  prefilledValues,
   children,
 }: {
   resourceId: string;
   id: string | null;
+  // Fields with prefilled values are not shown and cannot be edited.
+  // This is used for example by inlines where the related field is
+  // known and should not be changeable.
+  prefilledValues?: Record<string, any | null>;
   children: React.ReactElement;
 }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +43,7 @@ export function InlineModal({
   return contentType ? (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-screen-xl max-h-[calc(100dvh-80px)] overflow-hidden flex flex-col p-0 gap-0">
+      <DialogContent className="max-w-screen-lg max-h-[calc(100dvh-80px)] overflow-hidden flex flex-col p-0 gap-0">
         <DialogHeader className="border-b p-4">
           <DialogTitle className="text-center">
             {translate(
@@ -55,6 +60,7 @@ export function InlineModal({
           resourceId={resourceId}
           contentType={contentType}
           id={id}
+          prefilledValues={prefilledValues}
           closeDialog={() => setOpen(false)}
         />
       </DialogContent>
@@ -66,15 +72,19 @@ function Main({
   contentType,
   resourceId,
   id,
+  prefilledValues,
   closeDialog,
 }: {
   contentType: ContentType;
   resourceId: string;
   id: string | null;
+  prefilledValues?: Record<string, any | null>;
   closeDialog: VoidFunction;
 }) {
   const isCreate = R.isNil(id);
-  const form = useForm();
+  const form = useForm({
+    defaultValues: prefilledValues,
+  });
   const { data, isError, isLoading } = useOne({
     resource: resourceId,
     id: id ?? undefined,
@@ -116,7 +126,7 @@ function Main({
 
   useEffect(() => {
     if (!isLoading && !isError) {
-      form.reset(data.data);
+      form.reset({ ...data.data, ...prefilledValues });
     }
   }, [isLoading, isError, data]);
 
@@ -141,7 +151,10 @@ function Main({
       <ScrollArea className="flex-1 flex-col flex">
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="p-4 max-w-screen-md mx-auto">
-            <ContentFields contentType={contentType} />
+            <ContentFields
+              contentType={contentType}
+              exclude={prefilledValues ? Object.keys(prefilledValues) : []}
+            />
           </div>
         </form>
       </ScrollArea>

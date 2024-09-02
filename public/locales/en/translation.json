@@ -44,6 +44,10 @@
     },
     "media_field": {
       "placeholder": "Select an image"
+    },
+    "inlines": {
+      "create": "Add {{resourceName}}",
+      "empty_state": "You don't have any {{resourceName}} yet."
     }
   },
   "validations": {

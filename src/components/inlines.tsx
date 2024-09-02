@@ -1,10 +1,12 @@
-import { useDelete, useList } from "@refinedev/core";
+import { useDelete, useList, useTranslate } from "@refinedev/core";
 import * as R from "ramda";
 import { PiTrash } from "react-icons/pi";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { ContentFieldDisplay } from "@/components/content-field-display";
+import { InlineModal } from "@/components/inline-modal";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -32,6 +34,7 @@ export function Inlines({ contentType }: { contentType: ContentType }) {
 
 export function TabularInline({ inline }: { inline: Inline }) {
   const contentType = useContentType(inline.resourceId);
+  const translate = useTranslate();
   const fieldNames = useAdminFields(contentType);
   const { id } = useParams<"id">();
   const { data } = useList({
@@ -46,32 +49,59 @@ export function TabularInline({ inline }: { inline: Inline }) {
 
   return (
     contentType && (
-      <div className="p-4 border shadow-sm rounded">
-        <h4 className="font-semibold text-lg mb-4">
-          {contentType.verboseNamePlural}
-        </h4>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {fields.map((name) => (
-                <TableHead key={name}>
-                  {contentType.fields[name].label}
-                </TableHead>
+      <div className="p-4 border rounded">
+        <div className="flex items-center mb-4 justify-between">
+          <h4 className="font-semibold text-lg">
+            {contentType.verboseNamePlural}
+          </h4>
+          <div>
+            <InlineModal
+              resourceId={inline.resourceId}
+              id={null}
+              prefilledValues={{ [inline.fkName]: id }}
+            >
+              <Button variant="outline" size="sm">
+                {translate("components.inlines.create", {
+                  resourceName: contentType.verboseName,
+                })}
+              </Button>
+            </InlineModal>
+          </div>
+        </div>
+        {!data?.data ? (
+          <div className="flex justify-center py-12">
+            <Spinner />
+          </div>
+        ) : R.isEmpty(data.data) ? (
+          <div className="text-center text-sm text-muted-foreground select-none py-12">
+            {translate("components.inlines.empty_state", {
+              resourceName: contentType.verboseNamePlural,
+            })}
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {fields.map((name) => (
+                  <TableHead key={name}>
+                    {contentType.fields[name].label}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.data.map((record) => (
+                <TabularInlineRow
+                  key={record.id}
+                  record={record}
+                  fields={fields}
+                  contentType={contentType}
+                  canDelete={inline.canDelete}
+                />
               ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data?.data.map((record) => (
-              <TabularInlineRow
-                key={record.id}
-                record={record}
-                fields={fields}
-                contentType={contentType}
-                canDelete={inline.canDelete}
-              />
-            ))}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        )}
       </div>
     )
   );
@@ -92,6 +122,16 @@ const TabularInlineRow = ({
 
   return (
     <TableRow>
+      {R.isEmpty(fields) && (
+        <TableCell>
+          <Link
+            to={`/content/${contentType.resourceId}/${record.id}`}
+            className="font-medium hover:underline"
+          >
+            {record.__str__}
+          </Link>
+        </TableCell>
+      )}
       {fields.map((name) => (
         <TableCell key={name}>
           <ContentFieldDisplay
