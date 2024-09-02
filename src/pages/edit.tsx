@@ -68,7 +68,7 @@ function Layout({
             sidebar={sidebar}
           />
 
-          <div className="max-w-screen-md mx-auto w-full lg:w-2/3 z-10 relative">
+          <div className="max-w-screen-md mx-auto w-full pt-12 lg:w-2/3 z-10 relative">
             <ContentFields contentType={contentType} />
           </div>
           {id && <Inlines contentType={contentType} />}
@@ -160,8 +160,8 @@ function Header({
   const translate = useTranslate();
 
   return (
-    <div className="flex items-start justify-between lg:sticky top-0 left-0 right-0 lg:p-4 mb-12 lg:mb-0">
-      <div className="lg:w-1/6">
+    <div className="flex items-center justify-between lg:sticky top-0 left-0 right-0 lg:p-4 mb-12 lg:mb-0 z-20 bg-gradient-to-b from-white/95 via-white/75 to-white/0">
+      <div className="w-full flex items-center gap-1">
         <Link
           to={isSingleton ? "/" : `/content/${resourceId}`}
           className={cn(
@@ -174,7 +174,8 @@ function Header({
             {isSingleton ? translate("common.back") : resourceNamePlural}
           </span>
         </Link>
-        <h1 className="text-xl font-semibold mt-4 px-4">
+        <span className="select-none opacity-20">{"/"}</span>
+        <h1 className="px-2 text-sm text-left font-medium line-clamp-1 max-w-md">
           {isSingleton ? resourceNamePlural : form.watch("__str__")}
         </h1>
       </div>

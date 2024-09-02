@@ -31,7 +31,7 @@ import { cn } from "@/utils/cn";
  */
 export function ContentFields({ contentType }: { contentType: ContentType }) {
   const fieldNames = useAdminFields(contentType);
-  const readOnly = !contentType.admin?.permissions.change;
+  const noUpdatePermission = !contentType.admin?.permissions.change;
 
   return (
     <div className="space-y-6">
@@ -45,7 +45,11 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
               <ContentField
                 key={name}
                 name={name}
-                readOnly={readOnly}
+                readOnly={
+                  (noUpdatePermission ||
+                    contentType.admin?.readonlyFields.includes(name)) ??
+                  false
+                }
                 fieldConfig={contentType.fields[name]}
               />
             ))}
@@ -54,7 +58,11 @@ export function ContentFields({ contentType }: { contentType: ContentType }) {
           <ContentField
             key={nameOrNames}
             name={nameOrNames}
-            readOnly={readOnly}
+            readOnly={
+              (noUpdatePermission ||
+                contentType.admin?.readonlyFields.includes(nameOrNames)) ??
+              false
+            }
             fieldConfig={contentType.fields[nameOrNames]}
           />
         ),

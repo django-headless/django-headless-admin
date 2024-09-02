@@ -41,6 +41,7 @@ export interface ContentType {
   admin: {
     fields: (string | string[])[] | null;
     exclude: string[] | null;
+    readonlyFields: string[];
     listDisplay: string[];
     listDisplayLinks: string[];
     listPerPage: number;
