@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 import { ContentTypeField, FieldType } from "@/types";
 
@@ -16,7 +17,14 @@ export function ContentFieldDisplay({
 
   switch (fieldType) {
     case FieldType.ForeignKey:
-      return value;
+      return value ? (
+        <Link
+          className="hover:underline"
+          to={`/content/${contentTypeField.resourceId}/${value.id}`}
+        >
+          {value.__str__}
+        </Link>
+      ) : null;
     case FieldType.DateTimeField:
       return (
         <div className="font-medium text-sm text-muted-foreground">
@@ -30,6 +38,13 @@ export function ContentFieldDisplay({
         </div>
       );
     case FieldType.MediaField:
+      return (
+        <img
+          src={value.__str__}
+          alt=""
+          className="size-12 object-cover rounded-md"
+        />
+      );
     case FieldType.FileField:
       return (
         <img src={value} alt="" className="size-12 object-cover rounded-md" />

@@ -28,12 +28,15 @@ export const dataProvider: DataProvider = {
   },
 
   async getList({ resource, pagination, filters = [] }) {
+    const fields = R.fromPairs(
+      filters.map(({ field, value }: any) => [field, value]),
+    );
     const { data } = await http.get(`/${resource}`, {
       params: {
+        ...fields,
         page: pagination?.current,
         limit: pagination?.pageSize,
-        relations: "string",
-        ...R.fromPairs(filters.map(({ field, value }: any) => [field, value])),
+        relation_field: "combined",
       },
     });
 
