@@ -90,12 +90,12 @@
     "success": "Succesvol",
     "error": "Fout (statuscode: {{statusCode}})",
     "undoable": "Je hebt {{seconds}} seconden om deze actie ongedaan te maken",
-    "createSuccess": "{{resource}} succesvol aangemaakt",
-    "createError": "{{resource}} kon niet aangemaakt worden (statuscode: {{statusCode}})",
-    "deleteSuccess": "{{resource}} succesvol verwijderd",
-    "deleteError": "{{resource}} kon niet verwijderd worden (statuscode: {{statusCode}})",
-    "editSuccess": "{{resource}} succesvol bewerkt",
-    "editError": "{{resource}} kon niet gewijzigd worden (statuscode: {{statusCode}})",
+    "create_success": "{{resource}} succesvol aangemaakt",
+    "create_error": "{{resource}} kon niet aangemaakt worden (statuscode: {{statusCode}})",
+    "delete_success": "{{resource}} succesvol verwijderd",
+    "delete_error": "{{resource}} kon niet verwijderd worden (statuscode: {{statusCode}})",
+    "edit_success": "{{resource}} succesvol opgeslagen",
+    "edit_error": "{{resource}} kon niet opgeslagen worden",
     "importProgress": "Importeren: {{processed}}/{{total}}"
   }
 }

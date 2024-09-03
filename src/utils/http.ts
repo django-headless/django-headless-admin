@@ -1,5 +1,6 @@
 import { HttpError } from "@refinedev/core";
 import axios from "axios";
+import * as R from "ramda";
 
 export const http = axios.create({
   baseURL:
@@ -13,10 +14,12 @@ http.interceptors.response.use(
     return response;
   },
   (error) => {
+    const response = error.response ?? {};
     const customError: HttpError = {
       ...error,
-      message: error.response?.data?.detail,
-      statusCode: error.response?.status,
+      message: response.data?.detail ?? "",
+      statusCode: response.status,
+      errors: !response.data?.detail ? R.map(R.head)(response.data) : {},
     };
 
     return Promise.reject(customError);

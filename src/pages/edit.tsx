@@ -1,7 +1,7 @@
-import { useDelete, useOne, useTranslate, useUpdate } from "@refinedev/core";
+import { useDelete, useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import * as R from "ramda";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
   PiCaretLeft,
@@ -25,11 +25,11 @@ export function EditPage() {
   const contentType = useContentType(resourceId!);
 
   return contentType && resourceId ? (
-    <Layout resourceId={resourceId} id={id} contentType={contentType} />
+    <EditMain resourceId={resourceId} id={id} contentType={contentType} />
   ) : null;
 }
 
-function Layout({
+function EditMain({
   contentType,
   resourceId,
   id = null,
@@ -43,21 +43,10 @@ function Layout({
   const isSingleton = contentType.isSingleton ?? false;
   const [sidebar, setSidebar] = useState(false);
 
-  // Check if content type contains a file field, so we
-  // can tell the dataprovider to use multipart.
-  const hasFileField = Object.values(contentType.fields).some(
-    R.whereEq({ type: FieldType.FileField }),
-  );
-
   useTitle(translate("pages.edit.document_title", { resourceName }));
 
   return (
-    <EditForm
-      hasFileField={hasFileField}
-      isSingleton={isSingleton}
-      resourceId={resourceId}
-      id={id}
-    >
+    <EditForm contentType={contentType} id={id}>
       <div className="flex overflow-hidden h-dvh">
         <div className="relative flex-1 overflow-y-auto">
           <Header
@@ -82,43 +71,49 @@ function Layout({
 }
 
 function EditForm({
-  isSingleton,
-  hasFileField,
-  resourceId,
   id = null,
   children,
+  contentType,
 }: {
-  isSingleton: boolean;
-  hasFileField: boolean;
-  resourceId: string;
   id?: string | null;
   children: React.ReactElement;
+  contentType: ContentType;
 }) {
-  const { data, isError, isLoading } = useOne({
-    resource: resourceId,
-    id,
-    meta: { isSingleton },
-  });
-  const { mutate: update } = useUpdate();
+  const translate = useTranslate();
+  const resourceId = contentType.resourceId;
+  const isSingleton = contentType.isSingleton;
+  // Check if content type contains a file field, so we
+  // can tell the dataprovider to use multipart.
+  const hasFileField = Object.values(contentType.fields).some(
+    R.whereEq({ type: FieldType.FileField }),
+  );
 
-  const form = useForm();
-
-  const onSubmit = useCallback((values: any) => {
-    update({
+  const form = useForm({
+    refineCoreProps: {
+      action: id ? "edit" : "create",
       resource: resourceId,
-      id: id ?? "<SINGLETON>",
-      values,
+      id: id ?? undefined,
       meta: { isSingleton, hasFileField },
-    });
-  }, []);
+      successNotification() {
+        return {
+          message: translate("notifications.edit_success", {
+            resource: contentType.verboseName,
+          }),
+          type: "success",
+        };
+      },
+      errorNotification() {
+        return {
+          message: translate("notifications.edit_error", {
+            resource: contentType.verboseName,
+          }),
+          type: "success",
+        };
+      },
+    },
+  });
 
-  useEffect(() => {
-    if (!isLoading && !isError) {
-      form.reset(data.data);
-    }
-  }, [isLoading, isError, data]);
-
-  if (isLoading) {
+  if (form.formState.isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Spinner />
@@ -126,7 +121,7 @@ function EditForm({
     );
   }
 
-  if (isError) {
+  if (form.refineCore.query?.isError) {
     return (
       <div className="flex items-center justify-center py-12">
         Something went wrong!
@@ -134,11 +129,7 @@ function EditForm({
     );
   }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>{children}</form>
-    </Form>
-  );
+  return <Form {...form}>{children}</Form>;
 }
 
 function Header({
@@ -158,6 +149,8 @@ function Header({
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const form = useFormContext();
   const translate = useTranslate();
+
+  console.log(form);
 
   return (
     <div className="flex items-center justify-between lg:sticky top-0 left-0 right-0 lg:p-4 mb-12 lg:mb-0 z-20 bg-gradient-to-b from-white/95 via-white/75 to-white/0">
@@ -181,7 +174,10 @@ function Header({
       </div>
       <div className="flex items-center justify-end gap-2 lg:w-1/6">
         {contentType.admin?.permissions.change && (
-          <Button loading={form.formState.isSubmitting} type="submit">
+          <Button
+            loading={form.formState.isSubmitting}
+            {...form.saveButtonProps}
+          >
             {translate("common.save")}
           </Button>
         )}

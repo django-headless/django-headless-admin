@@ -16,12 +16,12 @@ export const dataProvider: DataProvider = {
 
   async update({ resource, variables, id, meta }) {
     if (meta.hasFileField) {
-      return await http.patchForm(
+      return http.patchForm(
         `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
         variables,
       );
     }
-    return await http.patch(
+    return http.patch(
       `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
       variables,
     );
