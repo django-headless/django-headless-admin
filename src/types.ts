@@ -121,4 +121,5 @@ export enum JSONSchemaType {
   Integer = "integer",
   Number = "number",
   String = "string",
+  Null = "null",
 }

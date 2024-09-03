@@ -96,7 +96,8 @@ function EditForm({
       meta: { isSingleton, hasFileField },
       successNotification() {
         return {
-          message: translate("notifications.edit_success", {
+          message: translate("notifications.success"),
+          description: translate("notifications.edit_success", {
             resource: contentType.verboseName,
           }),
           type: "success",
@@ -104,10 +105,11 @@ function EditForm({
       },
       errorNotification() {
         return {
-          message: translate("notifications.edit_error", {
+          message: translate("notifications.error"),
+          description: translate("notifications.edit_error", {
             resource: contentType.verboseName,
           }),
-          type: "success",
+          type: "error",
         };
       },
     },

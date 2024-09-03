@@ -8,7 +8,7 @@ export const notificationProvider: NotificationProvider = {
       id: params.key,
       title: params.message,
       description: params.description,
-      color: params.type === "error" ? "red" : "blue",
+      variant: params.type === "error" ? "destructive" : "default",
     });
   },
   close(id) {

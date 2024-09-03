@@ -87,8 +87,8 @@
     "required": "Dit is een verplicht veld"
   },
   "notifications": {
-    "success": "Succesvol",
-    "error": "Fout (statuscode: {{statusCode}})",
+    "success": "Succes",
+    "error": "Fout",
     "undoable": "Je hebt {{seconds}} seconden om deze actie ongedaan te maken",
     "create_success": "{{resource}} succesvol aangemaakt",
     "create_error": "{{resource}} kon niet aangemaakt worden (statuscode: {{statusCode}})",

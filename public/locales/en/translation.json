@@ -55,8 +55,8 @@
     "required": "This is a required field"
   },
   "notifications": {
-    "success": "Successful",
-    "error": "Error (status code: {{statusCode}})",
+    "success": "Success",
+    "error": "Error",
     "undoable": "You have {{seconds}} seconds to undo",
     "createSuccess": "Successfully created {{resource}}",
     "createError": "There was an error creating {{resource}} (status code: {{statusCode}})",

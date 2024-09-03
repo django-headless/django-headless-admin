@@ -26,13 +26,23 @@ const FlexField = React.forwardRef<React.ElementRef<"div">, FlexFieldProps>(
                 value={value?.[name] || ""}
                 onBlur={onBlur}
                 onChange={(e) => {
+                  const types = Array.isArray(property.type)
+                    ? property.type
+                    : [property.type];
+
                   const fieldValue = R.pipe(
                     R.when(
-                      () =>
-                        [
-                          JSONSchemaType.Integer,
-                          JSONSchemaType.Number,
-                        ].includes(property.type),
+                      (v) =>
+                        !types.includes(JSONSchemaType.String) &&
+                        v === "" &&
+                        types.includes(JSONSchemaType.Null),
+                      R.always(null),
+                    ),
+                    R.when(
+                      (v) =>
+                        (types.includes(JSONSchemaType.Integer) ||
+                          types.includes(JSONSchemaType.Number)) &&
+                        !R.isNil(v),
                       Number,
                     ),
                   )(e.target.value);
