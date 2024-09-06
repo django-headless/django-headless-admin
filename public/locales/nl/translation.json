@@ -39,6 +39,7 @@
     },
     "list": {
       "add": "{{resourceName}} toevoegen",
+      "empty_state": "Geen resultaten",
       "search": "Zoek {{resourceName}}"
     },
     "media_library": {

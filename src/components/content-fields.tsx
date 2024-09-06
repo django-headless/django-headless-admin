@@ -22,6 +22,7 @@ import { MediaField } from "@/components/ui/media-field";
 import { MultipleChoiceField } from "@/components/ui/multiple-choice-field";
 import { RichTextField } from "@/components/ui/rich-text";
 import { Textarea } from "@/components/ui/textarea";
+import { TimePickerInput } from "@/components/ui/time-picker";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import { ContentType, ContentTypeField, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
@@ -109,11 +110,14 @@ export function ContentField({
       case FieldType.PositiveSmallIntegerField:
         return <Input type="number" min={0} />;
       case FieldType.IntegerField:
+      case FieldType.DecimalField:
         return <Input type="number" />;
       case FieldType.EmailField:
         return <Input type="email" />;
       case FieldType.DateField:
         return <DatePicker />;
+      case FieldType.TimeField:
+        return <TimePickerInput picker="12hours" />;
       case FieldType.URLField:
         return <Input type="url" />;
       case FieldType.URLPathField:

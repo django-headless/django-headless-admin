@@ -1,6 +1,7 @@
 import { useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
+import * as R from "ramda";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -56,7 +57,7 @@ export function Main({
       setCurrent,
       pageCount,
       current,
-      tableQuery: { isFetching, isPreviousData },
+      tableQuery: { isFetching, isPreviousData, data },
     },
   } = useTable({
     refineCoreProps: {
@@ -104,7 +105,7 @@ export function Main({
 
       <div
         className={cn("rounded-md mb-6 bg-white", {
-          "opacity-50": isFetching && isPreviousData,
+          "animate-pulse": isFetching && isPreviousData,
         })}
       >
         <Table>
@@ -137,6 +138,12 @@ export function Main({
           </TableBody>
         </Table>
       </div>
+
+      {!isFetching && R.isEmpty(data?.data) && (
+        <div className="select-none text-center text-sm text-muted-foreground py-12">
+          {translate("pages.list.empty_state")}
+        </div>
+      )}
 
       <Pagination
         pages={pageCount}

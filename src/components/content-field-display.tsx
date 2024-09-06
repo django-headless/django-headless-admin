@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import * as R from "ramda";
 import { Link } from "react-router-dom";
 
 import { ContentTypeField, FieldType } from "@/types";
@@ -14,6 +15,10 @@ export function ContentFieldDisplay({
   value: any;
 }) {
   const fieldType = contentTypeField.type;
+
+  if (R.isNil(value)) {
+    return "";
+  }
 
   switch (fieldType) {
     case FieldType.ForeignKey:

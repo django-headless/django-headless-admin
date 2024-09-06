@@ -115,7 +115,7 @@ function EditForm({
     },
   });
 
-  if (form.formState.isLoading) {
+  if (form.refineCore.formLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Spinner />
@@ -151,8 +151,6 @@ function Header({
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const form = useFormContext();
   const translate = useTranslate();
-
-  console.log(form);
 
   return (
     <div className="flex items-center justify-between lg:sticky top-0 left-0 right-0 lg:p-4 mb-12 lg:mb-0 z-20 bg-gradient-to-b from-white/95 via-white/75 to-white/0">
