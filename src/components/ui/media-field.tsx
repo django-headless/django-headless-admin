@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Pagination } from "@/components/ui/pagination";
 import { cn } from "@/utils/cn";
 
 const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
@@ -119,17 +120,25 @@ function SelectDialogContent({
 }): JSX.Element {
   const [search, setSearch] = useState("");
   const [selection, setSelection] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
   const translate = useTranslate();
   const { data: list } = useList({
     resource: "media_library",
-    pagination: { pageSize: 24 },
+    pagination: { current: page, pageSize: 24 },
     filters: [{ field: "search", operator: "contains", value: search }],
   });
 
   return (
     <div>
       <div className="mb-6">
-        <DebouncedInput value={search} onChange={(v) => setSearch(v)} />
+        <DebouncedInput
+          placeholder={translate("common.search")}
+          value={search}
+          onChange={(v) => {
+            setPage(1);
+            setSearch(v);
+          }}
+        />
       </div>
       <div className="grid grid-cols-6 gap-2">
         {list?.data.map((item: any) => {
@@ -164,7 +173,14 @@ function SelectDialogContent({
           );
         })}
       </div>
-      <div className="flex items-center justify-end gap-2 pt-6">
+      <div className="mt-6">
+        <Pagination
+          current={page}
+          onPageChange={setPage}
+          pages={Math.ceil((list?.total ?? 0) / 24)}
+        />
+      </div>
+      <div className="flex items-center justify-end gap-2 pt-6 mt-6 border-t">
         <DialogClose asChild>
           <Button variant="ghost">{translate("common.cancel")}</Button>
         </DialogClose>

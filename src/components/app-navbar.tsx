@@ -191,7 +191,7 @@ function MainLink({
         cn(
           "px-6 py-2 text-sm font-normal rounded hover:bg-secondary flex items-center gap-3",
           isActive
-            ? "font-bold text-secondary-foreground"
+            ? "font-medium bg-secondary text-secondary-foreground"
             : "text-muted-foreground",
         )
       }

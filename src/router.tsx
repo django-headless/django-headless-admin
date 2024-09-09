@@ -3,6 +3,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
+import { Dashboard } from "@/pages/dashboard";
 import { EditPage } from "@/pages/edit";
 import { ListPage } from "@/pages/list";
 import { LoginPage } from "@/pages/login";
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             path: "",
             element: <AppShell />,
             children: [
+              {
+                path: "/",
+                element: <Dashboard />,
+              },
               {
                 path: "content/:resourceId",
                 element: <ListPage />,

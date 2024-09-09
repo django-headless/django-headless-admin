@@ -81,6 +81,11 @@
     "inlines": {
       "create": "{{resourceName}} toevoegen",
       "empty_state": "Je hebt nog geen {{resourceName}}."
+    },
+    "widgets": {
+      "recent_actions": {
+        "title": "Recente acties"
+      }
     }
   },
   "validations": {

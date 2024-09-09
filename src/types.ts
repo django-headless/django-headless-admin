@@ -27,6 +27,14 @@ export interface AdminSite {
   siteTitle: string;
   indexTitle: string;
   siteUrl: string | null;
+  // Only available if logged in as admin user.
+  widgets?: DashboardWidget[];
+}
+
+export interface DashboardWidget {
+  colSpan: number;
+  useJsx: boolean;
+  html: string;
 }
 
 export interface ContentType {
@@ -124,4 +132,15 @@ export enum JSONSchemaType {
   Number = "number",
   String = "string",
   Null = "null",
+}
+
+export interface RecentAction {
+  id: number;
+  changeMessage: string;
+  changes: Record<string, any>[];
+  objectId: string;
+  objectResourceId: string;
+  objectRepr: string;
+  actionFlag: "ADDITION" | "CHANGE" | "DELETION";
+  actionTime: DateTimeString;
 }
