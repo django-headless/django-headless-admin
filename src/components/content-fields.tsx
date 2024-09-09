@@ -21,6 +21,7 @@ import { ManyMediaField } from "@/components/ui/many-media-field";
 import { MediaField } from "@/components/ui/media-field";
 import { MultipleChoiceField } from "@/components/ui/multiple-choice-field";
 import { RichTextField } from "@/components/ui/rich-text";
+import { TagField } from "@/components/ui/tag-field";
 import { Textarea } from "@/components/ui/textarea";
 import { TimePickerInput } from "@/components/ui/time-picker";
 import { useAdminFields } from "@/hooks/useAdminFields";
@@ -120,6 +121,8 @@ export function ContentField({
         return <TimePickerInput picker="12hours" />;
       case FieldType.URLField:
         return <Input type="url" />;
+      case FieldType.TagField:
+        return <TagField />;
       case FieldType.URLPathField:
         return <Input placeholder="/" />;
       case FieldType.TextField:

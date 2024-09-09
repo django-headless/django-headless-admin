@@ -108,6 +108,7 @@ export enum FieldType {
   MultipleChoiceField = "MultipleChoiceField",
   PositiveIntegerField = "PositiveIntegerField",
   PositiveSmallIntegerField = "PositiveSmallIntegerField",
+  TagField = "TagField",
   TextField = "TextField",
   TimeField = "TimeField",
   URLField = "URLField",

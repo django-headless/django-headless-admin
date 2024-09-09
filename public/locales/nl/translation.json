@@ -74,6 +74,10 @@
     "m2m_field": {
       "placeholder": "Voeg item toe"
     },
+    "tag_field": {
+      "placeholder": "Voeg tags toe",
+      "hint": "⏎ Druk enter om toe te voegen"
+    },
     "inline_modal": {
       "create_title": "{{resourceName}} toevoegen",
       "edit_title": "Bewerk {{resourceName}}"
