@@ -31,12 +31,14 @@ export default function useColumns(contentType: ContentType) {
             >
               <ContentFieldDisplay
                 contentTypeField={contentTypeField}
+                config={contentType.admin?.fieldConfig?.[key]}
                 value={value}
               />
             </Link>
           ) : (
             <ContentFieldDisplay
               contentTypeField={contentTypeField}
+              config={contentType.admin?.fieldConfig?.[key]}
               value={value}
             />
           );

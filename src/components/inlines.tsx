@@ -135,6 +135,7 @@ const TabularInlineRow = ({
       {fields.map((name) => (
         <TableCell key={name}>
           <ContentFieldDisplay
+            config={contentType.admin?.fieldConfig?.[name]}
             value={record[name]}
             contentTypeField={contentType.fields[name]}
           />

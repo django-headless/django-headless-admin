@@ -15,15 +15,17 @@ export const dataProvider: DataProvider = {
   },
 
   async update({ resource, variables, id, meta }) {
+    const writableVariables = R.omit(meta.readOnlyFields, variables);
+
     if (meta.hasFileField) {
       return http.patchForm(
         `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
-        variables,
+        writableVariables,
       );
     }
     return http.patch(
       `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
-      variables,
+      writableVariables,
     );
   },
 

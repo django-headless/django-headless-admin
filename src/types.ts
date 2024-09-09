@@ -55,6 +55,7 @@ export interface ContentType {
     listPerPage: number;
     inlines: Inline[] | null;
     enableSearch: boolean;
+    fieldConfig?: Record<string, { format?: string }>;
     permissions: {
       add: boolean;
       change: boolean;

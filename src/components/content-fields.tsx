@@ -25,7 +25,7 @@ import { TagField } from "@/components/ui/tag-field";
 import { Textarea } from "@/components/ui/textarea";
 import { TimePickerInput } from "@/components/ui/time-picker";
 import { useAdminFields } from "@/hooks/useAdminFields";
-import { ContentType, ContentTypeField, FieldType } from "@/types";
+import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
 
 /**
@@ -58,12 +58,12 @@ export function ContentFields({
                   <ContentField
                     key={name}
                     name={name}
+                    contentType={contentType}
                     readOnly={
                       (noUpdatePermission ||
                         contentType.admin?.readonlyFields.includes(name)) ??
                       false
                     }
-                    fieldConfig={contentType.fields[name]}
                   />
                 ),
             )}
@@ -73,12 +73,12 @@ export function ContentFields({
             <ContentField
               key={nameOrNames}
               name={nameOrNames}
+              contentType={contentType}
               readOnly={
                 (noUpdatePermission ||
                   contentType.admin?.readonlyFields.includes(nameOrNames)) ??
                 false
               }
-              fieldConfig={contentType.fields[nameOrNames]}
             />
           )
         ),
@@ -89,14 +89,15 @@ export function ContentFields({
 
 export function ContentField({
   name,
-  fieldConfig,
   readOnly,
+  contentType,
 }: {
   name: string;
-  fieldConfig: ContentTypeField;
+  contentType: ContentType;
   readOnly: boolean;
 }) {
   const form = useFormContext();
+  const fieldConfig = contentType.fields[name];
   const element = useMemo(() => {
     switch (fieldConfig.type) {
       case FieldType.CharField:
@@ -170,6 +171,7 @@ export function ContentField({
             <div className="flex-1">
               {readOnly ? (
                 <ContentFieldDisplay
+                  config={contentType.admin?.fieldConfig?.[name]}
                   contentTypeField={fieldConfig}
                   value={form.watch(name)}
                 />

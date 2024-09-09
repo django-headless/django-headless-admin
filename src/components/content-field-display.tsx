@@ -1,17 +1,20 @@
 import dayjs from "dayjs";
+import prettyBytes from "pretty-bytes";
 import * as R from "ramda";
 import { Link } from "react-router-dom";
 
-import { ContentTypeField, FieldType } from "@/types";
+import { type ContentType, type ContentTypeField, FieldType } from "@/types";
 
 /**
  * Renders a readonly view of a content field.
  */
 export function ContentFieldDisplay({
   contentTypeField,
+  config,
   value,
 }: {
   contentTypeField: ContentTypeField;
+  config?: any;
   value: any;
 }) {
   const fieldType = contentTypeField.type;
@@ -54,6 +57,12 @@ export function ContentFieldDisplay({
       return (
         <img src={value} alt="" className="size-12 object-cover rounded-md" />
       );
+    case FieldType.IntegerField:
+    case FieldType.PositiveIntegerField:
+    case FieldType.PositiveSmallIntegerField:
+      return config?.format === "file_size"
+        ? prettyBytes(value * 1_000)
+        : value;
     default:
       return value;
   }

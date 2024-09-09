@@ -87,13 +87,14 @@ function EditForm({
   const hasFileField = Object.values(contentType.fields).some(
     R.whereEq({ type: FieldType.FileField }),
   );
+  const readOnlyFields = contentType.admin?.readonlyFields ?? [];
 
   const form = useForm({
     refineCoreProps: {
       action: id ? "edit" : "create",
       resource: resourceId,
       id: id ?? undefined,
-      meta: { isSingleton, hasFileField },
+      meta: { isSingleton, hasFileField, readOnlyFields },
       successNotification() {
         return {
           message: translate("notifications.success"),

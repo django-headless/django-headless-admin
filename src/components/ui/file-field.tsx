@@ -16,7 +16,9 @@ const FileField = React.forwardRef<HTMLDivElement, FileFieldProps>(
 
     return (
       <div ref={ref} {...props}>
-        <div className="mb-2 text-xs text-muted-foreground">{initialValue}</div>
+        <div className="mb-2 text-xs text-muted-foreground empty:hidden">
+          {typeof initialValue === "string" ? initialValue : initialValue?.name}
+        </div>
         <Input
           type="file"
           accept={type === "file" ? "*" : `${type}/*`}
