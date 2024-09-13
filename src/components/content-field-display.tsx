@@ -1,9 +1,15 @@
 import dayjs from "dayjs";
 import prettyBytes from "pretty-bytes";
 import * as R from "ramda";
+import {
+  PiCheckCircle,
+  PiCheckCircleBold,
+  PiXCircle,
+  PiXCircleBold,
+} from "react-icons/pi";
 import { Link } from "react-router-dom";
 
-import { type ContentType, type ContentTypeField, FieldType } from "@/types";
+import { type ContentTypeField, FieldType } from "@/types";
 
 /**
  * Renders a readonly view of a content field.
@@ -63,6 +69,17 @@ export function ContentFieldDisplay({
       return config?.format === "file_size"
         ? prettyBytes(value * 1_000)
         : value;
+    case FieldType.BooleanField:
+    case FieldType.NullBooleanField:
+      return value ? (
+        <span>
+          <PiCheckCircleBold className="text-emerald-600" />
+        </span>
+      ) : (
+        <span>
+          <PiXCircleBold className="text-destructive" />
+        </span>
+      );
     default:
       return value;
   }

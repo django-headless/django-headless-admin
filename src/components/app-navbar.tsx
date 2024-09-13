@@ -52,8 +52,9 @@ export function AppNavbar() {
           R.anyPass([
             // Don't show content types without admin models
             R.propSatisfies(R.isNil, "admin"),
-            // Users are a separate route.
+            // Users and user groups are a separate route.
             R.prop("isUserModel"),
+            R.whereEq({ resourceId: "groups" }),
             // Some other special models are excluded from this list.
             R.propSatisfies(
               R.includes(R.__, NON_COLLECTION_MODELS),

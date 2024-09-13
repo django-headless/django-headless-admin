@@ -93,6 +93,9 @@ export interface Inline {
 }
 
 export enum FieldType {
+  AutoField = "AutoField",
+  BooleanField = "BooleanField",
+  NullBooleanField = "NullBooleanField",
   CharField = "CharField",
   DateField = "DateField",
   DateTimeField = "DateTimeField",

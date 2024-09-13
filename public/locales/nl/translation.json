@@ -45,6 +45,27 @@
     "media_library": {
       "title": "Mediabibliotheek",
       "search": "Media zoeken"
+    },
+    "users": {
+      "title": "Gebruikers"
+    },
+    "groups": {
+      "title": "Gebruikersgroepen"
+    },
+    "api_tokens": {
+      "title": "API-sleutels"
+    },
+    "settings": {
+      "title": "Instellingen",
+      "users": {
+        "label": "Gebruikers"
+      },
+      "groups": {
+        "label": "Gebruikersgroepen"
+      },
+      "api_tokens": {
+        "label": "API-sleutels"
+      }
     }
   },
   "components": {

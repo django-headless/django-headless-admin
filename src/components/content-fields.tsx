@@ -21,6 +21,7 @@ import { ManyMediaField } from "@/components/ui/many-media-field";
 import { MediaField } from "@/components/ui/media-field";
 import { MultipleChoiceField } from "@/components/ui/multiple-choice-field";
 import { RichTextField } from "@/components/ui/rich-text";
+import { Switch } from "@/components/ui/switch";
 import { TagField } from "@/components/ui/tag-field";
 import { Textarea } from "@/components/ui/textarea";
 import { TimePickerInput } from "@/components/ui/time-picker";
@@ -124,6 +125,9 @@ export function ContentField({
         return <Input type="url" />;
       case FieldType.TagField:
         return <TagField />;
+      case FieldType.BooleanField:
+      case FieldType.NullBooleanField:
+        return <Switch />;
       case FieldType.URLPathField:
         return <Input placeholder="/" />;
       case FieldType.TextField:
@@ -142,6 +146,8 @@ export function ContentField({
         return <ManyMediaField />;
       case FieldType.FileField:
         return <FileField type={fieldConfig.validation?.fileType || "file"} />;
+      case FieldType.AutoField:
+        return null;
       default:
         return import.meta.env.DEV ? (
           <div className="text-sm font-medium text-gray-500">
