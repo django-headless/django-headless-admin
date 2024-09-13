@@ -33,6 +33,7 @@ export default function useColumns(contentType: ContentType) {
                 contentTypeField={contentTypeField}
                 config={contentType.admin?.fieldConfig?.[key]}
                 value={value}
+                canLink={false}
               />
             </Link>
           ) : (

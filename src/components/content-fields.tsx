@@ -24,7 +24,6 @@ import { RichTextField } from "@/components/ui/rich-text";
 import { Switch } from "@/components/ui/switch";
 import { TagField } from "@/components/ui/tag-field";
 import { Textarea } from "@/components/ui/textarea";
-import { TimePickerInput } from "@/components/ui/time-picker";
 import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
 
@@ -117,7 +116,7 @@ export function ContentField({
       case FieldType.DateField:
         return <DatePicker />;
       case FieldType.TimeField:
-        return <TimePickerInput picker="12hours" />;
+        return <Input />;
       case FieldType.URLField:
         return <Input type="url" />;
       case FieldType.TagField:

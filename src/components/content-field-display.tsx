@@ -13,10 +13,12 @@ export function ContentFieldDisplay({
   contentTypeField,
   config,
   value,
+  canLink = true,
 }: {
   contentTypeField: ContentTypeField;
   config?: any;
   value: any;
+  canLink?: boolean;
 }) {
   const fieldType = contentTypeField.type;
 
@@ -27,12 +29,16 @@ export function ContentFieldDisplay({
   switch (fieldType) {
     case FieldType.ForeignKey:
       return value ? (
-        <Link
-          className="hover:underline"
-          to={`/content/${contentTypeField.resourceId}/${value.id}`}
-        >
-          {value.__str__}
-        </Link>
+        canLink ? (
+          <Link
+            className="hover:underline"
+            to={`/content/${contentTypeField.resourceId}/${value.id}`}
+          >
+            {value.__str__}
+          </Link>
+        ) : (
+          value.__str__
+        )
       ) : null;
     case FieldType.DateTimeField:
       return (
