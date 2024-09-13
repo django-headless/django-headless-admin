@@ -1,5 +1,6 @@
 import type { DataProvider } from "@refinedev/core";
 import * as R from "ramda";
+import snakecaseKeys from "snakecase-keys";
 
 import { http } from "@/utils/http";
 
@@ -20,7 +21,7 @@ export const dataProvider: DataProvider = {
     if (meta.hasFileField) {
       return http.patchForm(
         `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
-        writableVariables,
+        snakecaseKeys(writableVariables),
       );
     }
     return http.patch(

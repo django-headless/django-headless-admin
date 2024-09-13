@@ -72,14 +72,19 @@ export const authProvider: AuthProvider = {
   updatePassword: async (params) => ({}),
   getPermissions: async (params) => ({}),
   async getIdentity() {
-    const { data } = await http.get<SessionUser>("/users/me/");
+    try {
+      const { data } = await http.get<SessionUser>("/users/me/");
+      console.log(`Changing locale to ${data.locale}`);
+      dayjs.locale(data.locale);
 
-    console.log(`Changing locale to ${data.locale}`);
-    dayjs.locale(data.locale);
+      console.log(`Changing timezone to ${data.timezone}`);
+      dayjs.tz.setDefault(data.timezone);
 
-    console.log(`Changing timezone to ${data.timezone}`);
-    dayjs.tz.setDefault(data.timezone);
-
-    return data;
+      return data;
+    } catch (e: any) {
+      if (e.response.status === 401) {
+        return authProvider.logout();
+      }
+    }
   },
 };
