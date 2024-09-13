@@ -48,6 +48,7 @@ export interface ContentType {
   fields: Record<string, ContentTypeField>;
   admin: {
     fields: (string | string[])[] | null;
+    sidebarFields: string[];
     exclude: string[] | null;
     readonlyFields: string[];
     listDisplay: string[];

@@ -1,25 +1,31 @@
 import { useDelete, useTranslate } from "@refinedev/core";
 import { useForm } from "@refinedev/react-hook-form";
 import * as R from "ramda";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
   PiCaretLeft,
   PiSidebarSimple,
   PiSidebarSimpleFill,
 } from "react-icons/pi";
+import type { ImperativePanelHandle } from "react-resizable-panels";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ContentFields } from "@/components/content-fields";
 import { Inlines } from "@/components/inlines";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { Spinner } from "@/components/ui/spinner";
+import { useAdminFields } from "@/hooks/useAdminFields";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
-
 export function EditPage() {
   const { resourceId, id } = useParams<"resourceId" | "id">();
   const contentType = useContentType(resourceId!);
@@ -42,30 +48,55 @@ function EditMain({
   const resourceName = contentType.verboseName;
   const isSingleton = contentType.isSingleton ?? false;
   const [sidebar, setSidebar] = useState(false);
+  const fieldNames = useAdminFields(contentType);
+  const ref = useRef<ImperativePanelHandle>(null);
 
   useTitle(translate("pages.edit.document_title", { resourceName }));
 
   return (
     <EditForm contentType={contentType} id={id}>
-      <div className="flex overflow-hidden h-dvh">
-        <div className="relative flex-1 overflow-y-auto">
-          <Header
-            isSingleton={isSingleton}
-            resourceId={resourceId}
-            contentType={contentType}
-            setSidebar={(s) => setSidebar(s)}
-            sidebar={sidebar}
-          />
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel>
+          <div className="relative flex-1 overflow-y-auto h-dvh">
+            <Header
+              isSingleton={isSingleton}
+              resourceId={resourceId}
+              contentType={contentType}
+              setSidebar={(s) => setSidebar(s)}
+              sidebar={sidebar}
+            />
 
-          <div className="max-w-screen-md mx-auto w-full pt-12 lg:w-2/3 z-10 relative">
-            <ContentFields contentType={contentType} />
+            <div className="max-w-screen-md mx-auto w-full pt-12 lg:w-2/3 z-10 relative">
+              <ContentFields
+                contentType={contentType}
+                fieldNames={fieldNames}
+              />
+            </div>
+            {id && <Inlines contentType={contentType} />}
           </div>
-          {id && <Inlines contentType={contentType} />}
-        </div>
+        </ResizablePanel>
+
+        <ResizableHandle
+          withHandle
+          onDoubleClick={() => ref.current?.resize(20)}
+        />
+
         {sidebar && (
-          <Sidebar contentType={contentType} resourceId={resourceId} id={id} />
+          <ResizablePanel
+            ref={ref}
+            className="flex flex-col"
+            minSize={10}
+            defaultSize={20}
+            maxSize={50}
+          >
+            <Sidebar
+              contentType={contentType}
+              resourceId={resourceId}
+              id={id}
+            />
+          </ResizablePanel>
         )}
-      </div>
+      </ResizablePanelGroup>
     </EditForm>
   );
 }
@@ -211,10 +242,17 @@ function Sidebar({
   const resourceName = contentType.verboseName;
   const navigate = useNavigate();
   const { mutateAsync: remove } = useDelete();
+  const fieldNames = useAdminFields(contentType, { sidebar: true });
 
   return (
-    <div className="border-l overflow-y-auto flex flex-col flex-none w-80">
-      <div className="flex-1"></div>
+    <div className="overflow-y-auto w-full flex-1 flex flex-col bg-muted/50">
+      <div className="flex-1 p-4">
+        <ContentFields
+          layout="vertical"
+          contentType={contentType}
+          fieldNames={fieldNames}
+        />
+      </div>
       <div className="p-4 border-t">
         {contentType.admin?.permissions.delete && (
           <Button

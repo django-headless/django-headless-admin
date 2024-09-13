@@ -69,7 +69,7 @@ export function AppNavbar() {
   ) as [string, ContentType[]][];
 
   return (
-    <nav className="flex flex-col overflow-hidden h-full">
+    <nav className="flex flex-col overflow-hidden h-full bg-accent/50">
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="space-y-1 border-b p-3">
           <div className="font-bold text-lg pl-6 pb-3">
@@ -190,9 +190,9 @@ function MainLink({
       to={to}
       className={({ isActive }) =>
         cn(
-          "px-6 py-2 text-sm font-normal rounded hover:bg-secondary flex items-center gap-3",
+          "px-6 py-2 text-sm font-normal rounded hover:bg-primary/10 flex items-center gap-3",
           isActive
-            ? "font-medium bg-secondary text-secondary-foreground"
+            ? "font-medium bg-primary/10 text-primary"
             : "text-muted-foreground",
         )
       }

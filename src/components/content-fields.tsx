@@ -25,7 +25,6 @@ import { Switch } from "@/components/ui/switch";
 import { TagField } from "@/components/ui/tag-field";
 import { Textarea } from "@/components/ui/textarea";
 import { TimePickerInput } from "@/components/ui/time-picker";
-import { useAdminFields } from "@/hooks/useAdminFields";
 import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
 
@@ -35,14 +34,13 @@ import { cn } from "@/utils/cn";
  */
 export function ContentFields({
   contentType,
-  exclude = [],
+  fieldNames = [],
+  layout = "horizontal",
 }: {
   contentType: ContentType;
-  // Force the exclusion of certain field names which
-  // is used by inlines to exclude known field values.
-  exclude?: string[];
+  fieldNames: (string | string[])[];
+  layout?: "horizontal" | "vertical";
 }) {
-  const fieldNames = useAdminFields(contentType);
   const noUpdatePermission = !contentType.admin?.permissions.change;
 
   return (
@@ -53,35 +51,32 @@ export function ContentFields({
             key={nameOrNames.join()}
             className="flex items-end gap-2 justify-evenly"
           >
-            {nameOrNames.map(
-              (name) =>
-                !exclude.includes(name) && (
-                  <ContentField
-                    key={name}
-                    name={name}
-                    contentType={contentType}
-                    readOnly={
-                      (noUpdatePermission ||
-                        contentType.admin?.readonlyFields.includes(name)) ??
-                      false
-                    }
-                  />
-                ),
-            )}
+            {nameOrNames.map((name) => (
+              <ContentField
+                key={name}
+                name={name}
+                contentType={contentType}
+                layout={layout}
+                readOnly={
+                  (noUpdatePermission ||
+                    contentType.admin?.readonlyFields.includes(name)) ??
+                  false
+                }
+              />
+            ))}
           </div>
         ) : (
-          !exclude.includes(nameOrNames) && (
-            <ContentField
-              key={nameOrNames}
-              name={nameOrNames}
-              contentType={contentType}
-              readOnly={
-                (noUpdatePermission ||
-                  contentType.admin?.readonlyFields.includes(nameOrNames)) ??
-                false
-              }
-            />
-          )
+          <ContentField
+            key={nameOrNames}
+            name={nameOrNames}
+            contentType={contentType}
+            layout={layout}
+            readOnly={
+              (noUpdatePermission ||
+                contentType.admin?.readonlyFields.includes(nameOrNames)) ??
+              false
+            }
+          />
         ),
       )}
     </div>
@@ -92,10 +87,12 @@ export function ContentField({
   name,
   readOnly,
   contentType,
+  layout,
 }: {
   name: string;
   contentType: ContentType;
   readOnly: boolean;
+  layout: "horizontal" | "vertical";
 }) {
   const form = useFormContext();
   const fieldConfig = contentType.fields[name];
@@ -163,8 +160,16 @@ export function ContentField({
         control={form.control}
         name={name}
         render={({ field }) => (
-          <FormItem className="flex items-start space-y-0">
-            <div className="w-[200px] shrink-0">
+          <FormItem
+            className={cn(
+              layout === "horizontal"
+                ? "flex items-start space-y-0"
+                : "space-y-1",
+            )}
+          >
+            <div
+              className={cn({ "w-[200px] shrink-0": layout === "horizontal" })}
+            >
               <FormLabel
                 className={cn({
                   "font-normal text-secondary-foreground":

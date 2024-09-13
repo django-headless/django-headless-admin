@@ -1,12 +1,7 @@
 import dayjs from "dayjs";
 import prettyBytes from "pretty-bytes";
 import * as R from "ramda";
-import {
-  PiCheckCircle,
-  PiCheckCircleBold,
-  PiXCircle,
-  PiXCircleBold,
-} from "react-icons/pi";
+import { PiCheckCircleBold, PiXCircleBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
 import { type ContentTypeField, FieldType } from "@/types";

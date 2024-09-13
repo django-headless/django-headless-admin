@@ -18,6 +18,7 @@ import {
 import { Form } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
+import { useAdminFields } from "@/hooks/useAdminFields";
 import useContentType from "@/hooks/useContentType";
 import { ContentType, FieldType } from "@/types";
 
@@ -81,6 +82,7 @@ function Main({
   prefilledValues?: Record<string, any | null>;
   closeDialog: VoidFunction;
 }) {
+  const fieldNames = useAdminFields(contentType);
   const isCreate = R.isNil(id);
   const form = useForm({
     defaultValues: prefilledValues,
@@ -153,7 +155,10 @@ function Main({
           <div className="p-4 max-w-screen-md mx-auto">
             <ContentFields
               contentType={contentType}
-              exclude={prefilledValues ? Object.keys(prefilledValues) : []}
+              fieldNames={R.without(
+                prefilledValues ? Object.keys(prefilledValues) : [],
+                fieldNames,
+              )}
             />
           </div>
         </form>
