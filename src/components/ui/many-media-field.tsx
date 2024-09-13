@@ -17,44 +17,46 @@ const ManyMediaField = React.forwardRef<
   const translate = useTranslate();
   const { data: selected } = useMany({
     resource: "media_library",
-    ids: value,
+    ids: value ?? [],
     queryOptions: {
-      enabled: !R.isEmpty(value),
+      enabled: !R.isNil(value) && !R.isEmpty(value),
     },
   });
 
   return (
-    <div ref={ref} className={cn("space-y-2", className)} {...props}>
-      {selected?.data && !R.isEmpty(selected.data) && (
-        <ScrollArea className="whitespace-nowrap border rounded-md">
-          <div className="flex items-center w-max gap-2 pt-2 px-2 pb-4">
-            {selected.data.map((record) => (
-              <div
-                key={record.id}
-                className="relative flex items-center shrink-0 group"
+    <div
+      ref={ref}
+      className={cn("space-y-2 border rounded-md p-4", className)}
+      {...props}
+    >
+      <ScrollArea className="whitespace-nowrap">
+        <div className="flex items-center w-max gap-2 pt-2 px-2 pb-4">
+          {selected?.data.map((record) => (
+            <div
+              key={record.id}
+              className="relative flex items-center shrink-0 group"
+            >
+              <Avatar className="size-24 rounded-md shadow-sm">
+                <AvatarImage src={record.file ?? undefined} alt="" />
+                <AvatarFallback className="rounded-md" />
+              </Avatar>
+              <button
+                className="absolute bg-white/50 rounded p-3 left-1/2 -translate-x-1/2 invisible group-hover:visible"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onChange?.(R.without([record.id], value ?? []));
+                }}
               >
-                <Avatar className="size-24 rounded-md shadow-sm">
-                  <AvatarImage src={record.file ?? undefined} alt="" />
-                  <AvatarFallback className="rounded-md" />
-                </Avatar>
-                <button
-                  className="absolute bg-white/50 rounded p-3 left-1/2 -translate-x-1/2 invisible group-hover:visible"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onChange?.(R.without([record.id], value));
-                  }}
-                >
-                  <PiXBold />
-                </button>
-              </div>
-            ))}
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      )}
+                <PiXBold />
+              </button>
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
       <SelectDialog
         multiple
-        onSelect={(v) => onChange?.(R.uniq([...value, ...v]))}
+        onSelect={(v) => onChange?.(R.uniq([...(value ?? []), ...v]))}
       >
         <Button variant="outline">
           {translate("components.media_field.select_media")}
@@ -68,7 +70,7 @@ ManyMediaField.displayName = "ManyMediaField";
 
 interface ManyMediaFieldProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value?: string[];
+  value?: string[] | null;
   onChange?(value: string[]): void;
 }
 

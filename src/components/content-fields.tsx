@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -167,7 +168,9 @@ export function ContentField({
             )}
           >
             <div
-              className={cn({ "w-[200px] shrink-0": layout === "horizontal" })}
+              className={cn({
+                "w-[200px] shrink-0": layout === "horizontal",
+              })}
             >
               <FormLabel
                 className={cn({

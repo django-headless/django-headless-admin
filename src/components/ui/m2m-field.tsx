@@ -15,6 +15,9 @@ const ManyToManyField = React.forwardRef<
   const [search, setSearch] = useState("");
   const { data: list } = useList({
     resource: resourceId,
+    queryOptions: {
+      enabled: !R.isNil(value),
+    },
     filters: [
       { field: "search", operator: "contains", value: search },
       { field: "~id__in", operator: "nin", value: value },
@@ -22,14 +25,14 @@ const ManyToManyField = React.forwardRef<
   });
   const { data: selected } = useMany({
     resource: resourceId,
-    ids: value,
+    ids: value ?? [],
     queryOptions: {
-      enabled: !R.isEmpty(value),
+      enabled: !R.isNil(value) && !R.isEmpty(value),
     },
   });
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 border rounded-md p-4">
       <div className="flex items-center flex-wrap gap-2">
         {selected?.data.map((record) => (
           <div
@@ -42,7 +45,7 @@ const ManyToManyField = React.forwardRef<
             <Button
               size="sm"
               variant="ghost"
-              onClick={() => onChange?.(R.without([record.id], value))}
+              onClick={() => onChange?.(R.without([record.id], value ?? []))}
             >
               <PiXBold />
             </Button>
@@ -55,12 +58,12 @@ const ManyToManyField = React.forwardRef<
         {...props}
         onSearchValueChange={setSearch}
         placeholder={translate("components.m2m_field.placeholder")}
-        onChange={(v) => onChange?.(R.append(v, value))}
+        onChange={(v) => onChange?.(R.append(v, value ?? []))}
         options={
           list?.data.map(({ id, __str__ }) => ({
             value: id,
             label: __str__,
-          })) ?? []
+          })) ?? ([] as any)
         }
       />
     </div>
@@ -71,7 +74,7 @@ ManyToManyField.displayName = "ManyToManyField";
 
 interface ManyToManyFieldProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value?: string[];
+  value?: string[] | null;
   onChange?(value: string[]): void;
   resourceId: string;
 }

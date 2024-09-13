@@ -55,8 +55,8 @@ function EditMain({
 
   return (
     <EditForm contentType={contentType} id={id}>
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
+      <ResizablePanelGroup direction="horizontal" autoSaveId="conditional">
+        <ResizablePanel id="main" order={1}>
           <div className="relative flex-1 overflow-y-auto h-dvh">
             <Header
               isSingleton={isSingleton}
@@ -84,6 +84,8 @@ function EditMain({
         {sidebar && (
           <ResizablePanel
             ref={ref}
+            id="sidebar"
+            order={2}
             className="flex flex-col"
             minSize={10}
             defaultSize={20}
@@ -121,6 +123,11 @@ function EditForm({
   const readOnlyFields = contentType.admin?.readonlyFields ?? [];
 
   const form = useForm({
+    /**
+     * Some fields may not have mounted yet. In order for all fields
+     * to be handled by the form we need to set a default for each of them.
+     */
+    defaultValues: R.mapObjIndexed(R.always(null), contentType.fields),
     refineCoreProps: {
       action: id ? "edit" : "create",
       resource: resourceId,

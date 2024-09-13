@@ -10,7 +10,7 @@ import { cn } from "@/utils/cn";
 
 export interface TagFieldProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
-  value?: string[];
+  value?: string[] | null;
   onChange?(tags: string[]): void;
 }
 
