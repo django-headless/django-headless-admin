@@ -12,7 +12,7 @@ const FlexField = React.forwardRef<React.ElementRef<"div">, FlexFieldProps>(
       <div
         ref={ref}
         {...props}
-        className={cn("flex items-start gap-2", className)}
+        className={cn("flex items-start flex-wrap gap-2", className)}
       >
         {Object.entries(schema.properties).map(([name, property]) => {
           return (
