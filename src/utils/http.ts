@@ -1,4 +1,3 @@
-import { HttpError } from "@refinedev/core";
 import axios from "axios";
 import * as R from "ramda";
 
@@ -14,14 +13,16 @@ http.interceptors.response.use(
     return response;
   },
   (error) => {
-    const response = error.response ?? {};
-    const customError: HttpError = {
-      ...error,
-      message: response.data?.detail ?? "",
-      statusCode: response.status,
-      errors: !response.data?.detail ? R.map(R.head)(response.data) : {},
-    };
+    if (error.response) {
+      const response = error.response ?? {};
 
-    return Promise.reject(customError);
+      return Promise.reject({
+        ...error,
+        message: response.data?.detail ?? "",
+        statusCode: response.status,
+        errors: !response.data?.detail ? R.map(R.head)(response.data) : {},
+      });
+    }
+    return Promise.reject({ message: error.message });
   },
 );

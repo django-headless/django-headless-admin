@@ -23,12 +23,12 @@ const MultipleChoiceField = React.forwardRef<
                 R.includes(choice),
                 R.without([choice]),
                 R.append(choice),
-              )(value),
+              )(value ?? []),
             );
           }}
           className={cn(
             "px-2 py-0.5 rounded select-none hover:cursor-pointer",
-            value.includes(choice)
+            value?.includes(choice)
               ? "bg-primary text-primary-foreground shadow"
               : "bg-accent text-accent-foreground",
           )}
@@ -44,7 +44,7 @@ MultipleChoiceField.displayName = "ChoiceField";
 
 interface MultipleChoiceFieldProps {
   options: [string, string][];
-  value?: string[];
+  value?: string[] | null;
   onChange?(value: string[]): void;
   onBlur?: FocusEventHandler;
   className?: string;

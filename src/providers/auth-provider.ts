@@ -10,7 +10,7 @@ const REFRESH_STORAGE_KEY = "DJANGO_HEADLESS_REFRESH_TOKEN";
 export const authProvider: AuthProvider = {
   async login({ email, password, remember, redirectTo = "/" }) {
     try {
-      const { data, status } = await http.post<{
+      const { data } = await http.post<{
         access: string;
         refresh: string;
       }>("/jwt/create", {
@@ -27,7 +27,7 @@ export const authProvider: AuthProvider = {
     } catch (e: any) {
       return {
         success: false,
-        error: { name: "Login Error", message: e.response.data.detail },
+        error: { name: "Login Error", message: e.response?.data.detail },
       };
     }
   },
