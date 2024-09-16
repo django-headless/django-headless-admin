@@ -128,7 +128,10 @@ function EditForm({
      * Some fields may not have mounted yet. In order for all fields
      * to be handled by the form we need to set a default for each of them.
      */
-    defaultValues: R.mapObjIndexed(R.always(null), contentType.fields),
+    defaultValues: {
+      __str__: "",
+      ...R.mapObjIndexed(R.propOr(null, "default"), contentType.fields),
+    },
     refineCoreProps: {
       action: id ? "edit" : "create",
       resource: resourceId,

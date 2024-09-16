@@ -41,7 +41,12 @@ export function ContentFields({
   fieldNames: (string | string[])[];
   layout?: "horizontal" | "vertical";
 }) {
-  const noUpdatePermission = !contentType.admin?.permissions.change;
+  // Check admin permissions or assume true if no admin is configured (e.g. for inlines).
+  const noUpdatePermission = !R.pathOr(true, [
+    "admin",
+    "permissions",
+    "change",
+  ]);
 
   return (
     <div className="space-y-6">

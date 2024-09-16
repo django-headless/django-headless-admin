@@ -138,7 +138,10 @@ export function AppNavbar() {
                     {user.profilePicture && (
                       <AvatarImage src={user.profilePicture} />
                     )}
-                    <AvatarFallback>{`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`}</AvatarFallback>
+                    <AvatarFallback className="uppercase">
+                      {`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`.trim() ||
+                        user.email.slice(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
                   <PiCaretDown />
                 </Button>
@@ -149,7 +152,10 @@ export function AppNavbar() {
                     {user.profilePicture && (
                       <AvatarImage src={user.profilePicture} />
                     )}
-                    <AvatarFallback>{`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`}</AvatarFallback>
+                    <AvatarFallback className="uppercase">
+                      {`${user.firstName[0] ?? ""}${user.lastName[0] ?? ""}`.trim() ||
+                        user.email.slice(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="text-sm font-medium">{`${user.firstName ?? ""} ${user.lastName ?? ""}`}</div>

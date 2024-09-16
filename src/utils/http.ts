@@ -18,7 +18,7 @@ http.interceptors.response.use(
 
       return Promise.reject({
         ...error,
-        message: response.data?.detail ?? "",
+        message: response.data?.detail ?? response.data?.nonFieldErrors ?? "",
         statusCode: response.status,
         errors: !response.data?.detail ? R.map(R.head)(response.data) : {},
       });

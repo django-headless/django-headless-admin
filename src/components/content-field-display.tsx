@@ -81,6 +81,12 @@ export function ContentFieldDisplay({
           <PiXCircleBold className="text-destructive" />
         </span>
       );
+    case FieldType.MultipleChoiceField:
+      return (
+        <div className="text-sm">
+          {R.pipe(R.sortBy(R.identity), R.join(", "))(value ?? [])}
+        </div>
+      );
     default:
       return <div className="break-words text-sm">{value}</div>;
   }

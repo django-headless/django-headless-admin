@@ -85,7 +85,10 @@ function Main({
   const fieldNames = useAdminFields(contentType);
   const isCreate = R.isNil(id);
   const form = useForm({
-    defaultValues: prefilledValues,
+    defaultValues: {
+      ...R.mapObjIndexed(R.propOr(null, "default"), contentType.fields),
+      ...prefilledValues,
+    },
   });
   const { data, isError, isLoading } = useOne({
     resource: resourceId,
