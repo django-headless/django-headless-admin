@@ -82,6 +82,6 @@ export function ContentFieldDisplay({
         </span>
       );
     default:
-      return value;
+      return <div className="break-words">{value}</div>;
   }
 }

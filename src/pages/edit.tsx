@@ -26,6 +26,7 @@ import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType, FieldType } from "@/types";
 import { cn } from "@/utils/cn";
+
 export function EditPage() {
   const { resourceId, id } = useParams<"resourceId" | "id">();
   const contentType = useContentType(resourceId!);
@@ -86,7 +87,7 @@ function EditMain({
             ref={ref}
             id="sidebar"
             order={2}
-            className="flex flex-col"
+            className="flex flex-col overflow-hidden h-dvh"
             minSize={10}
             defaultSize={20}
             maxSize={50}
@@ -133,6 +134,7 @@ function EditForm({
       resource: resourceId,
       id: id ?? undefined,
       meta: { isSingleton, hasFileField, readOnlyFields },
+      queryOptions: { retry: false },
       successNotification() {
         return {
           message: translate("notifications.success"),
@@ -162,7 +164,10 @@ function EditForm({
     );
   }
 
-  if (form.refineCore.query?.isError) {
+  if (
+    form.refineCore.query?.isError &&
+    form.refineCore.query.error.statusCode >= 500
+  ) {
     return (
       <div className="flex items-center justify-center py-12">
         Something went wrong!

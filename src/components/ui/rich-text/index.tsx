@@ -51,7 +51,7 @@ export const RichTextField = React.forwardRef<
 });
 
 interface RichtTextProps {
-  value?: string;
+  value?: string | null;
   onChange?(value: string): void;
   disabled?: boolean;
 }
