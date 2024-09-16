@@ -42,8 +42,8 @@ export function ContentFieldDisplay({
       ) : null;
     case FieldType.DateTimeField:
       return (
-        <div className="font-medium text-sm text-muted-foreground">
-          {dayjs(value).format("L LT")}
+        <div className="text-sm whitespace-nowrap">
+          {dayjs(value).fromNow()}
         </div>
       );
     case FieldType.DateField:
@@ -82,6 +82,6 @@ export function ContentFieldDisplay({
         </span>
       );
     default:
-      return <div className="break-words">{value}</div>;
+      return <div className="break-words text-sm">{value}</div>;
   }
 }

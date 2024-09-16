@@ -45,7 +45,10 @@ export function TabularInline({ inline }: { inline: Inline }) {
    * We flatten the field names array as fieldsets are not supported
    * in this view. We also remove the foreign key field as it is implicit.
    */
-  const fields = R.pipe(R.flatten, R.without([inline.fkName]))(fieldNames);
+  const fields =
+    R.isNil(inline.fields) || R.isEmpty(inline.fields)
+      ? R.pipe(R.flatten, R.without([inline.fkName]))(fieldNames)
+      : inline.fields;
 
   return (
     contentType && (
@@ -55,17 +58,19 @@ export function TabularInline({ inline }: { inline: Inline }) {
             {contentType.verboseNamePlural}
           </h4>
           <div>
-            <InlineModal
-              resourceId={inline.resourceId}
-              id={null}
-              prefilledValues={{ [inline.fkName]: id }}
-            >
-              <Button variant="outline" size="sm">
-                {translate("components.inlines.create", {
-                  resourceName: contentType.verboseName,
-                })}
-              </Button>
-            </InlineModal>
+            {inline.canAdd && (
+              <InlineModal
+                resourceId={inline.resourceId}
+                id={null}
+                prefilledValues={{ [inline.fkName]: id }}
+              >
+                <Button variant="outline" size="sm">
+                  {translate("components.inlines.create", {
+                    resourceName: contentType.verboseName,
+                  })}
+                </Button>
+              </InlineModal>
+            )}
           </div>
         </div>
         {!data?.data ? (

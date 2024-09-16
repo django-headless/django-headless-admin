@@ -87,7 +87,9 @@ export interface ContentTypeField {
 export interface Inline {
   resourceId: string;
   fkName: string;
+  fields: string[] | null;
   canDelete: boolean;
+  canAdd: boolean;
   extra: number;
   minNum: number | null;
   maxNum: number | null;
