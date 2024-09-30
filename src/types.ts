@@ -147,7 +147,7 @@ export interface RecentAction {
   changeMessage: string;
   changes: Record<string, any>[];
   objectId: string;
-  objectResourceId: string;
+  objectResourceId: string | null;
   objectRepr: string;
   actionFlag: "ADDITION" | "CHANGE" | "DELETION";
   actionTime: DateTimeString;

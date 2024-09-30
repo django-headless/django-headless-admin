@@ -3,12 +3,15 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import App from "@/app";
 import { AppShell } from "@/components/app-shell";
+import { ForgotPasswordPage } from "@/pages/(auth)/forgot-password";
+import { AuthLayout } from "@/pages/(auth)/layout";
+import { LoginPage } from "@/pages/(auth)/login";
+import { ResetPasswordPage } from "@/pages/(auth)/reset-password";
 import { ApiTokensPage } from "@/pages/api-tokens";
 import { Dashboard } from "@/pages/dashboard";
 import { EditPage } from "@/pages/edit";
 import { GroupsPage } from "@/pages/groups";
 import { ListPage } from "@/pages/list";
-import { LoginPage } from "@/pages/login";
 import { MediaLibrary } from "@/pages/media-library";
 import { SettingsPage } from "@/pages/settings";
 import { UsersPage } from "@/pages/users";
@@ -18,11 +21,23 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/login",
-        element: <LoginPage />,
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "forgot-password",
+            element: <ForgotPasswordPage />,
+          },
+          {
+            path: "password-reset/:uid/:token",
+            element: <ResetPasswordPage />,
+          },
+        ],
       },
       {
-        path: "",
         element: (
           <Authenticated key="root" appendCurrentPathToQuery>
             <Outlet />
@@ -30,7 +45,6 @@ const router = createBrowserRouter([
         ),
         children: [
           {
-            path: "",
             element: <AppShell />,
             children: [
               {

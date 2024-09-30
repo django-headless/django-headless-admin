@@ -54,9 +54,9 @@ export function ContentFields({
         Array.isArray(nameOrNames) ? (
           <div
             key={nameOrNames.join()}
-            className="flex items-end gap-2 justify-evenly"
+            className="flex items-end gap-4 justify-between"
           >
-            {nameOrNames.map((name) => (
+            {nameOrNames.map((name, idx) => (
               <ContentField
                 key={name}
                 name={name}

@@ -68,8 +68,38 @@ export const authProvider: AuthProvider = {
   },
   onError: async (params) => ({}),
   register: async (params) => ({}),
-  forgotPassword: async (params) => ({}),
-  updatePassword: async (params) => ({}),
+  async forgotPassword(params: { email: string }) {
+    try {
+      await http.post("/users/reset_password/", { email: params.email });
+
+      return {
+        success: true,
+      };
+    } catch (e: any) {
+      return {
+        success: false,
+      };
+    }
+  },
+  async updatePassword({
+    uid,
+    token,
+    password,
+  }: {
+    uid: string;
+    token: string;
+    password: string;
+  }) {
+    try {
+      await http.post("/users/reset_password_confirm/", {
+        uid,
+        token,
+        newPassword: password,
+      });
+
+      return { success: true, redirectTo: "/login" };
+    } catch (e: any) {}
+  },
   getPermissions: async (params) => ({}),
   async getIdentity() {
     try {

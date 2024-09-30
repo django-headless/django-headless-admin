@@ -4,7 +4,9 @@
     "back": "Terug",
     "cancel": "Annuleren",
     "create": "Toevoegen",
+    "email": "E-mail",
     "general": "Algemeen",
+    "password": "Wachtwoord",
     "save": "Opslaan",
     "search": "Zoeken"
   },
@@ -32,6 +34,19 @@
       "email": "E-mail",
       "forgot_password": "Wachtwoord vergeten",
       "password": "Wachtwoord"
+    },
+    "forgot_password": {
+      "title": "Vraag een nieuw wachtwoord aan",
+      "document_title": "Wachtwoord vergeten",
+      "success": "Er is een e-mail gestuurd naar {{email}} met een herstellink.",
+      "button": "Nieuw wachtwoord aanvragen"
+    },
+    "reset_password": {
+      "title": "Geef je nieuwe wachtwoord op",
+      "document_title": "Nieuw wachtwoord",
+      "confirm_password": "Herhaal wachtwoord",
+      "no_password_match": "Wachtwoorden komen niet overeen",
+      "button": "Wachtwoord wijzigen"
     },
     "edit": {
       "document_title": "Bewerk {{resourceName}}",
@@ -114,6 +129,9 @@
       "recent_actions": {
         "title": "Recente acties"
       }
+    },
+    "date_picker": {
+      "placeholder": "Selecteer een datum"
     }
   },
   "validations": {
