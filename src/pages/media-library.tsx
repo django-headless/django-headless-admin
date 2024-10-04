@@ -1,12 +1,12 @@
-import { useCustom, useDelete, useList, useTranslate } from "@refinedev/core";
+import { useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
 import * as R from "ramda";
 import { useState } from "react";
-import { PiFolder, PiHouseBold, PiPlus, PiTrash } from "react-icons/pi";
 import { useSearchParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
+import { FolderPath, MediaFolders } from "@/components/media-library";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
@@ -36,7 +36,7 @@ export function Main() {
   const translate = useTranslate();
   const itemCT = useContentType(ITEM_RESOURCE_ID);
   const folderCT = useContentType(FOLDER_RESOURCE_ID);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useTitle(translate("pages.media_library.title"));
 
@@ -73,7 +73,19 @@ export function Main() {
       </div>
 
       <div className="mb-12">
-        <FolderPath />
+        <FolderPath
+          folder={searchParams.get("folder")}
+          onSelect={(folder) =>
+            setSearchParams((searchParams) => {
+              if (folder) {
+                searchParams.set("folder", folder);
+              } else {
+                searchParams.delete("folder");
+              }
+              return searchParams;
+            })
+          }
+        />
       </div>
 
       <MediaItems />
@@ -88,7 +100,7 @@ export function MediaItems() {
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const columns = useColumns(contentType);
   const [search, setSearch] = useState("");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const {
     getHeaderGroups,
@@ -140,7 +152,19 @@ export function MediaItems() {
         )}
       </div>
 
-      <MediaFolders />
+      <MediaFolders
+        folder={searchParams.get("folder")}
+        onSelect={(folder) =>
+          setSearchParams((searchParams) => {
+            if (folder) {
+              searchParams.set("folder", folder);
+            } else {
+              searchParams.delete("folder");
+            }
+            return searchParams;
+          })
+        }
+      />
 
       <div
         className={cn("rounded-md mb-6 bg-white", {
@@ -189,160 +213,6 @@ export function MediaItems() {
         current={current}
         onPageChange={setCurrent}
       />
-    </div>
-  );
-}
-
-export function MediaFolders() {
-  const translate = useTranslate();
-  const contentType = useContentType(FOLDER_RESOURCE_ID);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { mutate: deleteFolder } = useDelete();
-  const folder = searchParams.get("folder");
-  const { isFetching, isPreviousData, data } = useList({
-    resource: FOLDER_RESOURCE_ID,
-    filters: [
-      {
-        field: "parent",
-        operator: "eq",
-        value: folder,
-      },
-    ],
-  });
-  const { data: folderPath } = useCustom({
-    url: `/media-library/folder-path?folder=${searchParams.get("folder") ?? ""}`,
-    method: "get",
-  });
-
-  return (
-    <div className="mt-6">
-      <div
-        className={cn("rounded-md mb-6 border-dashed border", {
-          "animate-pulse": isFetching && isPreviousData,
-        })}
-      >
-        <ul className="pt-2 space-y-2">
-          {folderPath?.data && !R.isEmpty(folderPath.data) && (
-            <li className="px-4">
-              <button
-                onClick={() =>
-                  setSearchParams((searchParams) => {
-                    const parent =
-                      folderPath.data[folderPath.data.length - 2]?.id ?? null;
-
-                    if (parent) {
-                      searchParams.set("folder", parent);
-                    } else {
-                      searchParams.delete("folder");
-                    }
-                    return searchParams;
-                  })
-                }
-              >
-                {".."}
-              </button>
-            </li>
-          )}
-          {data?.data.map((folder) => (
-            <li
-              key={folder.id}
-              className="group font-medium text-sm px-4 flex items-center justify-between gap-2"
-            >
-              <button
-                className="flex items-center gap-2"
-                onClick={() =>
-                  setSearchParams((searchParams) => {
-                    searchParams.set("folder", folder.id);
-                    return searchParams;
-                  })
-                }
-              >
-                <PiFolder className="text-lg" />
-                <span>{folder.name}</span>
-              </button>
-              <button
-                className="invisible group-hover:visible text-destructive"
-                onClick={() => {
-                  if (confirm("Are you sure?")) {
-                    deleteFolder({
-                      resource: FOLDER_RESOURCE_ID,
-                      id: folder.id,
-                    });
-                  }
-                }}
-              >
-                <PiTrash />
-              </button>
-            </li>
-          ))}
-          <li className="font-medium text-sm border-t border-dashed px-4 py-2">
-            {contentType.admin?.permissions.add && (
-              <InlineModal
-                resourceId={FOLDER_RESOURCE_ID}
-                id={null}
-                prefilledValues={{ parent: searchParams.get("folder") }}
-              >
-                <button
-                  className="flex items-center gap-2 text-muted-foreground hover:text-secondary-foreground"
-                  onClick={() => {}}
-                >
-                  <PiPlus className="mr-1" />
-                  <span>{translate("pages.media_library.new_folder")}</span>
-                </button>
-              </InlineModal>
-            )}
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-export function FolderPath() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { isFetching, isPreviousData, data } = useCustom({
-    url: `/media-library/folder-path?folder=${searchParams.get("folder") ?? ""}`,
-    method: "get",
-  });
-
-  return (
-    <div>
-      <div
-        className={cn("rounded-md mb-6 bg-white", {
-          "animate-pulse": isFetching && isPreviousData,
-        })}
-      >
-        <ul className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-          <li className="flex">
-            <button
-              onClick={() =>
-                setSearchParams((searchParams) => {
-                  searchParams.delete("folder");
-                  return searchParams;
-                })
-              }
-            >
-              <PiHouseBold />
-            </button>
-          </li>
-          {data?.data.map((folder) => (
-            <li key={folder.id} className="flex items-center gap-2">
-              <span className="select-none">{"/"}</span>
-              <button
-                className="hover:underline"
-                onClick={() =>
-                  setSearchParams((searchParams) => {
-                    searchParams.set("folder", folder.id);
-                    return searchParams;
-                  })
-                }
-              >
-                {folder.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

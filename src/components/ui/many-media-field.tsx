@@ -10,13 +10,15 @@ import { SelectDialog } from "@/components/ui/media-field";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/utils/cn";
 
+const ITEM_RESOURCE_ID = "media-library/items";
+
 const ManyMediaField = React.forwardRef<
   React.ElementRef<typeof Combobox>,
   ManyMediaFieldProps
 >(({ value = [], onChange, className, ...props }, ref) => {
   const translate = useTranslate();
   const { data: selected } = useMany({
-    resource: "media_library",
+    resource: ITEM_RESOURCE_ID,
     ids: value ?? [],
     queryOptions: {
       enabled: !R.isNil(value) && !R.isEmpty(value),

@@ -4,6 +4,7 @@ import React, { type HTMLAttributes, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { PiCheckBold, PiXBold } from "react-icons/pi";
 
+import { FolderPath, MediaFolders } from "@/components/media-library";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { DebouncedInput } from "@/components/ui/debounced-input";
@@ -17,6 +18,8 @@ import {
 import { Pagination } from "@/components/ui/pagination";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/utils/cn";
+
+const ITEM_RESOURCE_ID = "media-library/items";
 
 const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
   (
@@ -32,7 +35,7 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
   ) => {
     const translate = useTranslate();
     const { data } = useOne({
-      resource: "media_library",
+      resource: ITEM_RESOURCE_ID,
       id: value,
       queryOptions: {
         enabled: !R.isNil(value),
@@ -103,7 +106,7 @@ export function SelectDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-screen-lg">
+      <DialogContent className="max-w-screen-lg h-full max-h-[920px] flex flex-col">
         <DialogHeader>
           {translate("components.media_field.dialog_title")}
         </DialogHeader>
@@ -123,16 +126,22 @@ function SelectDialogContent({
   const [search, setSearch] = useState("");
   const [selection, setSelection] = useState<string[]>([]);
   const [page, setPage] = useState(1);
+  const [folder, setFolder] = useState<string | null>(null);
   const translate = useTranslate();
   const { data: list } = useList({
-    resource: "media_library",
+    resource: ITEM_RESOURCE_ID,
     pagination: { current: page, pageSize: 24 },
-    filters: [{ field: "search", operator: "contains", value: search }],
+    filters: [
+      { field: "search", operator: "contains", value: search },
+      { field: "folder", operator: "contains", value: folder },
+    ],
   });
 
   return (
-    <div>
-      <div className="flex items-stretch gap-6">
+    <div className="flex flex-col flex-1">
+      <FolderPath folder={folder} onSelect={setFolder} />
+
+      <div className="flex items-stretch gap-6 flex-1">
         <div className="flex-1 shrink-0">
           <div className="mb-6">
             <DebouncedInput
@@ -143,6 +152,7 @@ function SelectDialogContent({
                 setSearch(v);
               }}
             />
+            <MediaFolders folder={folder} onSelect={setFolder} />
           </div>
           <div className="grid grid-cols-6 gap-2">
             {list?.data.map((item: any) => {
@@ -209,7 +219,7 @@ function SelectDialogContent({
 function UploadField({ onUpload }: { onUpload(mediaId: string): void }) {
   const translate = useTranslate();
   const { mutateAsync, isLoading } = useCreate({
-    resource: "media_library",
+    resource: ITEM_RESOURCE_ID,
   });
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
