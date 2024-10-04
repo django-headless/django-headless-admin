@@ -2,7 +2,9 @@ import type { DataProvider } from "@refinedev/core";
 import * as R from "ramda";
 import snakecaseKeys from "snakecase-keys";
 
+import { FieldType } from "@/types";
 import { http } from "@/utils/http";
+import { normalize } from "@/utils/normalize";
 
 export const dataProvider: DataProvider = {
   getApiUrl: () => http.defaults.baseURL ?? "",
@@ -16,17 +18,24 @@ export const dataProvider: DataProvider = {
   },
 
   async update({ resource, variables, id, meta }) {
-    const writableVariables = R.omit(meta.readOnlyFields, variables);
+    const isSingleton = meta.contentType.isSingleton;
+    const writableVariables = R.omit(
+      meta.contentType.admin?.readOnly ?? [],
+      variables,
+    );
+    const hasFileField = Object.values(meta.contentType.fields).some(
+      R.whereEq({ type: FieldType.FileField }),
+    );
 
-    if (meta.hasFileField) {
+    if (hasFileField) {
       return http.patchForm(
-        `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
-        snakecaseKeys(writableVariables),
+        `/${resource}${isSingleton ? "" : `/${id}`}`,
+        snakecaseKeys(normalize(writableVariables, meta.contentType)),
       );
     }
     return http.patch(
-      `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
-      writableVariables,
+      `/${resource}${isSingleton ? "" : `/${id}`}`,
+      normalize(writableVariables, meta.contentType),
     );
   },
 
@@ -53,11 +62,21 @@ export const dataProvider: DataProvider = {
   },
 
   async create({ resource, variables, meta }) {
-    if (meta.hasFileField) {
-      return await http.postForm(`/${resource}`, variables);
+    const hasFileField = Object.values(meta.contentType.fields).some(
+      R.whereEq({ type: FieldType.FileField }),
+    );
+
+    if (hasFileField) {
+      return await http.postForm(
+        `/${resource}`,
+        snakecaseKeys(normalize(variables, meta.contentType)),
+      );
     }
 
-    return await http.post(`/${resource}`, variables);
+    return await http.post(
+      `/${resource}`,
+      normalize(variables, meta.contentType),
+    );
   },
 
   async deleteOne({ resource, id }) {

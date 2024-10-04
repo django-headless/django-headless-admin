@@ -61,7 +61,11 @@ export function Main() {
             </InlineModal>
           )}
           {itemCT.admin?.permissions.add && (
-            <InlineModal resourceId={ITEM_RESOURCE_ID} id={null}>
+            <InlineModal
+              resourceId={ITEM_RESOURCE_ID}
+              id={null}
+              prefilledValues={{ folder: searchParams.get("folder") }}
+            >
               <Button>
                 {translate("pages.list.add", {
                   resourceName: itemCT.verboseName,

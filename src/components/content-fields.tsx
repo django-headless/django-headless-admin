@@ -54,7 +54,7 @@ export function ContentFields({
         Array.isArray(nameOrNames) ? (
           <div
             key={nameOrNames.join()}
-            className="flex items-end gap-4 justify-between"
+            className="flex items-start gap-4 justify-between"
           >
             {nameOrNames.map((name, idx) => (
               <ContentField
@@ -101,6 +101,7 @@ export function ContentField({
 }) {
   const form = useFormContext();
   const fieldConfig = contentType.fields[name];
+  console.log(fieldConfig);
   const element = useMemo(() => {
     switch (fieldConfig.type) {
       case FieldType.CharField:
@@ -120,7 +121,7 @@ export function ContentField({
       case FieldType.EmailField:
         return <Input type="email" />;
       case FieldType.DateField:
-        return <DatePicker />;
+        return <DatePicker clearable={!fieldConfig.validation.required} />;
       case FieldType.TimeField:
         return <Input />;
       case FieldType.URLField:

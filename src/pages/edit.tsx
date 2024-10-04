@@ -24,7 +24,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
-import { ContentType, FieldType } from "@/types";
+import { ContentType } from "@/types";
 import { cn } from "@/utils/cn";
 
 export function EditPage() {
@@ -115,14 +115,6 @@ function EditForm({
 }) {
   const translate = useTranslate();
   const resourceId = contentType.resourceId;
-  const isSingleton = contentType.isSingleton;
-  // Check if content type contains a file field, so we
-  // can tell the dataprovider to use multipart.
-  const hasFileField = Object.values(contentType.fields).some(
-    R.whereEq({ type: FieldType.FileField }),
-  );
-  const readOnlyFields = contentType.admin?.readonlyFields ?? [];
-
   const form = useForm({
     /**
      * Some fields may not have mounted yet. In order for all fields
@@ -136,7 +128,7 @@ function EditForm({
       action: id ? "edit" : "create",
       resource: resourceId,
       id: id ?? undefined,
-      meta: { isSingleton, hasFileField, readOnlyFields },
+      meta: { contentType },
       queryOptions: { retry: false },
       successNotification() {
         return {

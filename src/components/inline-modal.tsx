@@ -20,7 +20,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import useContentType from "@/hooks/useContentType";
-import { ContentType, FieldType } from "@/types";
+import { ContentType } from "@/types";
 
 export function InlineModal({
   resourceId,
@@ -98,12 +98,6 @@ function Main({
   const { mutateAsync: update } = useUpdate();
   const { mutateAsync: create } = useCreate();
 
-  // Check if content type contains a file field, so we
-  // can tell the dataprovider to use multipart.
-  const hasFileField = Object.values(contentType.fields).some(
-    R.whereEq({ type: FieldType.FileField }),
-  );
-
   const onSubmit = useCallback(
     async (values: any) => {
       try {
@@ -113,14 +107,14 @@ function Main({
               id: id,
               values,
               meta: {
-                hasFileField,
+                contentType,
               },
             })
           : create({
               resource: resourceId,
               values,
               meta: {
-                hasFileField,
+                contentType,
               },
             }));
         closeDialog();

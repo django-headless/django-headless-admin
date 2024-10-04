@@ -133,7 +133,8 @@
       }
     },
     "date_picker": {
-      "placeholder": "Selecteer een datum"
+      "placeholder": "Selecteer een datum",
+      "clear": "Wissen"
     }
   },
   "validations": {
