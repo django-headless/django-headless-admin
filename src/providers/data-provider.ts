@@ -32,7 +32,10 @@ export const dataProvider: DataProvider = {
 
   async getList({ resource, pagination, filters = [] }) {
     const fields = R.fromPairs(
-      filters.map(({ field, value }: any) => [field, value]),
+      filters.map(({ field, value }: any) => [
+        !R.isNil(value) ? field : `${field}__isnull`,
+        R.when(R.isNil, R.T, value),
+      ]),
     );
     const { data } = await http.get(`/${resource}`, {
       params: {

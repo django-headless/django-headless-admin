@@ -13,6 +13,7 @@ import { EditPage } from "@/pages/edit";
 import { GroupsPage } from "@/pages/groups";
 import { ListPage } from "@/pages/list";
 import { MediaLibrary } from "@/pages/media-library";
+import { MediaItemEditPage } from "@/pages/media-library/item-edit";
 import { SettingsPage } from "@/pages/settings";
 import { UsersPage } from "@/pages/users";
 
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
                 element: <ListPage />,
               },
               {
-                path: "media-library",
+                path: "content/media-library/items",
                 element: <MediaLibrary />,
               },
             ],
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
           {
             path: "content/:resourceId/:id",
             element: <EditPage />,
+          },
+          {
+            path: "content/media-library/items/:id",
+            element: <MediaItemEditPage />,
           },
         ],
       },

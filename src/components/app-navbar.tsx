@@ -83,7 +83,7 @@ export function AppNavbar() {
           <MainLink
             icon={<span>📷</span>}
             label={translate("app.navbar.items.media_library")}
-            to="/media-library"
+            to="/content/media-library/items"
           />
         </div>
 

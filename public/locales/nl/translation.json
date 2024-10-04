@@ -59,7 +59,9 @@
     },
     "media_library": {
       "title": "Mediabibliotheek",
-      "search": "Media zoeken"
+      "search": "Media zoeken",
+      "folders": "Folders",
+      "new_folder": "Nieuwe folder"
     },
     "users": {
       "title": "Gebruikers"
