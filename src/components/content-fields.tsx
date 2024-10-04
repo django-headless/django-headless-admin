@@ -101,7 +101,7 @@ export function ContentField({
 }) {
   const form = useFormContext();
   const fieldConfig = contentType.fields[name];
-  console.log(fieldConfig);
+
   const element = useMemo(() => {
     switch (fieldConfig.type) {
       case FieldType.CharField:

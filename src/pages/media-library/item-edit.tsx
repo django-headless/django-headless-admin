@@ -9,7 +9,12 @@ import {
   PiSidebarSimpleFill,
 } from "react-icons/pi";
 import type { ImperativePanelHandle } from "react-resizable-panels";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import { ContentFields } from "@/components/content-fields";
 import { Inlines } from "@/components/inlines";
@@ -24,7 +29,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useAdminFields } from "@/hooks/useAdminFields";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
-import { ContentType, FieldType } from "@/types";
+import { ContentType } from "@/types";
 import { cn } from "@/utils/cn";
 
 const ITEM_RESOURCE_ID = "media-library/items";
@@ -109,13 +114,6 @@ function EditForm({
 }) {
   const translate = useTranslate();
   const resourceId = contentType.resourceId;
-  const isSingleton = contentType.isSingleton;
-  // Check if content type contains a file field, so we
-  // can tell the dataprovider to use multipart.
-  const hasFileField = Object.values(contentType.fields).some(
-    R.whereEq({ type: FieldType.FileField }),
-  );
-  const readOnlyFields = contentType.admin?.readonlyFields ?? [];
 
   const form = useForm({
     /**
@@ -130,7 +128,7 @@ function EditForm({
       action: id ? "edit" : "create",
       resource: resourceId,
       id: id ?? undefined,
-      meta: { isSingleton, hasFileField, readOnlyFields },
+      meta: { contentType },
       queryOptions: { retry: false },
       successNotification() {
         return {
@@ -242,6 +240,7 @@ function Sidebar({
   const translate = useTranslate();
   const resourceName = contentType.verboseName;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { mutateAsync: remove } = useDelete();
   const fieldNames = useAdminFields(contentType, { sidebar: true });
 
@@ -266,7 +265,9 @@ function Sidebar({
                     resource: ITEM_RESOURCE_ID,
                     id: id,
                   });
-                  navigate(`/content/${ITEM_RESOURCE_ID}`);
+                  navigate(
+                    `/content/${ITEM_RESOURCE_ID}?${searchParams.toString()}`,
+                  );
                 } catch (e) {}
               }
             }}

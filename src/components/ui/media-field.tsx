@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Pagination } from "@/components/ui/pagination";
 import { Spinner } from "@/components/ui/spinner";
+import useContentType from "@/hooks/useContentType";
 import { cn } from "@/utils/cn";
 
 const ITEM_RESOURCE_ID = "media-library/items";
@@ -133,7 +134,7 @@ function SelectDialogContent({
     pagination: { current: page, pageSize: 24 },
     filters: [
       { field: "search", operator: "contains", value: search },
-      { field: "folder", operator: "contains", value: folder },
+      { field: "folder", operator: "eq", value: folder || "<NULL>" },
     ],
   });
 
@@ -197,6 +198,7 @@ function SelectDialogContent({
         </div>
 
         <UploadField
+          folder={folder}
           onUpload={(mediaId) =>
             setSelection(multiple ? R.append(mediaId) : R.always([mediaId]))
           }
@@ -216,7 +218,14 @@ function SelectDialogContent({
   );
 }
 
-function UploadField({ onUpload }: { onUpload(mediaId: string): void }) {
+function UploadField({
+  onUpload,
+  folder,
+}: {
+  folder: string | null;
+  onUpload(mediaId: string): void;
+}) {
+  const contentType = useContentType(ITEM_RESOURCE_ID);
   const translate = useTranslate();
   const { mutateAsync, isLoading } = useCreate({
     resource: ITEM_RESOURCE_ID,
@@ -226,12 +235,13 @@ function UploadField({ onUpload }: { onUpload(mediaId: string): void }) {
       for await (const f of acceptedFiles) {
         const { data } = await mutateAsync({
           values: {
+            folder,
             name: f.name,
             file: f,
             type: f.type.split("/")[0],
           },
           meta: {
-            hasFileField: true,
+            contentType,
           },
         });
         onUpload(data.id as string);

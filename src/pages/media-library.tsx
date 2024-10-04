@@ -105,6 +105,7 @@ export function MediaItems() {
   const columns = useColumns(contentType);
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const folder = searchParams.get("folder");
 
   const {
     getHeaderGroups,
@@ -126,7 +127,7 @@ export function MediaItems() {
           {
             field: "folder",
             operator: "eq",
-            value: searchParams.get("folder"),
+            value: R.isNil(folder) ? "<NULL>" : folder,
           },
         ],
       },

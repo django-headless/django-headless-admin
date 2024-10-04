@@ -24,7 +24,7 @@ export function MediaFolders({
       {
         field: "parent",
         operator: "eq",
-        value: folder,
+        value: R.isNil(folder) ? "<NULL>" : folder,
       },
     ],
   });

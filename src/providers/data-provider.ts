@@ -23,15 +23,15 @@ export const dataProvider: DataProvider = {
       meta.contentType.admin?.readOnly ?? [],
       variables,
     );
-    const hasFileField = Object.values(meta.contentType.fields).some(
-      R.whereEq({ type: FieldType.FileField }),
-    );
+    const fileFields = Object.entries(meta.contentType.fields)
+      .filter(([_, value]) => value.type === FieldType.FileField)
+      .map(R.head) as string[];
 
-    if (hasFileField) {
-      return http.patchForm(
-        `/${resource}${isSingleton ? "" : `/${id}`}`,
-        snakecaseKeys(normalize(writableVariables, meta.contentType)),
-      );
+    if (!R.isEmpty(fileFields)) {
+      return http.patchForm(`/${resource}${isSingleton ? "" : `/${id}`}`, {
+        ...snakecaseKeys(R.pick(fileFields, variables), { deep: false }),
+        ...snakecaseKeys(R.omit(fileFields, variables)),
+      });
     }
     return http.patch(
       `/${resource}${isSingleton ? "" : `/${id}`}`,
@@ -42,8 +42,8 @@ export const dataProvider: DataProvider = {
   async getList({ resource, pagination, filters = [] }) {
     const fields = R.fromPairs(
       filters.map(({ field, value }: any) => [
-        !R.isNil(value) ? field : `${field}__isnull`,
-        R.when(R.isNil, R.T, value),
+        value === "<NULL>" ? `${field}__isnull` : field,
+        value === "<NULL>" ? true : value,
       ]),
     );
     const { data } = await http.get(`/${resource}`, {
@@ -62,15 +62,15 @@ export const dataProvider: DataProvider = {
   },
 
   async create({ resource, variables, meta }) {
-    const hasFileField = Object.values(meta.contentType.fields).some(
-      R.whereEq({ type: FieldType.FileField }),
-    );
+    const fileFields = Object.entries(meta.contentType.fields)
+      .filter(([_, value]) => value.type === FieldType.FileField)
+      .map(R.head) as string[];
 
-    if (hasFileField) {
-      return await http.postForm(
-        `/${resource}`,
-        snakecaseKeys(normalize(variables, meta.contentType)),
-      );
+    if (!R.isEmpty(fileFields)) {
+      return await http.postForm(`/${resource}`, {
+        ...snakecaseKeys(R.pick(fileFields, variables), { deep: false }),
+        ...snakecaseKeys(R.omit(fileFields, variables)),
+      });
     }
 
     return await http.post(
