@@ -151,7 +151,7 @@ function EditForm({
     },
   });
 
-  if (form.refineCore.formLoading) {
+  if (form.refineCore.query?.isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Spinner />

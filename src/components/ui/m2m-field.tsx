@@ -15,9 +15,6 @@ const ManyToManyField = React.forwardRef<
   const [search, setSearch] = useState("");
   const { data: list } = useList({
     resource: resourceId,
-    queryOptions: {
-      enabled: !R.isNil(value),
-    },
     filters: [
       { field: "search", operator: "contains", value: search },
       { field: "~id__in", operator: "nin", value: value },
@@ -34,23 +31,31 @@ const ManyToManyField = React.forwardRef<
   return (
     <div className="space-y-2 border rounded-md p-4">
       <div className="flex items-center flex-wrap gap-2">
-        {selected?.data.map((record) => (
-          <div
-            key={record.id}
-            className="rounded bg-muted pl-2 py-0.5 flex items-center"
-          >
-            <span className="text-secondary-foreground text-sm font-medium">
-              {record.__str__}
-            </span>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => onChange?.(R.without([record.id], value ?? []))}
-            >
-              <PiXBold />
-            </Button>
-          </div>
-        ))}
+        {value?.map((id) => {
+          const record = selected?.data.find(R.whereEq({ id }));
+
+          return (
+            record && (
+              <div
+                key={record.id}
+                className="rounded bg-muted pl-2 py-0.5 flex items-center"
+              >
+                <span className="text-secondary-foreground text-sm font-medium">
+                  {record.__str__}
+                </span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() =>
+                    onChange?.(R.without([record.id], value ?? []))
+                  }
+                >
+                  <PiXBold />
+                </Button>
+              </div>
+            )
+          );
+        })}
       </div>
       <Combobox
         ref={ref}
