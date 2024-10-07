@@ -11,7 +11,7 @@ export const dataProvider: DataProvider = {
 
   async getOne({ resource, id, meta }) {
     const { data } = await http.get(
-      `/${resource}${meta.isSingleton ? "" : `/${id}`}`,
+      `/${resource}${meta.contentType?.isSingleton ? "" : `/${id}`}`,
     );
 
     return { data };
