@@ -100,6 +100,7 @@ export enum FieldType {
   BooleanField = "BooleanField",
   NullBooleanField = "NullBooleanField",
   CharField = "CharField",
+  CropField = "CropField",
   DateField = "DateField",
   DateTimeField = "DateTimeField",
   DecimalField = "DecimalField",

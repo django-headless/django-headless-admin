@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 
 import { ContentFieldDisplay } from "@/components/content-field-display";
 import { ChoiceField } from "@/components/ui/choice-field";
+import { CropField } from "@/components/ui/crop-field";
 import { DatePicker } from "@/components/ui/date-picker";
 import { FileField } from "@/components/ui/file-field";
 import { FlexField } from "@/components/ui/flex-field";
@@ -110,6 +111,19 @@ export function ContentField({
         ) : (
           <Input />
         );
+      case FieldType.CropField:
+        return (
+          <CropField
+            media={form.watch(fieldConfig.mediaField)}
+            aspect={
+              fieldConfig.aspectField && form.watch(fieldConfig.aspectField)
+            }
+            disabled={
+              fieldConfig.aspectField &&
+              R.isNil(form.watch(fieldConfig.aspectField))
+            }
+          />
+        );
       case FieldType.MultipleChoiceField:
         return <MultipleChoiceField options={fieldConfig.choices ?? []} />;
       case FieldType.PositiveIntegerField:
@@ -158,7 +172,7 @@ export function ContentField({
           </div>
         ) : null;
     }
-  }, [fieldConfig]);
+  }, [fieldConfig, form]);
 
   return (
     element && (

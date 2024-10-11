@@ -87,7 +87,21 @@ export function ContentFieldDisplay({
           {R.pipe(R.sortBy(R.identity), R.join(", "))(value ?? [])}
         </div>
       );
+    case FieldType.CropField:
+      return (
+        <div>
+          {value
+            ? `${value.x}x, ${value.y}y, ${value.width}w, ${value.height}h`
+            : ""}
+        </div>
+      );
     default:
-      return <div className="break-words text-sm">{value}</div>;
+      return (
+        <div className="break-words text-sm">
+          {contentTypeField.choices
+            ? contentTypeField.choices.find(([key]) => key === value)?.[1]
+            : value}
+        </div>
+      );
   }
 }
