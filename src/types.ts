@@ -114,6 +114,7 @@ export enum FieldType {
   ManyToManyField = "ManyToManyField",
   MediaField = "MediaField",
   MultipleChoiceField = "MultipleChoiceField",
+  OneToOneField = "OneToOneField",
   PositiveIntegerField = "PositiveIntegerField",
   PositiveSmallIntegerField = "PositiveSmallIntegerField",
   TagField = "TagField",

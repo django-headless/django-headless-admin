@@ -154,6 +154,7 @@ export function ContentField({
       case FieldType.FlexField:
         return <FlexField schema={fieldConfig.schema!} />;
       case FieldType.ForeignKey:
+      case FieldType.OneToOneField:
         return <ForeignKeyField resourceId={fieldConfig.resourceId!} />;
       case FieldType.ManyToManyField:
         return <ManyToManyField resourceId={fieldConfig.resourceId!} />;

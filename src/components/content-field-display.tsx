@@ -28,6 +28,7 @@ export function ContentFieldDisplay({
 
   switch (fieldType) {
     case FieldType.ForeignKey:
+    case FieldType.OneToOneField:
       return value ? (
         canLink ? (
           <Link
