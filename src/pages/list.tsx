@@ -9,6 +9,7 @@ import { InlineModal } from "@/components/inline-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -21,7 +22,6 @@ import useColumns from "@/hooks/useColumns";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
 import { ContentType } from "@/types";
-import { cn } from "@/utils/cn";
 
 export function ListPage() {
   const { resourceId } = useParams<"resourceId">();
@@ -57,13 +57,16 @@ export function Main({
       setCurrent,
       pageCount,
       current,
-      tableQuery: { isFetching, isPreviousData, data },
+      tableQuery: { isFetching, data },
     },
   } = useTable({
     refineCoreProps: {
       resource: resourceId,
       syncWithLocation: true,
       pagination: { pageSize: contentType.admin?.listPerPage },
+      queryOptions: {
+        keepPreviousData: false,
+      },
     },
     columns,
   });
@@ -103,41 +106,46 @@ export function Main({
         )}
       </div>
 
-      <div
-        className={cn("rounded-md mb-6 bg-white", {
-          "animate-pulse": isFetching && isPreviousData,
-        })}
-      >
-        <Table>
-          <TableHeader>
-            {getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      {isFetching ? (
+        <div className="justify-center items-center flex py-24">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="rounded-md mb-6 bg-white">
+          <Table>
+            <TableHeader>
+              {getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
 
       {!isFetching && R.isEmpty(data?.data) && (
         <div className="select-none text-center text-sm text-muted-foreground py-12">
