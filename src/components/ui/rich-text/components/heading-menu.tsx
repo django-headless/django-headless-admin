@@ -1,5 +1,5 @@
 import { useTranslate } from "@refinedev/core";
-import { useCurrentEditor } from "@tiptap/react";
+import type { Editor } from "@tiptap/core";
 import React from "react";
 
 import {
@@ -23,8 +23,7 @@ const NODE_TYPES = [
   "codeBlock",
 ];
 
-const HeadingMenu: React.FC = () => {
-  const { editor } = useCurrentEditor();
+const HeadingMenu: React.FC = ({ editor }: { editor: Editor }) => {
   const translate = useTranslate();
   const value = editor ? getNodeType(editor) : undefined;
 

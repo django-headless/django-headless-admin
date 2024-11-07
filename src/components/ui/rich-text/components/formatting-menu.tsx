@@ -1,4 +1,4 @@
-import { useCurrentEditor } from "@tiptap/react";
+import type { Editor } from "@tiptap/core";
 import {
   PiArrowArcLeftBold,
   PiArrowArcRightBold,
@@ -16,9 +16,7 @@ import { Toggle } from "@/components/ui/toggle";
 
 import HeadingMenu from "./heading-menu";
 
-export function FormattingMenu() {
-  const { editor } = useCurrentEditor();
-
+export function FormattingMenu({ editor }: { editor: Editor }) {
   return (
     editor && (
       <div className="border-b flex items-center gap-2 p-1 overflow-x-auto overflow-y-hidden">
@@ -38,7 +36,7 @@ export function FormattingMenu() {
         </Button>
 
         <div className="w-[140px]">
-          <HeadingMenu />
+          <HeadingMenu editor={editor} />
         </div>
 
         <Toggle

@@ -4,10 +4,10 @@ import { Image } from "@tiptap/extension-image";
 import { Link } from "@tiptap/extension-link";
 import { Typography } from "@tiptap/extension-typography";
 import { Underline } from "@tiptap/extension-underline";
-import { EditorProvider } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import * as R from "ramda";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { FormattingMenu } from "./components/formatting-menu";
 
@@ -27,25 +27,36 @@ export const RichTextField = React.forwardRef<
   React.ElementRef<"div">,
   RichtTextProps
 >(function RichTextField({ value, onChange, disabled }: RichtTextProps, ref) {
+  const editor = useEditor({
+    extensions,
+    content: value,
+    editable: !disabled,
+    editorProps: {
+      attributes: {
+        class: "rich-text-field",
+      },
+    },
+    onUpdate({ editor }) {
+      onChange?.(editor.getHTML());
+    },
+  });
+  /*
+   * Update editor state if it doesn't match
+   * the current value.
+   */
+  useEffect(() => {
+    if (value !== editor.getHTML()) {
+      editor.commands.setContent(value);
+    }
+  }, [value, editor]);
+
   return R.isNil(value) ? null : (
     <div
       ref={ref}
       className="border border-solid rounded-md bg-background focus-within:border-ring"
     >
-      <EditorProvider
-        extensions={extensions}
-        content={value}
-        editable={!disabled}
-        onUpdate={({ editor }) => onChange?.(editor.getHTML())}
-        editorProps={{
-          attributes: {
-            class: "rich-text-field",
-          },
-        }}
-        slotBefore={<FormattingMenu />}
-      >
-        <span />
-      </EditorProvider>
+      <FormattingMenu editor={editor} />
+      <EditorContent editor={editor} />
     </div>
   );
 });
