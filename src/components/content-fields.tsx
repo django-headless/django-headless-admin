@@ -112,18 +112,7 @@ export function ContentField({
           <Input />
         );
       case FieldType.CropField:
-        return (
-          <CropField
-            media={form.watch(fieldConfig.mediaField)}
-            aspect={
-              fieldConfig.aspectField && form.watch(fieldConfig.aspectField)
-            }
-            disabled={
-              fieldConfig.aspectField &&
-              R.isNil(form.watch(fieldConfig.aspectField))
-            }
-          />
-        );
+        return <CropField media={form.watch(fieldConfig.mediaField)} />;
       case FieldType.MultipleChoiceField:
         return <MultipleChoiceField options={fieldConfig.choices ?? []} />;
       case FieldType.PositiveIntegerField:

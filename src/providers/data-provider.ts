@@ -28,10 +28,17 @@ export const dataProvider: DataProvider = {
       .map(R.head) as string[];
 
     if (!R.isEmpty(fileFields)) {
-      return http.patchForm(`/${resource}${isSingleton ? "" : `/${id}`}`, {
-        ...snakecaseKeys(R.pick(fileFields, variables), { deep: false }),
-        ...snakecaseKeys(R.omit(fileFields, variables)),
-      });
+      return http.patchForm(
+        `/${resource}${isSingleton ? "" : `/${id}`}`,
+        R.mapObjIndexed((value) =>
+          Array.isArray(value) || R.is(Object)(value)
+            ? JSON.stringify(value)
+            : value,
+        )({
+          ...snakecaseKeys(R.pick(fileFields, variables), { deep: false }),
+          ...snakecaseKeys(R.omit(fileFields, variables)),
+        }),
+      );
     }
     return http.patch(
       `/${resource}${isSingleton ? "" : `/${id}`}`,

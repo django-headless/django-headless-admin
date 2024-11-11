@@ -70,7 +70,6 @@ function EditMain({
             />
 
             <div className="max-w-screen-md mx-auto w-full pt-12 lg:w-2/3 z-10 relative">
-              <ImagePreview />
               <ContentFields
                 contentType={contentType}
                 fieldNames={fieldNames}
@@ -151,7 +150,7 @@ function EditForm({
     },
   });
 
-  if (form.refineCore.formLoading) {
+  if (form.refineCore.query?.isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Spinner />
@@ -276,20 +275,6 @@ function Sidebar({
           </Button>
         )}
       </div>
-    </div>
-  );
-}
-
-function ImagePreview() {
-  const form = useFormContext();
-
-  return (
-    <div className="mb-12 flex flex-col items-center">
-      <img
-        src={form.watch("file")}
-        alt=""
-        className="object-contain rounded-lg shadow select-none h-64"
-      />
     </div>
   );
 }

@@ -1,58 +1,40 @@
 "use client";
 import "react-image-crop/dist/ReactCrop.css";
 
-import { useOne } from "@refinedev/core";
 import * as R from "ramda";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ReactCrop from "react-image-crop";
 
-const ITEM_RESOURCE_ID = "media-library/items";
+import type { CropValue } from "@/types";
 
 const CropField = ({
   value,
   onChange,
   media,
-  aspect,
-  disabled,
 }: {
-  value?: any;
-  onChange?(crop: any): void;
-  media: string;
-  aspect: string | number;
-  disabled?: boolean;
+  value?: CropValue[];
+  onChange?(crop: CropValue[]): void;
+  media: any;
 }) => {
-  const { data } = useOne({
-    resource: ITEM_RESOURCE_ID,
-    id: media,
-    queryOptions: {
-      enabled: !R.isNil(media),
-    },
-  });
-  const src = data?.data.file;
-
-  // Reset crop whenever the aspect ratio changes.
-  useEffect(() => {
-    onChange(null);
-  }, [aspect]);
+  const src = media.file;
 
   return (
     <ReactCrop
-      disabled={disabled}
       ruleOfThirds
-      aspect={aspect ? Number(aspect) : undefined}
-      crop={value}
+      crop={value[0]}
+      className="w-full"
       onChange={(_, p) =>
-        onChange(
+        onChange([
           R.evolve({
             x: (n) => n.toFixed(2),
             y: (n) => n.toFixed(2),
             width: (n) => n.toFixed(2),
             height: (n) => n.toFixed(2),
           })(p),
-        )
+        ])
       }
     >
-      <img alt="" src={src} className="h-[480px] w-auto rounded" />
+      <img alt="" src={src} className="w-full rounded" />
     </ReactCrop>
   );
 };

@@ -24,6 +24,10 @@
     @apply border-l-2 border-muted border-solid border-0 mx-0 px-4 text-muted-foreground;
   }
 
+  & a {
+    @apply underline;
+  }
+
   & .rich-text-image {
     @apply bg-secondary rounded-md max-w-full cursor-grab h-12 w-12 active:cursor-grabbing;
     &.ProseMirror-selectednode {

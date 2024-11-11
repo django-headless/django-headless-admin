@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 
 import HeadingMenu from "./heading-menu";
+import LinkButton from "./link-button";
 
 export function FormattingMenu({ editor }: { editor: Editor }) {
   return (
@@ -66,7 +67,7 @@ export function FormattingMenu({ editor }: { editor: Editor }) {
           <PiTextStrikethroughBold />
         </Toggle>
 
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="h-auto self-stretch" />
 
         <Button
           size="sm"
@@ -83,7 +84,9 @@ export function FormattingMenu({ editor }: { editor: Editor }) {
           <PiListBulletsBold />
         </Button>
 
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="h-auto self-stretch" />
+
+        <LinkButton editor={editor} />
       </div>
     )
   );

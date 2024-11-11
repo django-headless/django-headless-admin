@@ -154,3 +154,11 @@ export interface RecentAction {
   actionFlag: "ADDITION" | "CHANGE" | "DELETION";
   actionTime: DateTimeString;
 }
+
+export interface CropValue {
+  x: string;
+  y: string;
+  width: string;
+  height: string;
+  unit: "%";
+}

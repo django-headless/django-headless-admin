@@ -103,7 +103,10 @@
       "heading6": "Kop 6",
       "paragraph": "Paragraaf",
       "blockquote": "Citaat",
-      "codeBlock": "Codeblok"
+      "codeBlock": "Codeblok",
+      "set_link": "Voeg link toe",
+      "update_link": "Bewerk link",
+      "remove_link": "Verwijder link"
     },
     "media_field": {
       "select_media": "Selecteer media",
