@@ -5,6 +5,7 @@ import * as R from "ramda";
 import React from "react";
 import ReactCrop from "react-image-crop";
 
+import { Image } from "@/components/ui/image";
 import type { CropValue } from "@/types";
 
 const CropField = ({
@@ -34,7 +35,7 @@ const CropField = ({
         ])
       }
     >
-      <img alt="" src={src} className="w-full rounded" />
+      <Image alt="" src={src} width={960} className="w-full rounded" />
     </ReactCrop>
   );
 };

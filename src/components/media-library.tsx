@@ -1,12 +1,24 @@
-import { useCustom, useDelete, useList, useTranslate } from "@refinedev/core";
+import {
+  useCustom,
+  useDelete,
+  useInfiniteList,
+  useTranslate,
+} from "@refinedev/core";
 import * as R from "ramda";
-import { PiFolder, PiHouseBold, PiPlus, PiTrash } from "react-icons/pi";
+import {
+  PiArrowDown,
+  PiFolder,
+  PiHouseBold,
+  PiPlus,
+  PiTrash,
+} from "react-icons/pi";
 
 import { InlineModal } from "@/components/inline-modal";
 import useContentType from "@/hooks/useContentType";
 import { cn } from "@/utils/cn";
 
 const FOLDER_RESOURCE_ID = "media-library/folders";
+const PAGE_SIZE = 100;
 
 export function MediaFolders({
   folder,
@@ -18,16 +30,22 @@ export function MediaFolders({
   const translate = useTranslate();
   const contentType = useContentType(FOLDER_RESOURCE_ID);
   const { mutate: deleteFolder } = useDelete();
-  const { isFetching, isPreviousData, data } = useList({
-    resource: FOLDER_RESOURCE_ID,
-    filters: [
-      {
-        field: "parent",
-        operator: "eq",
-        value: R.isNil(folder) ? "<NULL>" : folder,
+  const { isFetching, isPreviousData, data, hasNextPage, fetchNextPage } =
+    useInfiniteList({
+      resource: FOLDER_RESOURCE_ID,
+      pagination: {
+        pageSize: PAGE_SIZE,
       },
-    ],
-  });
+      filters: [
+        {
+          field: "parent",
+          operator: "eq",
+          value: R.isNil(folder) ? "<NULL>" : folder,
+        },
+      ],
+    });
+  const folders = data?.pages.flatMap(R.prop("data")) ?? [];
+  console.log(data);
   const { data: folderPath } = useCustom({
     url: `/media-library/folder-path?folder=${folder ?? ""}`,
     method: "get",
@@ -54,7 +72,7 @@ export function MediaFolders({
               </button>
             </li>
           )}
-          {data?.data.map((folder) => (
+          {folders.map((folder) => (
             <li
               key={folder.id}
               className="group font-medium text-sm px-4 flex items-center justify-between gap-2"
@@ -81,6 +99,17 @@ export function MediaFolders({
               </button>
             </li>
           ))}
+          {hasNextPage && (
+            <li>
+              <button
+                className="font-medium text-sm px-4 flex items-center justify-between gap-2 "
+                onClick={() => fetchNextPage()}
+              >
+                <PiArrowDown />
+                {translate("pages.media_library.load_more")}
+              </button>
+            </li>
+          )}
           <li className="font-medium text-sm border-t border-dashed px-4 py-2">
             {contentType.admin?.permissions.add && (
               <InlineModal

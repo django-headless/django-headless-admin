@@ -4,6 +4,7 @@ import * as R from "ramda";
 import { PiCheckCircleBold, PiXCircleBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
+import { Image } from "@/components/ui/image";
 import { type ContentTypeField, FieldType } from "@/types";
 
 /**
@@ -55,15 +56,21 @@ export function ContentFieldDisplay({
       );
     case FieldType.MediaField:
       return (
-        <img
+        <Image
           src={value.__str__}
           alt=""
           className="size-12 object-cover rounded-md"
+          width={200}
         />
       );
     case FieldType.FileField:
       return (
-        <img src={value} alt="" className="size-12 object-cover rounded-md" />
+        <Image
+          src={value}
+          alt=""
+          className="size-12 object-cover rounded-md"
+          width={200}
+        />
       );
     case FieldType.IntegerField:
     case FieldType.PositiveIntegerField:

@@ -162,3 +162,7 @@ export interface CropValue {
   height: string;
   unit: "%";
 }
+
+export interface HeadlessConfig {
+  imageLoader?({ src, width }: { src: string; width: number }): string;
+}

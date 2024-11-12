@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Image } from "@/components/ui/image";
 import { Pagination } from "@/components/ui/pagination";
 import { Spinner } from "@/components/ui/spinner";
 import useContentType from "@/hooks/useContentType";
@@ -172,9 +173,10 @@ function SelectDialogContent({
                     }
                   }}
                 >
-                  <img
+                  <Image
                     src={item.file}
                     alt=""
+                    width={200}
                     className={cn("object-cover aspect-square rounded", {
                       "opacity-40": isSelected,
                     })}
