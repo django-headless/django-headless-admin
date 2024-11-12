@@ -8,13 +8,13 @@ export const Image = React.forwardRef<
 >(({ src, width, ...props }, ref) => {
   const { imageLoader } = useConfig();
 
-  return (
+  return src ? (
     <img
       ref={ref}
       src={imageLoader ? imageLoader({ src, width }) : src}
       {...props}
     />
-  );
+  ) : null;
 });
 
 Image.displayName = "Image";

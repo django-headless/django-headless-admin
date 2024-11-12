@@ -54,6 +54,7 @@ export interface ContentType {
     listDisplay: string[];
     listDisplayLinks: string[];
     listPerPage: number;
+    sortableBy: string[] | null;
     inlines: Inline[] | null;
     enableSearch: boolean;
     fieldConfig?: Record<string, { format?: string }>;

@@ -2,13 +2,23 @@ import { useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender } from "@tanstack/react-table";
 import * as R from "ramda";
-import { useState } from "react";
+import React, { useState } from "react";
+import { PiSortAscendingBold } from "react-icons/pi";
 import { useParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTriggerPrimitive,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -49,10 +59,17 @@ export function Main({
 
   useTitle(title || resourceName);
 
+  React.useEffect(() => {
+    setFilters([], "replace");
+    setSorters([]);
+  }, [resourceId]);
+
   const {
     getHeaderGroups,
     getRowModel,
     refineCore: {
+      sorters,
+      setSorters,
       setFilters,
       setCurrent,
       pageCount,
@@ -86,24 +103,36 @@ export function Main({
         )}
       </div>
 
-      <div className="mb-4 empty:hidden flex items-center gap-1">
-        {contentType.admin?.enableSearch && (
-          <Input
-            placeholder={translate("pages.list.search", {
-              resourceName: resourceName.toLocaleLowerCase(),
-            })}
-            className="max-w-xs"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setFilters([
-                  { field: "search", operator: "eq", value: search },
-                ]);
-              }
+      <div className="mb-4 flex items-center gap-1">
+        <div className="flex flex-1">
+          {contentType.admin?.enableSearch && (
+            <Input
+              placeholder={translate("pages.list.search", {
+                resourceName: resourceName.toLocaleLowerCase(),
+              })}
+              className="max-w-xs"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setFilters([
+                    { field: "search", operator: "eq", value: search },
+                  ]);
+                }
+              }}
+            />
+          )}
+        </div>
+
+        <div className="flex">
+          <Sort
+            contentType={contentType}
+            value={sorters[0]?.field ?? null}
+            onChange={(field) => {
+              setSorters([{ field, order: "asc" }]);
             }}
           />
-        )}
+        </div>
       </div>
 
       {isFetching ? (
@@ -160,4 +189,40 @@ export function Main({
       />
     </div>
   );
+}
+
+function Sort({
+  contentType,
+  value,
+  onChange,
+}: {
+  contentType: ContentType;
+  value: string | null;
+  onChange(value: string | null): void;
+}) {
+  const translate = useTranslate();
+  const fields = contentType.admin.sortableBy ?? contentType.admin.listDisplay;
+
+  return !R.isEmpty(fields) ? (
+    <Select value={value ?? ""} onValueChange={onChange}>
+      <SelectTriggerPrimitive asChild>
+        <Button variant="ghost">
+          <PiSortAscendingBold className="mr-1" />
+          <SelectValue placeholder={translate("pages.list.sort")} />
+        </Button>
+      </SelectTriggerPrimitive>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>{translate("pages.list.sort_header")}</SelectLabel>
+          {fields
+            .filter((field) => field !== "__str__")
+            .map((field) => (
+              <SelectItem key={field} value={field}>
+                {contentType.fields[field]?.label || field}
+              </SelectItem>
+            ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ) : null;
 }

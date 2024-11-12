@@ -1,4 +1,5 @@
 import type { DataProvider } from "@refinedev/core";
+import * as changeCase from "change-case";
 import * as R from "ramda";
 import snakecaseKeys from "snakecase-keys";
 
@@ -46,7 +47,7 @@ export const dataProvider: DataProvider = {
     );
   },
 
-  async getList({ resource, pagination, filters = [] }) {
+  async getList({ resource, pagination, filters = [], sorters }) {
     const fields = R.fromPairs(
       filters.map(({ field, value }: any) => [
         value === "<NULL>" ? `${field}__isnull` : field,
@@ -59,6 +60,15 @@ export const dataProvider: DataProvider = {
         page: pagination?.current,
         limit: pagination?.pageSize,
         relation_field: "combined",
+        ordering:
+          !sorters || R.isEmpty(sorters)
+            ? undefined
+            : sorters
+                .map(
+                  (sorter) =>
+                    `${sorter.order === "asc" ? "" : "-"}${changeCase.snakeCase(sorter.field)}`,
+                )
+                .join(","),
       },
     });
 

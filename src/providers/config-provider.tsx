@@ -11,7 +11,6 @@ export function ConfigProvider({
   children: React.ReactNode;
   config: Partial<HeadlessConfig>;
 }) {
-  console.log(config);
   return (
     <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
   );

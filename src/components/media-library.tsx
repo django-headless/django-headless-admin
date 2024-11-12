@@ -45,7 +45,6 @@ export function MediaFolders({
       ],
     });
   const folders = data?.pages.flatMap(R.prop("data")) ?? [];
-  console.log(data);
   const { data: folderPath } = useCustom({
     url: `/media-library/folder-path?folder=${folder ?? ""}`,
     method: "get",

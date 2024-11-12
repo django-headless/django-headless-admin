@@ -150,6 +150,8 @@ const SelectSeparator = React.forwardRef<
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
+const SelectTriggerPrimitive = SelectPrimitive.Trigger;
+
 export {
   Select,
   SelectContent,
@@ -160,5 +162,6 @@ export {
   SelectScrollUpButton,
   SelectSeparator,
   SelectTrigger,
+  SelectTriggerPrimitive,
   SelectValue,
 };
