@@ -1,14 +1,15 @@
-import { useTranslate } from "@refinedev/core";
+import { type CrudSort, useDeleteMany, useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
-import { flexRender } from "@tanstack/react-table";
+import { flexRender, type RowSelectionState } from "@tanstack/react-table";
 import * as R from "ramda";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PiSortAscendingBold } from "react-icons/pi";
 import { useParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Pagination } from "@/components/ui/pagination";
 import {
   Select,
@@ -16,10 +17,12 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
+  SelectSeparator,
   SelectTriggerPrimitive,
   SelectValue,
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import { Switch } from "@/components/ui/switch";
 import {
   Table,
   TableBody,
@@ -55,13 +58,15 @@ export function Main({
   const resourceName =
     contentType.verboseNamePlural || `${contentType.verboseName}s`;
   const columns = useColumns(contentType);
-  const [search, setSearch] = useState("");
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const { mutateAsync, isLoading } = useDeleteMany();
 
   useTitle(title || resourceName);
 
   React.useEffect(() => {
     setFilters([], "replace");
     setSorters([]);
+    setRowSelection({});
   }, [resourceId]);
 
   const {
@@ -72,6 +77,7 @@ export function Main({
       setSorters,
       setFilters,
       setCurrent,
+      filters,
       pageCount,
       current,
       tableQuery: { isFetching, data },
@@ -85,8 +91,23 @@ export function Main({
         keepPreviousData: false,
       },
     },
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    getRowId: R.prop<string>("id"),
     columns,
+    state: {
+      rowSelection,
+    },
   });
+
+  const [search, setSearch] = useState(
+    filters.find(R.whereEq({ field: "search" }))?.value ?? "",
+  );
+
+  useEffect(() => {
+    setRowSelection({});
+  }, [filters, current, sorters]);
 
   return (
     <div className="p-16">
@@ -124,12 +145,32 @@ export function Main({
           )}
         </div>
 
-        <div className="flex">
+        <div className="flex items-center gap-1">
+          {!R.isEmpty(rowSelection) && (
+            <Button
+              variant="destructive"
+              size="sm"
+              loading={isLoading}
+              onClick={async () => {
+                if (window.confirm("Are you sure?")) {
+                  await mutateAsync({
+                    resource: resourceId,
+                    ids: Object.keys(R.pickBy(R.identity, rowSelection)),
+                  });
+                  setRowSelection({});
+                }
+              }}
+            >
+              {translate("pages.list.bulk_delete", {
+                count: Object.keys(rowSelection).length,
+              })}
+            </Button>
+          )}
           <Sort
             contentType={contentType}
-            value={sorters[0]?.field ?? null}
-            onChange={(field) => {
-              setSorters([{ field, order: "asc" }]);
+            value={sorters[0] ?? null}
+            onChange={(sort) => {
+              setSorters([sort]);
             }}
           />
         </div>
@@ -182,29 +223,43 @@ export function Main({
         </div>
       )}
 
-      <Pagination
-        pages={pageCount}
-        current={current}
-        onPageChange={setCurrent}
-      />
+      <div className="flex items-center gap-3 justify-between">
+        {!R.isEmpty(rowSelection) && (
+          <div className="text-sm text-muted-foreground shrink-0 select-none">
+            {translate("pages.list.rows_selected", {
+              count: Object.keys(rowSelection).length,
+            })}
+          </div>
+        )}
+        <Pagination
+          pages={pageCount}
+          current={current}
+          onPageChange={setCurrent}
+        />
+      </div>
     </div>
   );
 }
 
-function Sort({
+export function Sort({
   contentType,
   value,
   onChange,
 }: {
   contentType: ContentType;
-  value: string | null;
-  onChange(value: string | null): void;
+  value: CrudSort | null;
+  onChange(value: CrudSort | null): void;
 }) {
   const translate = useTranslate();
   const fields = contentType.admin.sortableBy ?? contentType.admin.listDisplay;
 
   return !R.isEmpty(fields) ? (
-    <Select value={value ?? ""} onValueChange={onChange}>
+    <Select
+      value={value?.field ?? ""}
+      onValueChange={(field) =>
+        onChange?.(value ? { ...value, field } : { field, order: "asc" })
+      }
+    >
       <SelectTriggerPrimitive asChild>
         <Button variant="ghost">
           <PiSortAscendingBold className="mr-1" />
@@ -222,6 +277,19 @@ function Sort({
               </SelectItem>
             ))}
         </SelectGroup>
+        <SelectSeparator />
+        <div className="p-2">
+          <Label className="font-medium flex items-center gap-2">
+            <Switch
+              disabled={!value}
+              value={value?.order === "asc"}
+              onChange={(checked) =>
+                onChange?.({ ...value, order: checked ? "asc" : "desc" })
+              }
+            />
+            {translate("pages.list.asc")}
+          </Label>
+        </div>
       </SelectContent>
     </Select>
   ) : null;

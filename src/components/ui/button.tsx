@@ -13,7 +13,7 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
-          "bg-white border border-destructive text-destructive shadow-sm hover:bg-destructive/5",
+          "bg-destructive/5 border border-destructive text-destructive shadow-sm hover:bg-destructive/10",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
@@ -50,6 +50,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       loading = false,
+      disabled = false,
       children,
       type = "button",
       ...props
@@ -62,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         type={type}
+        disabled={disabled || loading}
         {...props}
       >
         {loading && (

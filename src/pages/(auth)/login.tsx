@@ -110,7 +110,7 @@ export function LoginPage() {
             <Button
               className="w-full"
               type="submit"
-              loading={form.formState.isLoading}
+              loading={form.formState.isSubmitting}
             >
               {translate("pages.login.button")}
             </Button>

@@ -57,7 +57,13 @@
       "empty_state": "Geen resultaten",
       "search": "Zoek {{resourceName}}",
       "sort": "Sorteren",
-      "sort_header": "Sorteren op"
+      "sort_header": "Sorteren op",
+      "asc": "Oplopend",
+      "select_page": "Selecteer pagina",
+      "rows_selected_one": "1 item geselecteerd",
+      "rows_selected_other": "{{count}} items geselecteerd",
+      "bulk_delete_one": "Verwijder 1 item",
+      "bulk_delete_other": "Verwijder {{count}} items"
     },
     "media_library": {
       "title": "Mediabibliotheek",

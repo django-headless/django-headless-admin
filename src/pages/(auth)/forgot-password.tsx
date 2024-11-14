@@ -76,7 +76,7 @@ export function ForgotPasswordPage() {
               <Button
                 className="w-full"
                 type="submit"
-                loading={form.formState.isLoading}
+                loading={form.formState.isSubmitting}
               >
                 {translate("pages.forgot_password.button")}
               </Button>

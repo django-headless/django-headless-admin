@@ -1,8 +1,8 @@
-import { useTranslate } from "@refinedev/core";
+import { useDeleteMany, useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
-import { flexRender } from "@tanstack/react-table";
+import { flexRender, type RowSelectionState } from "@tanstack/react-table";
 import * as R from "ramda";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
@@ -21,6 +21,7 @@ import {
 import useColumns from "@/hooks/useColumns";
 import useContentType from "@/hooks/useContentType";
 import useTitle from "@/hooks/useTitle";
+import { Sort } from "@/pages/list";
 import { cn } from "@/utils/cn";
 
 const ITEM_RESOURCE_ID = "media-library/items";
@@ -106,13 +107,17 @@ export function MediaItems() {
   const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const folder = searchParams.get("folder");
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const { mutateAsync, isLoading } = useDeleteMany();
 
   const {
     getHeaderGroups,
     getRowModel,
     refineCore: {
       setFilters,
+      setSorters,
       setCurrent,
+      sorters,
       pageCount,
       current,
       tableQuery: { isFetching, isPreviousData, data },
@@ -132,29 +137,67 @@ export function MediaItems() {
         ],
       },
     },
+    enableRowSelection: true,
+    enableMultiRowSelection: true,
+    onRowSelectionChange: setRowSelection,
     columns,
+    getRowId: R.prop<string>("id"),
+    state: {
+      rowSelection,
+    },
   });
 
   return (
     <div>
       <div className="mb-4 empty:hidden flex items-center gap-1">
-        {contentType.admin?.enableSearch && (
-          <Input
-            placeholder={translate("pages.list.search", {
-              resourceName: resourceName.toLocaleLowerCase(),
-            })}
-            className="max-w-xs"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                setFilters([
-                  { field: "search", operator: "eq", value: search },
-                ]);
-              }
+        <div className="flex-1">
+          {contentType.admin?.enableSearch && (
+            <Input
+              placeholder={translate("pages.list.search", {
+                resourceName: resourceName.toLocaleLowerCase(),
+              })}
+              className="max-w-xs"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setFilters([
+                    { field: "search", operator: "eq", value: search },
+                  ]);
+                }
+              }}
+            />
+          )}
+        </div>
+        <div className="flex items-center gap-1">
+          {!R.isEmpty(rowSelection) && (
+            <Button
+              variant="destructive"
+              size="sm"
+              loading={isLoading}
+              onClick={async () => {
+                if (window.confirm("Are you sure?")) {
+                  await mutateAsync({
+                    resource: ITEM_RESOURCE_ID,
+                    ids: Object.keys(R.pickBy(R.identity, rowSelection)),
+                  });
+                  setRowSelection({});
+                }
+              }}
+            >
+              {translate("pages.list.bulk_delete", {
+                count: Object.keys(rowSelection).length,
+              })}
+            </Button>
+          )}
+          <Sort
+            contentType={contentType}
+            value={sorters[0] ?? null}
+            onChange={(sort) => {
+              setSorters([sort]);
             }}
           />
-        )}
+        </div>
       </div>
 
       <MediaFolders
@@ -213,11 +256,20 @@ export function MediaItems() {
         </div>
       )}
 
-      <Pagination
-        pages={pageCount}
-        current={current}
-        onPageChange={setCurrent}
-      />
+      <div className="flex items-center gap-3 justify-between">
+        {!R.isEmpty(rowSelection) && (
+          <div className="text-sm text-muted-foreground shrink-0 select-none">
+            {translate("pages.list.rows_selected", {
+              count: Object.keys(rowSelection).length,
+            })}
+          </div>
+        )}
+        <Pagination
+          pages={pageCount}
+          current={current}
+          onPageChange={setCurrent}
+        />
+      </div>
     </div>
   );
 }

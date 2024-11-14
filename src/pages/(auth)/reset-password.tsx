@@ -108,7 +108,7 @@ export function ResetPasswordPage() {
             <Button
               className="w-full"
               type="submit"
-              loading={form.formState.isLoading}
+              loading={form.formState.isSubmitting}
             >
               {translate("pages.reset_password.button")}
             </Button>

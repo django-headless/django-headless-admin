@@ -36,7 +36,7 @@ export default function App() {
           notificationProvider={notificationProvider}
           i18nProvider={i18nProvider}
         >
-          <TooltipProvider>
+          <TooltipProvider delayDuration={300}>
             <Toaster />
             <DocumentTitle />
             <Outlet />
