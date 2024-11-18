@@ -91,7 +91,11 @@ export function Main({
           {
             field: "fields",
             operator: "eq",
-            value: contentType.admin.listDisplay.map(snakeCase),
+            value: [
+              "id",
+              "__str__",
+              ...contentType.admin.listDisplay.map(snakeCase),
+            ],
           },
         ],
       },

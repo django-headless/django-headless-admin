@@ -66,8 +66,8 @@ export const authProvider: AuthProvider = {
 
     return { success: true, redirectTo: "/login" };
   },
-  onError: async (params) => ({}),
-  register: async (params) => ({}),
+  onError: async () => ({}),
+  register: async () => ({}),
   async forgotPassword(params: { email: string }) {
     try {
       await http.post("/users/reset_password/", { email: params.email });

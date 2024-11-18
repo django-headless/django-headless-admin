@@ -2,7 +2,7 @@ import { useCreate, useList, useOne, useTranslate } from "@refinedev/core";
 import * as R from "ramda";
 import React, { type HTMLAttributes, useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { PiCheckBold, PiXBold } from "react-icons/pi";
+import { PiCheckBold, PiFile, PiXBold } from "react-icons/pi";
 
 import { FolderPath, MediaFolders } from "@/components/media-library";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,6 +18,11 @@ import {
 import { Image } from "@/components/ui/image";
 import { Pagination } from "@/components/ui/pagination";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useContentType from "@/hooks/useContentType";
 import { cn } from "@/utils/cn";
 
@@ -141,7 +146,13 @@ function SelectDialogContent({
 
   return (
     <div className="flex flex-col flex-1">
-      <FolderPath folder={folder} onSelect={setFolder} />
+      <FolderPath
+        folder={folder}
+        onSelect={(folderId) => {
+          setPage(1);
+          setFolder(folderId);
+        }}
+      />
 
       <div className="flex items-stretch gap-6 flex-1">
         <div className="flex-1 shrink-0">
@@ -154,39 +165,55 @@ function SelectDialogContent({
                 setSearch(v);
               }}
             />
-            <MediaFolders folder={folder} onSelect={setFolder} />
+            <MediaFolders
+              folder={folder}
+              onSelect={(folderId) => {
+                setPage(1);
+                setFolder(folderId);
+              }}
+            />
           </div>
           <div className="grid grid-cols-6 gap-2">
             {list?.data.map((item: any) => {
               const isSelected = selection.includes(item.id);
               return (
-                <button
-                  key={item.id}
-                  className="relative"
-                  onClick={() => {
-                    if (multiple) {
-                      !isSelected
-                        ? setSelection(R.append(item.id))
-                        : setSelection(R.without([item.id]));
-                    } else {
-                      setSelection([item.id]);
-                    }
-                  }}
-                >
-                  <Image
-                    src={item.file}
-                    alt=""
-                    width={200}
-                    className={cn("object-cover aspect-square rounded", {
-                      "opacity-40": isSelected,
-                    })}
-                  />
-                  {isSelected && (
-                    <div className="size-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 shadow">
-                      <PiCheckBold className="size-2.5" />
-                    </div>
-                  )}
-                </button>
+                <Tooltip key={item.id}>
+                  <TooltipContent>{item.name}</TooltipContent>
+                  <TooltipTrigger asChild>
+                    <button
+                      className="relative"
+                      onClick={() => {
+                        if (multiple) {
+                          !isSelected
+                            ? setSelection(R.append(item.id))
+                            : setSelection(R.without([item.id]));
+                        } else {
+                          setSelection([item.id]);
+                        }
+                      }}
+                    >
+                      {item.type === "image" ? (
+                        <Image
+                          src={item.file}
+                          alt=""
+                          width={200}
+                          className={cn("object-cover aspect-square rounded", {
+                            "opacity-40": isSelected,
+                          })}
+                        />
+                      ) : (
+                        <div className="rounded h-full bg-accent flex items-center justify-center select-none">
+                          <PiFile />
+                        </div>
+                      )}
+                      {isSelected && (
+                        <div className="size-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 shadow">
+                          <PiCheckBold className="size-2.5" />
+                        </div>
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                </Tooltip>
               );
             })}
           </div>

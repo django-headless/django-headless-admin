@@ -42,6 +42,7 @@ export default function useColumns(contentType: ContentType) {
                   contentTypeField={contentTypeField}
                   config={contentType.admin?.fieldConfig?.[key]}
                   value={value}
+                  item={row.original}
                   canLink={false}
                 />
               </Link>
@@ -50,6 +51,7 @@ export default function useColumns(contentType: ContentType) {
                 contentTypeField={contentTypeField}
                 config={contentType.admin?.fieldConfig?.[key]}
                 value={value}
+                item={row.original}
               />
             );
           },

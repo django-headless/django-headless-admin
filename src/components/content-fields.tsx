@@ -57,7 +57,7 @@ export function ContentFields({
             key={nameOrNames.join()}
             className="flex items-start gap-4 justify-between"
           >
-            {nameOrNames.map((name, idx) => (
+            {nameOrNames.map((name) => (
               <ContentField
                 key={name}
                 name={name}

@@ -201,6 +201,8 @@ export function MediaItems() {
         folder={searchParams.get("folder")}
         onSelect={(folder) =>
           setSearchParams((searchParams) => {
+            // Reset the current page number
+            setCurrent(1);
             if (folder) {
               searchParams.set("folder", folder);
             } else {

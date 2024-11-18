@@ -14,11 +14,19 @@ export function ContentFieldDisplay({
   contentTypeField,
   config,
   value,
+  item,
   canLink = true,
 }: {
   contentTypeField: ContentTypeField;
   config?: any;
+  /*
+   * The value of the field.
+   */
   value: any;
+  /*
+   * The full content item object.
+   */
+  item: any;
   canLink?: boolean;
 }) {
   const fieldType = contentTypeField.type;
@@ -57,7 +65,7 @@ export function ContentFieldDisplay({
     case FieldType.MediaField:
       return value.type === "image" ? (
         <Image
-          src={value.__str__}
+          src={value.file}
           alt=""
           className="size-12 object-cover rounded-md"
           width={200}
@@ -68,13 +76,18 @@ export function ContentFieldDisplay({
         </div>
       );
     case FieldType.FileField:
-      return (
+      // TODO this only applies to media library content.
+      return !item.type || item.type === "image" ? (
         <Image
           src={value}
           alt=""
           className="size-12 object-cover rounded-md"
           width={200}
         />
+      ) : (
+        <div className="size-12 rounded-md bg-accent flex items-center justify-center select-none">
+          <PiFile />
+        </div>
       );
     case FieldType.IntegerField:
     case FieldType.PositiveIntegerField:

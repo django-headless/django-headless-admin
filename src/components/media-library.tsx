@@ -116,10 +116,7 @@ export function MediaFolders({
                 id={null}
                 prefilledValues={{ parent: folder }}
               >
-                <button
-                  className="flex items-center gap-2 text-muted-foreground hover:text-secondary-foreground"
-                  onClick={() => {}}
-                >
+                <button className="flex items-center gap-2 text-muted-foreground hover:text-secondary-foreground">
                   <PiPlus className="mr-1" />
                   <span>{translate("pages.media_library.new_folder")}</span>
                 </button>
