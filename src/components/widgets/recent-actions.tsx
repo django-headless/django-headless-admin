@@ -47,7 +47,7 @@ export function RecentActionsWidget() {
               </div>
               <div className="flex-1">
                 <div>
-                  {action.objectResourceId ? (
+                  {action.objectId && action.actionFlag !== "DELETION" ? (
                     <Link
                       className="font-medium text-xs/tight hover:underline inline-block"
                       to={`/content/${action.objectResourceId}/${action.objectId}`}
@@ -55,9 +55,9 @@ export function RecentActionsWidget() {
                       {action.objectRepr}
                     </Link>
                   ) : (
-                    <span className="text-xs/tight line-through text-muted-foreground">
+                    <div className="text-xs/tight line-through text-muted-foreground">
                       {action.objectRepr}
-                    </span>
+                    </div>
                   )}
                 </div>
                 <div className="text-xs text-muted-foreground whitespace-nowrap">

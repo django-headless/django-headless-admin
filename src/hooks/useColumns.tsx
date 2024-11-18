@@ -31,7 +31,7 @@ export default function useColumns(contentType: ContentType) {
             const value = getValue();
             const isLink =
               displayLinks.includes(key) ||
-              (R.isEmpty(displayLinks) && cell.column.getIndex() === 0);
+              (R.isEmpty(displayLinks) && cell.column.getIndex() === 1);
 
             return isLink ? (
               <Link

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import prettyBytes from "pretty-bytes";
 import * as R from "ramda";
-import { PiCheckCircleBold, PiXCircleBold } from "react-icons/pi";
+import { PiCheckCircleBold, PiFile, PiXCircleBold } from "react-icons/pi";
 import { Link } from "react-router-dom";
 
 import { Image } from "@/components/ui/image";
@@ -55,13 +55,17 @@ export function ContentFieldDisplay({
         </div>
       );
     case FieldType.MediaField:
-      return (
+      return value.type === "image" ? (
         <Image
           src={value.__str__}
           alt=""
           className="size-12 object-cover rounded-md"
           width={200}
         />
+      ) : (
+        <div className="size-12 rounded-md bg-accent flex items-center justify-center select-none">
+          <PiFile />
+        </div>
       );
     case FieldType.FileField:
       return (

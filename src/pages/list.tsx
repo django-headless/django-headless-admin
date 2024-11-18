@@ -1,6 +1,7 @@
 import { type CrudSort, useDeleteMany, useTranslate } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { flexRender, type RowSelectionState } from "@tanstack/react-table";
+import { snakeCase } from "change-case";
 import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { PiSortAscendingBold } from "react-icons/pi";
@@ -85,6 +86,15 @@ export function Main({
   } = useTable({
     refineCoreProps: {
       resource: resourceId,
+      filters: {
+        permanent: [
+          {
+            field: "fields",
+            operator: "eq",
+            value: contentType.admin.listDisplay.map(snakeCase),
+          },
+        ],
+      },
       syncWithLocation: true,
       pagination: { pageSize: contentType.admin?.listPerPage },
       queryOptions: {

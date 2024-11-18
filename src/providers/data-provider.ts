@@ -59,7 +59,7 @@ export const dataProvider: DataProvider = {
         ...fields,
         page: pagination?.current,
         limit: pagination?.pageSize,
-        relation_field: "combined",
+        expand: "*",
         ordering:
           !sorters || R.isEmpty(sorters)
             ? undefined

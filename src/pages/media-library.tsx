@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { InlineModal } from "@/components/inline-modal";
 import { FolderPath, MediaFolders } from "@/components/media-library";
+import { MediaLibraryModal } from "@/components/media-library-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
@@ -62,17 +63,13 @@ export function Main() {
             </InlineModal>
           )}
           {itemCT.admin?.permissions.add && (
-            <InlineModal
-              resourceId={ITEM_RESOURCE_ID}
-              id={null}
-              prefilledValues={{ folder: searchParams.get("folder") }}
-            >
+            <MediaLibraryModal folder={searchParams.get("folder")}>
               <Button>
                 {translate("pages.list.add", {
                   resourceName: itemCT.verboseName,
                 })}
               </Button>
-            </InlineModal>
+            </MediaLibraryModal>
           )}
         </div>
       </div>
