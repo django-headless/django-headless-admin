@@ -33,26 +33,30 @@ const ManyMediaField = React.forwardRef<
     >
       <ScrollArea className="whitespace-nowrap">
         <div className="flex items-center w-max gap-2 pt-2 px-2 pb-4">
-          {selected?.data.map((record) => (
-            <div
-              key={record.id}
-              className="relative flex items-center shrink-0 group"
-            >
-              <Avatar className="size-24 rounded-md shadow-sm">
-                <AvatarImage src={record.file ?? undefined} alt="" />
-                <AvatarFallback className="rounded-md" />
-              </Avatar>
-              <button
-                className="absolute bg-white/50 rounded p-3 left-1/2 -translate-x-1/2 invisible group-hover:visible"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onChange?.(R.without([record.id], value ?? []));
-                }}
+          {value?.map((id) => {
+            const record = selected?.data.find(R.whereEq({ id }));
+
+            return (
+              <div
+                key={id}
+                className="relative flex items-center shrink-0 group"
               >
-                <PiXBold />
-              </button>
-            </div>
-          ))}
+                <Avatar className="size-24 rounded-md shadow-sm">
+                  <AvatarImage src={record?.file ?? undefined} alt="" />
+                  <AvatarFallback className="rounded-md" />
+                </Avatar>
+                <button
+                  className="absolute bg-white/50 rounded p-3 left-1/2 -translate-x-1/2 invisible group-hover:visible"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onChange?.(R.without([id], value ?? []));
+                  }}
+                >
+                  <PiXBold />
+                </button>
+              </div>
+            );
+          })}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>

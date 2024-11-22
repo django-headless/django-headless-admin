@@ -57,7 +57,7 @@ const MediaField = React.forwardRef<React.ElementRef<"div">, MediaFieldProps>(
       >
         <div className="relative flex items-center shrink-0 group">
           <Avatar className="size-24 rounded-md shadow-sm">
-            <AvatarImage src={data?.data.file ?? undefined} alt="" />
+            <AvatarImage src={(value && data?.data.file) ?? undefined} alt="" />
             <AvatarFallback className="rounded-md" />
           </Avatar>
           {clearable && !R.isNil(value) && (
